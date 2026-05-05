@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AddisNET – Local Business Discovery</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ===== TOP NAVIGATION ===== -->
+  <header class="navbar">
+    <div class="navbar-inner">
+      <a href="#" class="logo">Addis<span>NET</span></a>
+      <button class="hamburger" id="menuToggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <!-- Slide-out menu -->
+    <nav class="side-menu" id="sideMenu" aria-hidden="true">
+      <button class="menu-close" id="menuClose" aria-label="Close menu">&times;</button>
+      <ul>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#contact">Contact Us</a></li>
+        <li><a href="#digital-store" class="highlight-link">Get Your Digital Store</a></li>
+        <li><a href="#admin">Admin Panel</a></li>
+      </ul>
+    </nav>
+    <div class="menu-overlay" id="menuOverlay"></div>
+  </header>
+
+  <!-- ===== HERO / CONTROL BAR ===== -->
+  <section class="hero">
+    <div class="hero-text">
+      <h1>Discover Addis, <span>one business at a time.</span></h1>
+      <p>Find trusted local businesses in your neighbourhood.</p>
+    </div>
+
+    <div class="control-bar">
+      <!-- Category Filter -->
+      <div class="filter-group" id="categoryFilter">
+        <button class="filter-btn" aria-haspopup="listbox" aria-expanded="false" id="catBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          <span id="catLabel">Category</span>
+          <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="dropdown-panel" id="catPanel" role="listbox">
+          <input type="text" class="dropdown-search" placeholder="Search category…" id="catSearch" />
+          <ul id="catList">
+            <li data-value="all" class="active" role="option">All Categories</li>
+            <li data-value="restaurants" role="option">🍽 Restaurants</li>
+            <li data-value="grocery" role="option">🛒 Grocery</li>
+            <li data-value="furniture" role="option">🛋 Furniture</li>
+            <li data-value="pharmacy" role="option">💊 Pharmacy</li>
+            <li data-value="clinics" role="option">🏥 Clinics</li>
+            <li data-value="fashion" role="option">👗 Fashion</li>
+            <li data-value="electronics" role="option">📱 Electronics</li>
+            <li data-value="beauty" role="option">💅 Beauty & Spa</li>
+            <li data-value="bakery" role="option">🥐 Bakery & Café</li>
+            <li data-value="auto" role="option">🚗 Auto Services</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Hood Filter -->
+      <div class="filter-group" id="hoodFilter">
+        <button class="filter-btn" aria-haspopup="listbox" aria-expanded="false" id="hoodBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          <span id="hoodLabel">Neighbourhood</span>
+          <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="dropdown-panel" id="hoodPanel" role="listbox">
+          <input type="text" class="dropdown-search" placeholder="Search neighbourhood…" id="hoodSearch" />
+          <ul id="hoodList">
+            <li data-value="all" class="active" role="option">All Neighbourhoods</li>
+            <li data-value="bole" role="option">📍 Bole</li>
+            <li data-value="megenagna" role="option">📍 Megenagna</li>
+            <li data-value="kazanchis" role="option">📍 Kazanchis</li>
+            <li data-value="piassa" role="option">📍 Piassa</li>
+            <li data-value="sarbet" role="option">📍 Sarbet</li>
+            <li data-value="gerji" role="option">📍 Gerji</li>
+            <li data-value="ayat" role="option">📍 Ayat</li>
+            <li data-value="summit" role="option">📍 Summit</li>
+            <li data-value="mexico" role="option">📍 Mexico</li>
+            <li data-value="4kilo" role="option">📍 4 Kilo</li>
+            <li data-value="6kilo" role="option">📍 6 Kilo</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MAIN BUSINESS GRID ===== -->
+  <main class="main-content">
+    <div class="section-header">
+      <h2 id="gridTitle">All Businesses</h2>
+      <span class="result-count" id="resultCount"></span>
+    </div>
+
+    <div class="business-grid" id="businessGrid">
+      <!-- Tiles injected by JS -->
+    </div>
+
+    <div class="empty-state" id="emptyState" hidden>
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <p>No businesses found for this filter.</p>
+    </div>
+  </main>
+
+  <!-- ===== FEATURED PRODUCTS (sticky bar) ===== -->
+  <div class="featured-sticky" id="featuredSticky">
+    <div class="featured-sticky-inner">
+      <div class="featured-sticky-header">
+        <h2>Featured Products</h2>
+        <div class="carousel-controls">
+          <button class="carousel-btn" id="carouselPrev" aria-label="Previous">&#8592;</button>
+          <button class="carousel-btn" id="carouselNext" aria-label="Next">&#8594;</button>
+        </div>
+      </div>
+      <div class="carousel-track-wrapper">
+        <div class="carousel-track" id="carouselTrack">
+          <!-- Injected by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Spacer so content isn't hidden behind sticky bar -->
+  <div class="featured-spacer" id="featuredSpacer"></div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer" id="siteFooter">
+    <div class="footer-inner">
+
+      <div class="footer-brand">
+        <span class="logo-footer">Addis<span>NET</span></span>
+        <p>Your city. Your businesses.</p>
+      </div>
+
+      <!-- Optional Sign In -->
+      <div class="footer-signin">
+        <h4>Stay in the loop</h4>
+        <form class="signin-form" id="signInForm">
+          <input type="text" placeholder="Your name" id="siName" autocomplete="name" required />
+          <select id="siHood" required>
+            <option value="">Your neighbourhood</option>
+          </select>
+          <button type="submit">Sign In</button>
+        </form>
+      </div>
+
+      <!-- Social Links -->
+      <div class="footer-social">
+        <h4>Follow Us</h4>
+        <div class="social-links">
+          <a href="#" class="social-link" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            LinkedIn
+          </a>
+          <a href="#" class="social-link" aria-label="TikTok">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/></svg>
+            TikTok
+          </a>
+          <a href="#" class="social-link" aria-label="Telegram">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.17 13.667l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.978.892z"/></svg>
+            Telegram
+          </a>
+        </div>
+      </div>
+
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 AddisNET. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
