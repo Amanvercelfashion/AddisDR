@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AddisNET – Local Business Discovery</title>
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="business-page.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 </head>
@@ -51,16 +52,6 @@
           <input type="text" class="dropdown-search" placeholder="Search category…" id="catSearch" />
           <ul id="catList">
             <li data-value="all" class="active" role="option">All Categories</li>
-            <li data-value="restaurants" role="option">🍽 Restaurants</li>
-            <li data-value="grocery" role="option">🛒 Grocery</li>
-            <li data-value="furniture" role="option">🛋 Furniture</li>
-            <li data-value="pharmacy" role="option">💊 Pharmacy</li>
-            <li data-value="clinics" role="option">🏥 Clinics</li>
-            <li data-value="fashion" role="option">👗 Fashion</li>
-            <li data-value="electronics" role="option">📱 Electronics</li>
-            <li data-value="beauty" role="option">💅 Beauty & Spa</li>
-            <li data-value="bakery" role="option">🥐 Bakery & Café</li>
-            <li data-value="auto" role="option">🚗 Auto Services</li>
           </ul>
         </div>
       </div>
@@ -76,20 +67,27 @@
           <input type="text" class="dropdown-search" placeholder="Search neighbourhood…" id="hoodSearch" />
           <ul id="hoodList">
             <li data-value="all" class="active" role="option">All Neighbourhoods</li>
-            <li data-value="bole" role="option">📍 Bole</li>
-            <li data-value="megenagna" role="option">📍 Megenagna</li>
-            <li data-value="kazanchis" role="option">📍 Kazanchis</li>
-            <li data-value="piassa" role="option">📍 Piassa</li>
-            <li data-value="sarbet" role="option">📍 Sarbet</li>
-            <li data-value="gerji" role="option">📍 Gerji</li>
-            <li data-value="ayat" role="option">📍 Ayat</li>
-            <li data-value="summit" role="option">📍 Summit</li>
-            <li data-value="mexico" role="option">📍 Mexico</li>
-            <li data-value="4kilo" role="option">📍 4 Kilo</li>
-            <li data-value="6kilo" role="option">📍 6 Kilo</li>
           </ul>
         </div>
       </div>
+    </div>
+
+    <!-- Product / Service Search -->
+    <div class="product-search-wrap">
+      <div class="product-search-box" id="productSearchBox">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input
+          type="text"
+          id="productSearchInput"
+          placeholder="Search products &amp; services… (e.g. Macchiato, Massage)"
+          autocomplete="off"
+          aria-label="Search products and services"
+          aria-autocomplete="list"
+          aria-controls="productSearchResults"
+        />
+        <button class="product-search-clear" id="productSearchClear" aria-label="Clear search" hidden>&times;</button>
+      </div>
+      <ul class="product-search-results" id="productSearchResults" role="listbox" hidden></ul>
     </div>
   </section>
 
@@ -109,6 +107,59 @@
       <p>No businesses found for this filter.</p>
     </div>
   </main>
+
+  <!-- ===== BUSINESS DETAIL PAGE ===== -->
+  <div class="biz-page" id="bizPage" aria-hidden="true">
+
+    <!-- Left: focused business -->
+    <div class="biz-main" id="bizMain">
+      <div class="biz-back-bar">
+        <button class="biz-back-btn" id="bizBackBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+          Back to all businesses
+        </button>
+      </div>
+      <img class="biz-hero-img" id="bizHeroImg" src="" alt="" />
+      <div class="biz-info">
+        <div class="biz-info-top">
+          <h1 class="biz-name" id="bizName"></h1>
+          <span class="biz-price-badge" id="bizPriceBadge"></span>
+        </div>
+        <p class="biz-tag" id="bizTag"></p>
+        <p class="biz-hook" id="bizHook"></p>
+        <div class="biz-rating-row" id="bizRatingRow"></div>
+        <div class="biz-rate-section" id="bizRateSection">
+          <span class="biz-rate-label">Rate this business:</span>
+          <div class="biz-rate-stars" id="bizRateStars">
+            <button class="biz-rate-star" data-val="1" aria-label="1 star">★</button>
+            <button class="biz-rate-star" data-val="2" aria-label="2 stars">★</button>
+            <button class="biz-rate-star" data-val="3" aria-label="3 stars">★</button>
+            <button class="biz-rate-star" data-val="4" aria-label="4 stars">★</button>
+            <button class="biz-rate-star" data-val="5" aria-label="5 stars">★</button>
+          </div>
+        </div>
+        <div class="biz-actions" id="bizActions"></div>
+        <div class="biz-report-row">
+          <button class="biz-report-btn" id="bizReportBtn">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Report Issue
+          </button>
+        </div>
+      </div>
+      <div class="biz-divider"></div>
+      <div class="biz-products-section">
+        <h2 class="biz-products-title">Products &amp; Services</h2>
+        <div class="biz-products-grid" id="bizProductsGrid"></div>
+      </div>
+    </div>
+
+    <!-- Right: other businesses sidebar -->
+    <div class="biz-sidebar" id="bizSidebar">
+      <p class="biz-sidebar-title">Other Businesses</p>
+      <!-- Injected by JS -->
+    </div>
+
+  </div>
 
   <!-- ===== FEATURED PRODUCTS (sticky bar) ===== -->
   <div class="featured-sticky" id="featuredSticky">

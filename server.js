@@ -12,6 +12,7 @@ const ratingRoutes = require('./routes/ratings');
 const reportRoutes = require('./routes/reports');
 const userRoutes = require('./routes/users');
 const adminRoutes = require('./routes/admin');
+const productRoutes = require('./routes/products');
 
 // Load database
 dbModule.load();
@@ -41,6 +42,7 @@ app.use('/api/ratings', ratingRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/products', productRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

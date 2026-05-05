@@ -1,9 +1,22 @@
-const dbModule = require('../db/database');
+const fs = require('fs');
+const path = require('path');
+
+const dbPath = path.join(__dirname, '../db/data.json');
 
 console.log('🔄 Seeding database with sample data...');
 
-dbModule.load();
-const db = dbModule.get();
+// Build fresh data directly
+const data = {
+  categories: [],
+  hoods: [],
+  businesses: [],
+  products: [],
+  featured_items: [],
+  ratings: [],
+  reports: [],
+  users: [],
+  _counters: { categories: 0, hoods: 0, businesses: 0, products: 0, featured_items: 0, ratings: 0, reports: 0, users: 0 }
+};
 
 // Categories
 const categories = [
@@ -13,8 +26,8 @@ const categories = [
 ];
 
 categories.forEach((name, i) => {
-  db.categories.push({ id: i + 1, name });
-  db._counters.categories = i + 1;
+  data.categories.push({ id: i + 1, name });
+  data._counters.categories = i + 1;
 });
 
 // Hoods
@@ -33,13 +46,13 @@ const hoods = [
 ];
 
 hoods.forEach((h, i) => {
-  db.hoods.push({ id: i + 1, ...h });
-  db._counters.hoods = i + 1;
+  data.hoods.push({ id: i + 1, ...h });
+  data._counters.hoods = i + 1;
 });
 
 // Helper to get IDs
-const getCatId = (name) => db.categories.find(c => c.name === name)?.id;
-const getHoodId = (name) => db.hoods.find(h => h.name === name)?.id;
+const getCatId = (name) => data.categories.find(c => c.name === name)?.id;
+const getHoodId = (name) => data.hoods.find(h => h.name === name)?.id;
 
 // Businesses
 const businesses = [
@@ -202,7 +215,7 @@ const businesses = [
 ];
 
 businesses.forEach((b, i) => {
-  db.businesses.push({
+  data.businesses.push({
     id: i + 1,
     name: b.name,
     category_id: getCatId(b.category),
@@ -217,11 +230,11 @@ businesses.forEach((b, i) => {
     rating_count: b.rating_count,
     created_at: new Date().toISOString()
   });
-  db._counters.businesses = i + 1;
+  data._counters.businesses = i + 1;
 });
 
 // Featured products
-const getBizId = (name) => db.businesses.find(b => b.name === name)?.id;
+const getBizId = (name) => data.businesses.find(b => b.name === name)?.id;
 
 const featured = [
   {
@@ -291,7 +304,7 @@ const featured = [
 ];
 
 featured.forEach((f, i) => {
-  db.featured_items.push({
+  data.featured_items.push({
     id: i + 1,
     business_id: getBizId(f.business),
     image_url: f.image_url,
@@ -301,15 +314,57 @@ featured.forEach((f, i) => {
     location_text: f.location_text,
     created_at: new Date().toISOString()
   });
-  db._counters.featured_items = i + 1;
+  data._counters.featured_items = i + 1;
 });
 
-dbModule.save();
+// Products per business (searchable)
+const products = [
+  { business: 'Yod Abyssinia',       name: 'Doro Wat',              description: 'Slow-cooked spiced chicken in berbere sauce with injera.',  price: '280 ETB',    image_url: 'https://images.unsplash.com/photo-1567364816519-cbc9c4ffe1eb?w=400&q=80' },
+  { business: 'Yod Abyssinia',       name: 'Tibs Firfir',           description: 'Shredded injera sautéed with spiced lamb and vegetables.',   price: '220 ETB',    image_url: null },
+  { business: 'Yod Abyssinia',       name: 'Tej (Honey Wine)',      description: 'Traditional Ethiopian honey wine served chilled.',           price: '120 ETB',    image_url: null },
+  { business: 'Shoa Supermarket',    name: 'Avocado Juice',         description: 'Thick blended avocado with honey.',                         price: '85 ETB',     image_url: 'https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?w=400&q=80' },
+  { business: 'Shoa Supermarket',    name: 'Organic Honey (1kg)',   description: 'Pure Ethiopian forest honey, unprocessed.',                 price: '350 ETB',    image_url: null },
+  { business: "Kaldi's Coffee",      name: 'Macchiato',             description: "Ethiopia's signature espresso with steamed milk.",          price: '55 ETB',     image_url: 'https://images.unsplash.com/photo-1485808191679-5f86510bd9d4?w=400&q=80' },
+  { business: "Kaldi's Coffee",      name: 'Croissant',             description: 'Buttery, flaky croissant baked fresh daily.',               price: '75 ETB',     image_url: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&q=80' },
+  { business: "Kaldi's Coffee",      name: 'Cappuccino',            description: 'Double espresso with velvety steamed milk foam.',           price: '80 ETB',     image_url: null },
+  { business: 'Desta Fashion House', name: 'Habesha Dress (Netela)',description: 'Hand-woven traditional cotton dress with embroidered border.',price: '1,200 ETB', image_url: 'https://images.unsplash.com/photo-1594938298603-c8148c4b4f7b?w=400&q=80' },
+  { business: 'Desta Fashion House', name: 'Gabi (Shawl)',          description: 'Thick woven cotton shawl, perfect for cool evenings.',      price: '650 ETB',    image_url: null },
+  { business: 'Liya Beauty Spa',     name: 'Deep Tissue Massage',   description: '60-minute full-body massage with Ethiopian oils.',          price: '450 ETB',    image_url: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=400&q=80' },
+  { business: 'Liya Beauty Spa',     name: 'Hair Treatment',        description: 'Nourishing hair mask and blow-dry styling.',                price: '300 ETB',    image_url: null },
+  { business: 'Liya Beauty Spa',     name: 'Manicure & Pedicure',   description: 'Full nail care with gel polish of your choice.',           price: '250 ETB',    image_url: null },
+  { business: 'Kenema Pharmacy',     name: 'Paracetamol 500mg',     description: 'Standard pain relief, 20 tablets per pack.',               price: '35 ETB',     image_url: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&q=80' },
+  { business: 'Kenema Pharmacy',     name: 'Vitamin C 1000mg',      description: 'Immune support supplement, 30 effervescent tablets.',      price: '180 ETB',    image_url: null },
+  { business: 'Bethzatha Clinic',    name: 'General Consultation',  description: 'Doctor visit with diagnosis and prescription.',            price: '500 ETB',    image_url: null },
+  { business: 'Bethzatha Clinic',    name: 'Blood Test (CBC)',      description: 'Complete blood count with same-day results.',              price: '350 ETB',    image_url: null },
+  { business: 'Summit Grill',        name: 'Tibs (Mixed Meat)',     description: 'Sautéed beef and lamb with rosemary and jalapeño.',        price: '320 ETB',    image_url: 'https://images.unsplash.com/photo-1529042410759-befb1204b468?w=400&q=80' },
+  { business: 'Summit Grill',        name: 'Grilled Fish',          description: 'Whole tilapia grilled with lemon herb butter.',            price: '280 ETB',    image_url: null },
+  { business: 'Selam Furniture',     name: 'Sofa Set (3+1+1)',      description: 'Modern fabric sofa set with solid wood frame.',            price: '18,500 ETB', image_url: null },
+  { business: 'Addis Tech Hub',      name: 'Laptop Screen Repair',  description: 'Screen replacement for most laptop brands, same day.',    price: '2,500 ETB',  image_url: null },
+  { business: 'Addis Tech Hub',      name: 'Phone Charging Port Repair', description: 'USB-C / micro-USB port replacement.',               price: '800 ETB',    image_url: null },
+  { business: 'Bole Auto Center',    name: 'Full Car Wash',         description: 'Exterior wash, interior vacuum, and window clean.',       price: '250 ETB',    image_url: null },
+  { business: 'Bole Auto Center',    name: 'Oil Change',            description: 'Engine oil + filter replacement, all car types.',        price: '800 ETB',    image_url: null },
+  { business: 'Ayat Fresh Market',   name: 'Organic Vegetables (1kg)', description: 'Mixed seasonal vegetables, farm-fresh daily.',       price: '80 ETB',     image_url: null },
+];
 
-console.log('✅ Database seeded successfully!');
+products.forEach((p, i) => {
+  data.products.push({
+    id: i + 1,
+    business_id: getBizId(p.business),
+    name: p.name,
+    description: p.description,
+    price: p.price,
+    image_url: p.image_url,
+    created_at: new Date().toISOString()
+  });
+  data._counters.products = i + 1;
+});
+
+// Write directly to file
+fs.writeFileSync(dbPath, JSON.stringify(data, null, 2));
 console.log(`   - ${categories.length} categories`);
 console.log(`   - ${hoods.length} hoods`);
 console.log(`   - ${businesses.length} businesses`);
 console.log(`   - ${featured.length} featured products`);
+console.log(`   - ${products.length} searchable products`);
 
 process.exit(0);

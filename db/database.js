@@ -3,11 +3,11 @@ const path = require('path');
 
 const dbPath = path.join(__dirname, 'data.json');
 
-// Default empty database structure
 const defaultData = {
   categories: [],
   hoods: [],
   businesses: [],
+  products: [],
   featured_items: [],
   ratings: [],
   reports: [],
@@ -16,6 +16,7 @@ const defaultData = {
     categories: 0,
     hoods: 0,
     businesses: 0,
+    products: 0,
     featured_items: 0,
     ratings: 0,
     reports: 0,
@@ -23,44 +24,45 @@ const defaultData = {
   }
 };
 
-let data = defaultData;
+let data = null;
 
-// Load database
 function load() {
   if (fs.existsSync(dbPath)) {
-    const raw = fs.readFileSync(dbPath, 'utf8');
-    data = JSON.parse(raw);
-    console.log('✅ Database loaded');
+    try {
+      data = JSON.parse(fs.readFileSync(dbPath, 'utf8'));
+      console.log('✅ Database loaded');
+    } catch (e) {
+      console.error('Failed to parse database, starting fresh:', e.message);
+      data = JSON.parse(JSON.stringify(defaultData));
+    }
   } else {
+    data = JSON.parse(JSON.stringify(defaultData));
     save();
     console.log('✅ New database created');
   }
 }
 
-// Save database
 function save() {
+  if (!data) return;
   fs.writeFileSync(dbPath, JSON.stringify(data, null, 2));
 }
 
-// Auto-save every 5 seconds
-setInterval(save, 5000);
+function get() {
+  if (!data) load();
+  return data;
+}
 
-// Save on exit
-process.on('exit', save);
-process.on('SIGINT', () => {
-  save();
-  process.exit(0);
-});
-
-// Helper to get next ID
 function nextId(table) {
-  data._counters[table]++;
+  if (!data) load();
+  data._counters[table] = (data._counters[table] || 0) + 1;
   return data._counters[table];
 }
 
-module.exports = {
-  get: () => data,
-  save,
-  load,
-  nextId
-};
+// Auto-save every 10 seconds
+setInterval(save, 10000);
+
+process.on('exit', save);
+process.on('SIGINT', () => { save(); process.exit(0); });
+process.on('SIGTERM', () => { save(); process.exit(0); });
+
+module.exports = { get, save, load, nextId };

@@ -123,7 +123,7 @@ function starSVG(cls) {
 
 function buildTile(b) {
   return `
-  <article class="tile" data-category="${b.category_name}" data-hood="${b.hood_name}" data-business-id="${b.id}">
+  <article class="tile" data-category="${b.category_name}" data-hood="${b.hood_name}" data-business-id="${b.id}" onclick="openBusinessPage(${b.id})" style="cursor:pointer">
     <img class="tile-image" src="${b.image_url}" alt="${b.name}" loading="lazy" />
     <div class="tile-body">
       <div class="tile-top">
@@ -136,7 +136,7 @@ function buildTile(b) {
         ${renderStars(b.rating_avg)}
         <span class="rating-text">${b.rating_avg.toFixed(1)} (${b.rating_count})</span>
       </div>
-      <div class="tile-actions">
+      <div class="tile-actions" onclick="event.stopPropagation()">
         <a href="tel:${b.phone_number}" class="action-btn call">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.82a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
           Call
@@ -151,7 +151,7 @@ function buildTile(b) {
         </a>
       </div>
     </div>
-    <div class="tile-footer">
+    <div class="tile-footer" onclick="event.stopPropagation()">
       <button class="report-btn" onclick="reportIssue(${b.id})">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         Report Issue
@@ -162,7 +162,7 @@ function buildTile(b) {
 
 function buildCarouselItem(p) {
   return `
-  <div class="carousel-item" data-business-id="${p.business_id}" onclick="scrollToBusiness(${p.business_id})">
+  <div class="carousel-item" data-business-id="${p.business_id}" onclick="openBusinessPage(${p.business_id})" style="cursor:pointer">
     <img src="${p.image_url}" alt="${p.title}" loading="lazy" />
     <div class="carousel-item-body">
       <p class="carousel-item-name">${p.title}</p>
@@ -246,14 +246,281 @@ async function populateFilters() {
   });
 }
 
-/* ===== SCROLL TO BUSINESS ===== */
-function scrollToBusiness(businessId) {
-  const tile = document.querySelector(`[data-business-id="${businessId}"]`);
-  if (tile) {
-    tile.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    tile.classList.add('highlight');
-    setTimeout(() => tile.classList.remove('highlight'), 2000);
+/* ===== PRODUCT SEARCH ===== */
+let searchDebounce = null;
+
+function highlight(text, query) {
+  if (!query) return text;
+  const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return text.replace(new RegExp(`(${escaped})`, 'gi'), '<mark>$1</mark>');
+}
+
+function buildSearchResult(p, query) {
+  const img = p.image_url
+    ? `<img class="psr-img" src="${p.image_url}" alt="${p.name}" loading="lazy" />`
+    : `<div class="psr-img-placeholder">🛍</div>`;
+  return `
+  <li class="psr-item" role="option" data-business-id="${p.business_id}" tabindex="-1">
+    ${img}
+    <div class="psr-info">
+      <p class="psr-name">${highlight(p.name, query)}</p>
+      <p class="psr-meta">
+        ${p.business_name}${p.hood_name ? ' · ' + p.hood_name : ''}
+        ${p.description ? ' — ' + p.description.slice(0, 50) + (p.description.length > 50 ? '…' : '') : ''}
+      </p>
+    </div>
+    ${p.price ? `<span class="psr-price">${p.price}</span>` : ''}
+  </li>`;
+}
+
+function initProductSearch() {
+  const input = document.getElementById('productSearchInput');
+  const results = document.getElementById('productSearchResults');
+  const clearBtn = document.getElementById('productSearchClear');
+
+  async function doSearch(q) {
+    if (!q || q.length < 2) {
+      results.hidden = true;
+      results.innerHTML = '';
+      clearBtn.hidden = !q;
+      return;
+    }
+    clearBtn.hidden = false;
+
+    const res = await fetch(`${API_BASE}/products/search?q=${encodeURIComponent(q)}`);
+    const items = await res.json();
+
+    if (items.length === 0) {
+      results.innerHTML = `<li class="psr-empty">No products or services found for "<strong>${q}</strong>"</li>`;
+    } else {
+      results.innerHTML = items.map(p => buildSearchResult(p, q)).join('');
+    }
+    results.hidden = false;
+
+    // Click on result → open business page
+    results.querySelectorAll('.psr-item').forEach(li => {
+      li.addEventListener('click', () => {
+        const bizId = parseInt(li.dataset.businessId);
+        results.hidden = true;
+        input.value = '';
+        clearBtn.hidden = true;
+        openBusinessPage(bizId);
+      });
+    });
   }
+
+  input.addEventListener('input', () => {
+    clearTimeout(searchDebounce);
+    searchDebounce = setTimeout(() => doSearch(input.value.trim()), 280);
+  });
+
+  clearBtn.addEventListener('click', () => {
+    input.value = '';
+    clearBtn.hidden = true;
+    results.hidden = true;
+    results.innerHTML = '';
+    input.focus();
+  });
+
+  // Keyboard navigation
+  input.addEventListener('keydown', (e) => {
+    const items = [...results.querySelectorAll('.psr-item')];
+    const focused = results.querySelector('.psr-item.focused');
+    const idx = items.indexOf(focused);
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      const next = items[idx + 1] || items[0];
+      if (next) { focused?.classList.remove('focused'); next.classList.add('focused'); next.focus(); }
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      const prev = items[idx - 1] || items[items.length - 1];
+      if (prev) { focused?.classList.remove('focused'); prev.classList.add('focused'); prev.focus(); }
+    } else if (e.key === 'Escape') {
+      results.hidden = true;
+    }
+  });
+
+  // Close on outside click
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('#productSearchBox') && !e.target.closest('#productSearchResults')) {
+      results.hidden = true;
+    }
+  });
+}
+
+/* ===== BUSINESS PAGE ===== */
+let currentBizId = null;
+
+async function openBusinessPage(businessId) {
+  const db_biz = businesses.length
+    ? businesses
+    : await fetchBusinesses();
+
+  // Find the business — if not in current filtered list, fetch all
+  let biz = db_biz.find(b => b.id === businessId);
+  if (!biz) {
+    const res = await fetch(`${API_BASE}/businesses/${businessId}`);
+    biz = await res.json();
+  }
+  if (!biz || biz.error) return;
+
+  currentBizId = businessId;
+
+  // Populate hero
+  const heroImg = document.getElementById('bizHeroImg');
+  heroImg.src = biz.image_url || '';
+  heroImg.alt = biz.name;
+
+  document.getElementById('bizName').textContent = biz.name;
+
+  const badge = document.getElementById('bizPriceBadge');
+  badge.textContent = biz.price_indicator || '';
+  badge.style.display = biz.price_indicator ? '' : 'none';
+
+  document.getElementById('bizTag').textContent = `${biz.category_name} • ${biz.hood_name}`;
+  document.getElementById('bizHook').textContent = biz.hook_text || '';
+
+  // Rating display
+  const ratingRow = document.getElementById('bizRatingRow');
+  ratingRow.innerHTML = `
+    ${renderStars(biz.rating_avg)}
+    <span class="biz-rating-num">${biz.rating_avg.toFixed(1)}</span>
+    <span class="biz-rating-count">(${biz.rating_count} ratings)</span>
+  `;
+
+  // Rate stars — highlight if user already rated
+  const rateStars = document.querySelectorAll('.biz-rate-star');
+  let userRating = 0;
+  if (currentUser) {
+    try {
+      const rRes = await fetch(`${API_BASE}/ratings/user/${currentUser.id}/business/${businessId}`);
+      const rData = await rRes.json();
+      userRating = rData.rating || 0;
+    } catch (_) {}
+  }
+  rateStars.forEach(btn => {
+    btn.classList.toggle('active', parseInt(btn.dataset.val) <= userRating);
+  });
+
+  // Action buttons
+  document.getElementById('bizActions').innerHTML = `
+    <a href="tel:${biz.phone_number}" class="biz-action-btn call">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.82a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      Call
+    </a>
+    ${biz.website_link ? `<a href="${biz.website_link}" target="_blank" rel="noopener" class="biz-action-btn">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      Website
+    </a>` : ''}
+    ${biz.location_link ? `<a href="${biz.location_link}" target="_blank" rel="noopener" class="biz-action-btn">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+      Location
+    </a>` : ''}
+  `;
+
+  // Report button
+  document.getElementById('bizReportBtn').onclick = () => reportIssue(businessId);
+
+  // Products
+  const pGrid = document.getElementById('bizProductsGrid');
+  pGrid.innerHTML = '<p class="biz-products-empty">Loading…</p>';
+  try {
+    const pRes = await fetch(`${API_BASE}/products?business_id=${businessId}`);
+    const products_list = await pRes.json();
+    if (products_list.length === 0) {
+      pGrid.innerHTML = '<p class="biz-products-empty">No products or services listed yet.</p>';
+    } else {
+      pGrid.innerHTML = products_list.map(p => `
+        <div class="biz-product-card">
+          ${p.image_url
+            ? `<img src="${p.image_url}" alt="${p.name}" loading="lazy" />`
+            : `<div class="biz-product-card-img-placeholder">🛍</div>`}
+          <div class="biz-product-card-body">
+            <p class="biz-product-card-name">${p.name}</p>
+            ${p.description ? `<p class="biz-product-card-desc">${p.description}</p>` : ''}
+            ${p.price ? `<p class="biz-product-card-price">${p.price}</p>` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+  } catch (_) {
+    pGrid.innerHTML = '<p class="biz-products-empty">Could not load products.</p>';
+  }
+
+  // Sidebar — all businesses except current
+  const allBiz = await fetchBusinesses();
+  const sidebar = document.getElementById('bizSidebar');
+  const others = allBiz.filter(b => b.id !== businessId);
+  sidebar.innerHTML = `<p class="biz-sidebar-title">Other Businesses</p>` +
+    others.map(b => `
+      <div class="biz-sidebar-item" data-id="${b.id}">
+        <img class="biz-sidebar-img" src="${b.image_url || ''}" alt="${b.name}" loading="lazy" />
+        <div class="biz-sidebar-info">
+          <p class="biz-sidebar-name">${b.name}</p>
+          <p class="biz-sidebar-tag">${b.category_name} • ${b.hood_name}</p>
+        </div>
+        <span class="biz-sidebar-rating">★ ${b.rating_avg.toFixed(1)}</span>
+      </div>
+    `).join('');
+
+  sidebar.querySelectorAll('.biz-sidebar-item').forEach(item => {
+    item.addEventListener('click', () => {
+      openBusinessPage(parseInt(item.dataset.id));
+      document.getElementById('bizMain').scrollTop = 0;
+    });
+  });
+
+  // Open the page
+  const page = document.getElementById('bizPage');
+  page.classList.add('open');
+  page.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeBusinessPage() {
+  const page = document.getElementById('bizPage');
+  page.classList.remove('open');
+  page.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+  currentBizId = null;
+}
+
+// Back button
+document.getElementById('bizBackBtn').addEventListener('click', closeBusinessPage);
+
+// Close on Escape
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && document.getElementById('bizPage').classList.contains('open')) {
+    closeBusinessPage();
+  }
+});
+
+// Rate stars interaction
+document.getElementById('bizRateStars').addEventListener('click', async (e) => {
+  const btn = e.target.closest('.biz-rate-star');
+  if (!btn) return;
+  if (!currentUser) {
+    alert('Please sign in to rate businesses.');
+    return;
+  }
+  const val = parseInt(btn.dataset.val);
+  const result = await submitRating(currentBizId, val);
+  if (result && result.success) {
+    document.querySelectorAll('.biz-rate-star').forEach(s => {
+      s.classList.toggle('active', parseInt(s.dataset.val) <= val);
+    });
+    // Update rating display
+    document.getElementById('bizRatingRow').innerHTML = `
+      ${renderStars(result.rating_avg)}
+      <span class="biz-rating-num">${result.rating_avg.toFixed(1)}</span>
+      <span class="biz-rating-count">(${result.rating_count} ratings)</span>
+    `;
+  }
+});
+
+/* ===== SCROLL TO BUSINESS (now opens the page) ===== */
+function scrollToBusiness(businessId) {
+  openBusinessPage(businessId);
 }
 
 /* ===== DROPDOWN LOGIC ===== */
@@ -465,6 +732,7 @@ setupDropdown("hoodBtn", "hoodPanel", "hoodSearch", "hoodList", (val) => {
   await renderGrid();
   await renderCarousel();
   initStickyFeatured();
+  initProductSearch();
   startAutoplay();
   window.addEventListener("resize", updateCarousel);
 })();

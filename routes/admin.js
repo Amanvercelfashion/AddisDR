@@ -3,332 +3,271 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const db = require('../db/database');
+const dbModule = require('../db/database');
 
-// Configure multer for image uploads
+// ===== MULTER SETUP =====
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadDir = path.join(__dirname, '..', 'uploads');
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
-    }
+    if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
     cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, uniqueSuffix + path.extname(file.originalname));
+    const unique = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    cb(null, unique + path.extname(file.originalname));
   }
 });
-
 const upload = multer({
   storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+  limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
-    const allowedTypes = /jpeg|jpg|png|webp/;
-    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = allowedTypes.test(file.mimetype);
-    if (extname && mimetype) {
-      cb(null, true);
-    } else {
-      cb(new Error('Only image files are allowed'));
-    }
+    /jpeg|jpg|png|webp/.test(path.extname(file.originalname).toLowerCase())
+      ? cb(null, true) : cb(new Error('Images only'));
   }
 });
 
 // ===== CATEGORIES =====
 router.get('/categories', (req, res) => {
-  try {
-    const stmt = db.prepare('SELECT * FROM categories ORDER BY name');
-    res.json(stmt.all());
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  res.json(dbModule.get().categories);
 });
 
 router.post('/categories', (req, res) => {
-  try {
-    const { name } = req.body;
-    const stmt = db.prepare('INSERT INTO categories (name) VALUES (?)');
-    const result = stmt.run(name);
-    res.json({ id: result.lastInsertRowid, name });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  const db = dbModule.get();
+  const item = { id: dbModule.nextId('categories'), name: req.body.name };
+  db.categories.push(item);
+  dbModule.save();
+  res.json(item);
 });
 
 router.put('/categories/:id', (req, res) => {
-  try {
-    const { name } = req.body;
-    const stmt = db.prepare('UPDATE categories SET name = ? WHERE id = ?');
-    stmt.run(name, req.params.id);
-    res.json({ success: true });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  const db = dbModule.get();
+  const item = db.categories.find(c => c.id === parseInt(req.params.id));
+  if (!item) return res.status(404).json({ error: 'Not found' });
+  item.name = req.body.name;
+  dbModule.save();
+  res.json({ success: true });
 });
 
 router.delete('/categories/:id', (req, res) => {
-  try {
-    const stmt = db.prepare('DELETE FROM categories WHERE id = ?');
-    stmt.run(req.params.id);
-    res.json({ success: true });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  const db = dbModule.get();
+  db.categories = db.categories.filter(c => c.id !== parseInt(req.params.id));
+  dbModule.save();
+  res.json({ success: true });
 });
 
 // ===== HOODS =====
 router.get('/hoods', (req, res) => {
-  try {
-    const stmt = db.prepare('SELECT * FROM hoods ORDER BY name');
-    res.json(stmt.all());
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  res.json(dbModule.get().hoods);
 });
 
 router.post('/hoods', (req, res) => {
-  try {
-    const { name, description } = req.body;
-    const stmt = db.prepare('INSERT INTO hoods (name, description) VALUES (?, ?)');
-    const result = stmt.run(name, description || null);
-    res.json({ id: result.lastInsertRowid, name, description });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  const db = dbModule.get();
+  const item = { id: dbModule.nextId('hoods'), name: req.body.name, description: req.body.description || '' };
+  db.hoods.push(item);
+  dbModule.save();
+  res.json(item);
 });
 
 router.put('/hoods/:id', (req, res) => {
-  try {
-    const { name, description } = req.body;
-    const stmt = db.prepare('UPDATE hoods SET name = ?, description = ? WHERE id = ?');
-    stmt.run(name, description || null, req.params.id);
-    res.json({ success: true });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  const db = dbModule.get();
+  const item = db.hoods.find(h => h.id === parseInt(req.params.id));
+  if (!item) return res.status(404).json({ error: 'Not found' });
+  item.name = req.body.name;
+  item.description = req.body.description || '';
+  dbModule.save();
+  res.json({ success: true });
 });
 
 router.delete('/hoods/:id', (req, res) => {
-  try {
-    const stmt = db.prepare('DELETE FROM hoods WHERE id = ?');
-    stmt.run(req.params.id);
-    res.json({ success: true });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  const db = dbModule.get();
+  db.hoods = db.hoods.filter(h => h.id !== parseInt(req.params.id));
+  dbModule.save();
+  res.json({ success: true });
 });
 
 // ===== BUSINESSES =====
 router.get('/businesses', (req, res) => {
-  try {
-    const stmt = db.prepare(`
-      SELECT 
-        b.*,
-        c.name as category_name,
-        h.name as hood_name
-      FROM businesses b
-      JOIN categories c ON b.category_id = c.id
-      JOIN hoods h ON b.hood_id = h.id
-      ORDER BY b.name
-    `);
-    res.json(stmt.all());
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  const db = dbModule.get();
+  const list = db.businesses.map(b => {
+    const cat = db.categories.find(c => c.id === b.category_id);
+    const hood = db.hoods.find(h => h.id === b.hood_id);
+    return { ...b, category_name: cat?.name || '', hood_name: hood?.name || '' };
+  });
+  res.json(list);
 });
 
 router.post('/businesses', upload.single('image'), (req, res) => {
-  try {
-    const {
-      name, category_id, hood_id, website_link,
-      phone_number, location_link, hook_text, price_indicator
-    } = req.body;
-    
-    const image_url = req.file ? `/uploads/${req.file.filename}` : null;
-    
-    const stmt = db.prepare(`
-      INSERT INTO businesses 
-      (name, category_id, hood_id, website_link, phone_number, location_link, image_url, hook_text, price_indicator)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `);
-    
-    const result = stmt.run(
-      name, category_id, hood_id, website_link || null,
-      phone_number || null, location_link || null, image_url,
-      hook_text || null, price_indicator || null
-    );
-    
-    res.json({ id: result.lastInsertRowid, success: true });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  const db = dbModule.get();
+  const { name, category_id, hood_id, website_link, phone_number, location_link, hook_text, price_indicator } = req.body;
+  const image_url = req.file ? `/uploads/${req.file.filename}` : req.body.image_url || null;
+  const item = {
+    id: dbModule.nextId('businesses'),
+    name, category_id: parseInt(category_id), hood_id: parseInt(hood_id),
+    website_link: website_link || null, phone_number: phone_number || null,
+    location_link: location_link || null, image_url,
+    hook_text: hook_text || null, price_indicator: price_indicator || null,
+    rating_avg: 0, rating_count: 0, created_at: new Date().toISOString()
+  };
+  db.businesses.push(item);
+  dbModule.save();
+  res.json({ id: item.id, success: true });
 });
 
 router.put('/businesses/:id', upload.single('image'), (req, res) => {
-  try {
-    const {
-      name, category_id, hood_id, website_link,
-      phone_number, location_link, hook_text, price_indicator
-    } = req.body;
-    
-    let image_url = req.body.existing_image_url;
-    if (req.file) {
-      image_url = `/uploads/${req.file.filename}`;
-    }
-    
-    const stmt = db.prepare(`
-      UPDATE businesses SET
-        name = ?, category_id = ?, hood_id = ?, website_link = ?,
-        phone_number = ?, location_link = ?, image_url = ?,
-        hook_text = ?, price_indicator = ?
-      WHERE id = ?
-    `);
-    
-    stmt.run(
-      name, category_id, hood_id, website_link || null,
-      phone_number || null, location_link || null, image_url,
-      hook_text || null, price_indicator || null, req.params.id
-    );
-    
-    res.json({ success: true });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  const db = dbModule.get();
+  const item = db.businesses.find(b => b.id === parseInt(req.params.id));
+  if (!item) return res.status(404).json({ error: 'Not found' });
+  const { name, category_id, hood_id, website_link, phone_number, location_link, hook_text, price_indicator } = req.body;
+  item.name = name;
+  item.category_id = parseInt(category_id);
+  item.hood_id = parseInt(hood_id);
+  item.website_link = website_link || null;
+  item.phone_number = phone_number || null;
+  item.location_link = location_link || null;
+  item.hook_text = hook_text || null;
+  item.price_indicator = price_indicator || null;
+  if (req.file) item.image_url = `/uploads/${req.file.filename}`;
+  dbModule.save();
+  res.json({ success: true });
 });
 
 router.delete('/businesses/:id', (req, res) => {
-  try {
-    const stmt = db.prepare('DELETE FROM businesses WHERE id = ?');
-    stmt.run(req.params.id);
-    res.json({ success: true });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  const db = dbModule.get();
+  db.businesses = db.businesses.filter(b => b.id !== parseInt(req.params.id));
+  dbModule.save();
+  res.json({ success: true });
 });
 
 // ===== FEATURED ITEMS =====
 router.get('/featured', (req, res) => {
-  try {
-    const stmt = db.prepare(`
-      SELECT 
-        f.*,
-        b.name as business_name
-      FROM featured_items f
-      JOIN businesses b ON f.business_id = b.id
-      ORDER BY f.created_at DESC
-    `);
-    res.json(stmt.all());
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  const db = dbModule.get();
+  const list = db.featured_items.map(f => {
+    const biz = db.businesses.find(b => b.id === f.business_id);
+    return { ...f, business_name: biz?.name || '' };
+  });
+  res.json(list);
 });
 
 router.post('/featured', upload.single('image'), (req, res) => {
-  try {
-    const { business_id, title, hook_text, exact_price, location_text } = req.body;
-    
-    const image_url = req.file ? `/uploads/${req.file.filename}` : null;
-    
-    const stmt = db.prepare(`
-      INSERT INTO featured_items 
-      (business_id, image_url, title, hook_text, exact_price, location_text)
-      VALUES (?, ?, ?, ?, ?, ?)
-    `);
-    
-    const result = stmt.run(
-      business_id, image_url, title,
-      hook_text || null, exact_price || null, location_text || null
-    );
-    
-    res.json({ id: result.lastInsertRowid, success: true });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  const db = dbModule.get();
+  const { business_id, title, hook_text, exact_price, location_text } = req.body;
+  const image_url = req.file ? `/uploads/${req.file.filename}` : req.body.image_url || null;
+  const item = {
+    id: dbModule.nextId('featured_items'),
+    business_id: parseInt(business_id), image_url, title,
+    hook_text: hook_text || null, exact_price: exact_price || null,
+    location_text: location_text || null, created_at: new Date().toISOString()
+  };
+  db.featured_items.push(item);
+  dbModule.save();
+  res.json({ id: item.id, success: true });
 });
 
 router.put('/featured/:id', upload.single('image'), (req, res) => {
-  try {
-    const { business_id, title, hook_text, exact_price, location_text } = req.body;
-    
-    let image_url = req.body.existing_image_url;
-    if (req.file) {
-      image_url = `/uploads/${req.file.filename}`;
-    }
-    
-    const stmt = db.prepare(`
-      UPDATE featured_items SET
-        business_id = ?, image_url = ?, title = ?,
-        hook_text = ?, exact_price = ?, location_text = ?
-      WHERE id = ?
-    `);
-    
-    stmt.run(
-      business_id, image_url, title,
-      hook_text || null, exact_price || null, location_text || null,
-      req.params.id
-    );
-    
-    res.json({ success: true });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  const db = dbModule.get();
+  const item = db.featured_items.find(f => f.id === parseInt(req.params.id));
+  if (!item) return res.status(404).json({ error: 'Not found' });
+  const { business_id, title, hook_text, exact_price, location_text } = req.body;
+  item.business_id = parseInt(business_id);
+  item.title = title;
+  item.hook_text = hook_text || null;
+  item.exact_price = exact_price || null;
+  item.location_text = location_text || null;
+  if (req.file) item.image_url = `/uploads/${req.file.filename}`;
+  dbModule.save();
+  res.json({ success: true });
 });
 
 router.delete('/featured/:id', (req, res) => {
-  try {
-    const stmt = db.prepare('DELETE FROM featured_items WHERE id = ?');
-    stmt.run(req.params.id);
-    res.json({ success: true });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  const db = dbModule.get();
+  db.featured_items = db.featured_items.filter(f => f.id !== parseInt(req.params.id));
+  dbModule.save();
+  res.json({ success: true });
+});
+
+// ===== PRODUCTS (per business) =====
+router.get('/products', (req, res) => {
+  const db = dbModule.get();
+  const { business_id } = req.query;
+  let products = db.products || [];
+  if (business_id) products = products.filter(p => p.business_id === parseInt(business_id));
+  const enriched = products.map(p => {
+    const biz = db.businesses.find(b => b.id === p.business_id);
+    return { ...p, business_name: biz?.name || '' };
+  });
+  res.json(enriched);
+});
+
+router.post('/products', upload.single('image'), (req, res) => {
+  const db = dbModule.get();
+  if (!db.products) db.products = [];
+  const { business_id, name, description, price } = req.body;
+  const image_url = req.file ? `/uploads/${req.file.filename}` : req.body.image_url || null;
+  const item = {
+    id: dbModule.nextId('products'),
+    business_id: parseInt(business_id),
+    name, description: description || null,
+    price: price || null, image_url,
+    created_at: new Date().toISOString()
+  };
+  db.products.push(item);
+  dbModule.save();
+  res.json({ id: item.id, success: true });
+});
+
+router.put('/products/:id', upload.single('image'), (req, res) => {
+  const db = dbModule.get();
+  if (!db.products) return res.status(404).json({ error: 'Not found' });
+  const item = db.products.find(p => p.id === parseInt(req.params.id));
+  if (!item) return res.status(404).json({ error: 'Not found' });
+  const { business_id, name, description, price } = req.body;
+  item.business_id = parseInt(business_id);
+  item.name = name;
+  item.description = description || null;
+  item.price = price || null;
+  if (req.file) item.image_url = `/uploads/${req.file.filename}`;
+  dbModule.save();
+  res.json({ success: true });
+});
+
+router.delete('/products/:id', (req, res) => {
+  const db = dbModule.get();
+  if (!db.products) return res.json({ success: true });
+  db.products = db.products.filter(p => p.id !== parseInt(req.params.id));
+  dbModule.save();
+  res.json({ success: true });
 });
 
 // ===== REPORTS =====
 router.get('/reports', (req, res) => {
-  try {
-    const stmt = db.prepare(`
-      SELECT 
-        r.*,
-        b.name as business_name
-      FROM reports r
-      JOIN businesses b ON r.business_id = b.id
-      ORDER BY r.created_at DESC
-    `);
-    res.json(stmt.all());
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  const db = dbModule.get();
+  const list = db.reports.map(r => {
+    const biz = db.businesses.find(b => b.id === r.business_id);
+    return { ...r, business_name: biz?.name || '' };
+  });
+  list.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  res.json(list);
 });
 
 router.get('/reports/summary', (req, res) => {
-  try {
-    const stmt = db.prepare(`
-      SELECT 
-        b.id,
-        b.name,
-        COUNT(r.id) as report_count
-      FROM businesses b
-      LEFT JOIN reports r ON b.id = r.business_id
-      GROUP BY b.id
-      HAVING report_count > 0
-      ORDER BY report_count DESC
-    `);
-    res.json(stmt.all());
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  const db = dbModule.get();
+  const summary = {};
+  db.reports.forEach(r => {
+    if (!summary[r.business_id]) {
+      const biz = db.businesses.find(b => b.id === r.business_id);
+      summary[r.business_id] = { id: r.business_id, name: biz?.name || '', report_count: 0 };
+    }
+    summary[r.business_id].report_count++;
+  });
+  const result = Object.values(summary).sort((a, b) => b.report_count - a.report_count);
+  res.json(result);
 });
 
 router.delete('/reports/:id', (req, res) => {
-  try {
-    const stmt = db.prepare('DELETE FROM reports WHERE id = ?');
-    stmt.run(req.params.id);
-    res.json({ success: true });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  const db = dbModule.get();
+  db.reports = db.reports.filter(r => r.id !== parseInt(req.params.id));
+  dbModule.save();
+  res.json({ success: true });
 });
 
 module.exports = router;
