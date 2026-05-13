@@ -12,19 +12,19 @@ let hoods = [];
 
 /* ===== LOCAL STORAGE ===== */
 function saveUser(user) {
-  localStorage.setItem('addisnet_user', JSON.stringify(user));
+  localStorage.setItem('addisdr_user', JSON.stringify(user));
   currentUser = user;
 }
 
 function loadUser() {
-  const stored = localStorage.getItem('addisnet_user');
+  const stored = localStorage.getItem('addisdr_user');
   if (stored) {
     currentUser = JSON.parse(stored);
   }
 }
 
 function clearUser() {
-  localStorage.removeItem('addisnet_user');
+  localStorage.removeItem('addisdr_user');
   currentUser = null;
 }
 
@@ -149,6 +149,10 @@ function buildTile(b) {
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
           Location
         </a>
+        <button class="action-btn share-btn" onclick="shareBusiness(${b.id}, '${b.name.replace(/'/g, "\\'")}')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Share
+        </button>
       </div>
     </div>
     <div class="tile-footer" onclick="event.stopPropagation()">
@@ -416,6 +420,10 @@ async function openBusinessPage(businessId) {
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
       Location
     </a>` : ''}
+    <button class="biz-action-btn share-btn" onclick="shareBusiness(${biz.id}, '${biz.name.replace(/'/g, "\\'")}')">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      Share
+    </button>
   `;
 
   // Report button
@@ -475,6 +483,9 @@ async function openBusinessPage(businessId) {
   page.classList.add('open');
   page.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
+
+  // Update URL with query param (no separate page, just a bookmark)
+  history.replaceState({ businessId }, '', `/?business=${businessId}`);
 }
 
 function closeBusinessPage() {
@@ -483,6 +494,8 @@ function closeBusinessPage() {
   page.setAttribute('aria-hidden', 'true');
   document.body.style.overflow = '';
   currentBizId = null;
+  // Remove the query param
+  history.replaceState({}, '', '/');
 }
 
 // Back button
@@ -715,6 +728,76 @@ document.getElementById("signInForm").addEventListener("submit", async (e) => {
   }
 });
 
+/* ===== SHARE BUSINESS ===== */
+async function shareBusiness(businessId, businessName) {
+  const shareUrl = `${location.origin}/?business=${businessId}`;
+  const shareData = {
+    title: `${businessName} — AddisDR`,
+    text: `Check out ${businessName} on AddisDR, Addis Ababa's local business directory.`,
+    url: shareUrl
+  };
+
+  // Use native Web Share API if available (mobile / modern browsers)
+  if (navigator.share) {
+    try {
+      await navigator.share(shareData);
+      return;
+    } catch (e) {
+      if (e.name === 'AbortError') return; // user cancelled — do nothing
+    }
+  }
+
+  // Fallback: copy link to clipboard
+  try {
+    await navigator.clipboard.writeText(shareUrl);
+    showToast('Link copied to clipboard!');
+  } catch (_) {
+    // Last resort: prompt
+    prompt('Copy this link to share:', shareUrl);
+  }
+}
+
+/* ===== TOAST NOTIFICATION ===== */
+function showToast(message) {
+  let toast = document.getElementById('shareToast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'shareToast';
+    toast.className = 'share-toast';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = message;
+  toast.classList.add('visible');
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => toast.classList.remove('visible'), 2800);
+}
+
+/* ===== HANDLE DIRECT /?business=:id URL ===== */
+function handleDirectUrl() {
+  const params = new URLSearchParams(location.search);
+  const bizId = params.get('business');
+  if (bizId && !isNaN(bizId)) {
+    openBusinessPage(parseInt(bizId));
+  }
+}
+
+// Handle browser back/forward
+window.addEventListener('popstate', () => {
+  const params = new URLSearchParams(location.search);
+  const bizId = params.get('business');
+  if (bizId && !isNaN(bizId)) {
+    openBusinessPage(parseInt(bizId));
+  } else {
+    const page = document.getElementById('bizPage');
+    if (page.classList.contains('open')) {
+      page.classList.remove('open');
+      page.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      currentBizId = null;
+    }
+  }
+});
+
 /* ===== INIT ===== */
 loadUser();
 
@@ -735,4 +818,5 @@ setupDropdown("hoodBtn", "hoodPanel", "hoodSearch", "hoodList", (val) => {
   initProductSearch();
   startAutoplay();
   window.addEventListener("resize", updateCarousel);
+  handleDirectUrl(); // open business page if URL is /business/:id
 })();

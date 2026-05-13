@@ -83,7 +83,7 @@
 .biz-price-badge {
   font-size: 0.82rem;
   font-weight: 700;
-  color: var(--brand);
+  color: var(--brand-dark);
   background: var(--brand-light);
   padding: 5px 12px;
   border-radius: 20px;
@@ -153,8 +153,6 @@
 }
 .biz-rate-star:hover,
 .biz-rate-star.active { color: var(--accent); transform: scale(1.15); }
-
-/* Action buttons */
 .biz-actions {
   display: flex;
   gap: 10px;
@@ -376,4 +374,14 @@
   .biz-products-grid { grid-template-columns: repeat(2, 1fr); }
   .biz-actions { gap: 8px; }
   .biz-action-btn { padding: 9px 14px; font-size: 0.8rem; }
+}
+
+/* Share button on detail page */
+.biz-action-btn.share-btn {
+  border-color: var(--brand);
+  color: var(--brand);
+}
+.biz-action-btn.share-btn:hover {
+  background: var(--brand);
+  color: #fff;
 }
