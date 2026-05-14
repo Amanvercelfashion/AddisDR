@@ -484,8 +484,8 @@ async function openBusinessPage(businessId) {
   page.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
 
-  // Update URL with query param (no separate page, just a bookmark)
-  history.replaceState({ businessId }, '', `/?business=${businessId}`);
+  // Update URL with slug (no separate page, same SPA)
+  history.replaceState({ businessId }, '', `/?business=${toSlug(biz.name)}`);
 }
 
 function closeBusinessPage() {
@@ -728,9 +728,19 @@ document.getElementById("signInForm").addEventListener("submit", async (e) => {
   }
 });
 
+/* ===== SLUG HELPER ===== */
+function toSlug(name) {
+  return name
+    .toLowerCase()
+    .replace(/[''`]/g, '')           // remove apostrophes
+    .replace(/[^a-z0-9]+/g, '-')    // non-alphanumeric → hyphen
+    .replace(/^-+|-+$/g, '');       // trim leading/trailing hyphens
+}
+
 /* ===== SHARE BUSINESS ===== */
 async function shareBusiness(businessId, businessName) {
-  const shareUrl = `${location.origin}/?business=${businessId}`;
+  const slug = toSlug(businessName);
+  const shareUrl = `${location.origin}/?business=${slug}`;
   const shareData = {
     title: `${businessName} — AddisDR`,
     text: `Check out ${businessName} on AddisDR, Addis Ababa's local business directory.`,
@@ -743,7 +753,7 @@ async function shareBusiness(businessId, businessName) {
       await navigator.share(shareData);
       return;
     } catch (e) {
-      if (e.name === 'AbortError') return; // user cancelled — do nothing
+      if (e.name === 'AbortError') return;
     }
   }
 
@@ -752,7 +762,6 @@ async function shareBusiness(businessId, businessName) {
     await navigator.clipboard.writeText(shareUrl);
     showToast('Link copied to clipboard!');
   } catch (_) {
-    // Last resort: prompt
     prompt('Copy this link to share:', shareUrl);
   }
 }
@@ -772,21 +781,36 @@ function showToast(message) {
   toast._timer = setTimeout(() => toast.classList.remove('visible'), 2800);
 }
 
-/* ===== HANDLE DIRECT /?business=:id URL ===== */
-function handleDirectUrl() {
+/* ===== HANDLE DIRECT /?business=slug URL ===== */
+async function handleDirectUrl() {
   const params = new URLSearchParams(location.search);
-  const bizId = params.get('business');
-  if (bizId && !isNaN(bizId)) {
-    openBusinessPage(parseInt(bizId));
+  const param = params.get('business');
+  if (!param) return;
+
+  // Support both legacy numeric IDs and new slugs
+  if (!isNaN(param)) {
+    openBusinessPage(parseInt(param));
+    return;
   }
+
+  // Slug lookup — fetch all businesses and match by slug
+  const all = await fetchBusinesses();
+  const match = all.find(b => toSlug(b.name) === param);
+  if (match) openBusinessPage(match.id);
 }
 
 // Handle browser back/forward
-window.addEventListener('popstate', () => {
+window.addEventListener('popstate', async () => {
   const params = new URLSearchParams(location.search);
-  const bizId = params.get('business');
-  if (bizId && !isNaN(bizId)) {
-    openBusinessPage(parseInt(bizId));
+  const param = params.get('business');
+  if (param) {
+    if (!isNaN(param)) {
+      openBusinessPage(parseInt(param));
+    } else {
+      const all = await fetchBusinesses();
+      const match = all.find(b => toSlug(b.name) === param);
+      if (match) openBusinessPage(match.id);
+    }
   } else {
     const page = document.getElementById('bizPage');
     if (page.classList.contains('open')) {
