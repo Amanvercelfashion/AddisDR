@@ -784,8 +784,21 @@ input, select { font-family: var(--font); }
   .product-search-wrap { flex: 1 1 100%; order: 3; }
   .business-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
   .main-content { padding: 12px 10px; }
-  .carousel-item { flex: 0 0 220px; }
-  .footer-inner { grid-template-columns: 1fr; gap: 28px; }  .featured-spacer { height: 110px; }
+  
+  /* Mobile: single centered carousel item */
+  .carousel-track-wrapper {
+    left: 52px;
+    right: 52px;
+  }
+  .carousel-item { 
+    flex: 0 0 calc(100vw - 104px - 28px); /* full width minus arrows and padding */
+  }
+  .carousel-track {
+    gap: 14px;
+  }
+  
+  .footer-inner { grid-template-columns: 1fr; gap: 28px; }
+  .featured-spacer { height: 110px; }
 }
 
 @media (max-width: 400px) {

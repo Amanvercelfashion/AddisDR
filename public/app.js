@@ -612,17 +612,39 @@ sideMenu.querySelectorAll("a").forEach(a => a.addEventListener("click", closeMen
 let carouselIndex = 0;
 const ITEM_WIDTH = 280 + 14;
 let autoplayTimer = null;
+let touchStartX = 0;
+let touchEndX = 0;
 
 function visibleCarouselItems() {
   const wrapper = document.querySelector(".carousel-track-wrapper");
+  const isMobile = window.innerWidth <= 640;
+  
+  if (isMobile) {
+    // On mobile, show 1 item at a time
+    return 1;
+  }
+  
   return Math.floor(wrapper.offsetWidth / ITEM_WIDTH);
+}
+
+function getItemWidth() {
+  const wrapper = document.querySelector(".carousel-track-wrapper");
+  const isMobile = window.innerWidth <= 640;
+  
+  if (isMobile) {
+    // On mobile, item width is the full wrapper width
+    return wrapper.offsetWidth + 14; // include gap
+  }
+  
+  return ITEM_WIDTH;
 }
 
 function updateCarousel() {
   const track = document.getElementById("carouselTrack");
+  const itemWidth = getItemWidth();
   const maxIndex = Math.max(0, featuredProducts.length - visibleCarouselItems());
   carouselIndex = Math.max(0, Math.min(carouselIndex, maxIndex));
-  track.style.transform = `translateX(-${carouselIndex * ITEM_WIDTH}px)`;
+  track.style.transform = `translateX(-${carouselIndex * itemWidth}px)`;
 }
 
 function stepCarousel(dir) {
@@ -642,6 +664,33 @@ function stopAutoplay() {
   if (autoplayTimer) { clearInterval(autoplayTimer); autoplayTimer = null; }
 }
 
+// Handle swipe gestures
+function handleTouchStart(e) {
+  touchStartX = e.changedTouches[0].screenX;
+  stopAutoplay();
+}
+
+function handleTouchEnd(e) {
+  touchEndX = e.changedTouches[0].screenX;
+  handleSwipe();
+  startAutoplay();
+}
+
+function handleSwipe() {
+  const swipeThreshold = 50;
+  const diff = touchStartX - touchEndX;
+  
+  if (Math.abs(diff) > swipeThreshold) {
+    if (diff > 0) {
+      // Swipe left - next
+      stepCarousel(1);
+    } else {
+      // Swipe right - prev
+      stepCarousel(-1);
+    }
+  }
+}
+
 document.getElementById("carouselNext").addEventListener("click", () => {
   stepCarousel(1);
   startAutoplay();
@@ -651,8 +700,18 @@ document.getElementById("carouselPrev").addEventListener("click", () => {
   startAutoplay();
 });
 
-document.querySelector(".carousel-track-wrapper").addEventListener("mouseenter", stopAutoplay);
-document.querySelector(".carousel-track-wrapper").addEventListener("mouseleave", startAutoplay);
+const carouselWrapper = document.querySelector(".carousel-track-wrapper");
+carouselWrapper.addEventListener("mouseenter", stopAutoplay);
+carouselWrapper.addEventListener("mouseleave", startAutoplay);
+
+// Touch event listeners
+carouselWrapper.addEventListener("touchstart", handleTouchStart, { passive: true });
+carouselWrapper.addEventListener("touchend", handleTouchEnd, { passive: true });
+
+// Re-calculate on window resize
+window.addEventListener("resize", () => {
+  updateCarousel();
+});
 
 /* ===== STICKY FEATURED BAR ===== */
 function initStickyFeatured() {
