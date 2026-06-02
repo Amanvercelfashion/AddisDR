@@ -370,6 +370,74 @@
   .biz-divider { margin: 0 18px; }
 }
 
+/* ── Phone: sidebar as a slim right column (15% width) ── */
+@media (max-width: 640px) {
+  .biz-page {
+    flex-direction: row;  /* side by side again, not stacked */
+  }
+
+  /* Main content: 85% */
+  .biz-main {
+    order: 1;
+    flex: 0 0 85%;
+    width: 85%;
+    min-width: 0;
+    overflow-y: auto;
+  }
+
+  /* Sidebar: 15%, vertical strip on the right */
+  .biz-sidebar {
+    order: 2;
+    flex: 0 0 15%;
+    width: 15%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 8px 4px;
+    border-top: none;
+    border-left: 1px solid var(--border);
+  }
+
+  /* Show title in tiny form */
+  .biz-sidebar-title {
+    display: block;
+    font-size: 0.55rem;
+    padding: 0 2px 8px;
+    letter-spacing: 0.3px;
+  }
+
+  /* Items: stacked vertically, image only (no text) */
+  .biz-sidebar-item {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-width: unset;
+    padding: 6px 2px;
+    gap: 3px;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+
+  /* Image fills the column width */
+  .biz-sidebar-img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    border-radius: 5px;
+  }
+
+  /* Hide text — column too narrow */
+  .biz-sidebar-name { display: none; }
+  .biz-sidebar-tag  { display: none; }
+  .biz-sidebar-rating {
+    font-size: 0.6rem;
+    display: block;
+  }
+}
+
 @media (max-width: 480px) {
   .biz-products-grid { grid-template-columns: repeat(2, 1fr); }
   .biz-actions { gap: 8px; }
