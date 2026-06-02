@@ -67,12 +67,11 @@ input, select { font-family: var(--font); }
   margin: 0 auto;
 }
 
-/* Filters group — right side of row 1, stacked vertically */
+/* Filters group — right side of row 1 */
 .topbar-filters {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 4px;
+  align-items: center;
+  gap: 8px;
   flex-shrink: 0;
 }
 
@@ -84,7 +83,7 @@ input, select { font-family: var(--font); }
   flex-shrink: 0;
 }
 .logo-img {
-  height: 60px;
+  height: 52px;
   width: auto;
   display: block;
 }
@@ -190,18 +189,17 @@ input, select { font-family: var(--font); }
 .filter-btn {
   display: flex;
   align-items: center;
-  gap: 5px;
-  padding: 5px 10px;
+  gap: 6px;
+  padding: 8px 12px;
   background: rgba(255,255,255,.12);
   border: 1px solid rgba(255,255,255,.25);
   border-radius: var(--radius-sm);
   color: #fff;
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   font-weight: 500;
   white-space: nowrap;
   transition: background 0.15s, border-color 0.15s;
   cursor: pointer;
-  line-height: 1.2;
 }
 .filter-btn:hover, .filter-btn.active {
   background: rgba(255,255,255,.22);
@@ -754,13 +752,64 @@ input, select { font-family: var(--font); }
 }
 
 @media (max-width: 640px) {
-  .topbar-row1 { height: auto; min-height: 52px; padding: 4px 10px; gap: 6px; flex-wrap: wrap; }
-  .logo-img { height: 46px; }
-  .product-search-wrap { flex: 1 1 100%; order: 3; }
+  /* ── Navbar: two-row layout, ~20% taller than desktop 64px ── */
+  .topbar-row1 {
+    height: auto;
+    flex-wrap: wrap;
+    padding: 6px 12px;
+    gap: 0;
+    row-gap: 6px;
+  }
+
+  /* Row 1a: logo (left) + hamburger (right), full width */
+  .logo {
+    flex: 1;                  /* stretch to push hamburger right */
+    min-width: 0;
+  }
+  .logo-img {
+    height: 52px;             /* bigger logo on mobile */
+  }
+  .hamburger {
+    order: 2;                 /* stays far right */
+  }
+
+  /* Row 1b: search + filters, full width below logo row */
+  .product-search-wrap {
+    flex: 1 1 0;              /* grow, take remaining space */
+    min-width: 0;
+    order: 3;                 /* below logo row */
+  }
+
+  /* Filters sit inline with the search bar in row 1b */
+  .topbar-filters {
+    order: 4;
+    flex-direction: column;
+    gap: 5px;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* Filter buttons: slightly larger touch target on mobile */
+  .filter-btn {
+    padding: 6px 10px;
+    font-size: 0.76rem;
+  }
+
+  /* ── Separator between the two nav rows ── */
+  .topbar-row1::after {
+    content: '';
+    display: block;
+    order: 2;                 /* sits after hamburger, before search row */
+    width: 100%;
+    height: 0;
+  }
+
+  /* Total navbar height: logo row ~64px + gap + search row ~36px = ~77px (~20% more) */
+
   .business-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
   .main-content { padding: 12px 10px; }
 
-  /* ── Mobile sticky bar: stack vertically, no side padding ── */
+  /* ── Mobile sticky bar ── */
   .featured-sticky {
     padding: 8px 0 0;
     height: 110px;
@@ -773,11 +822,7 @@ input, select { font-family: var(--font); }
     align-items: stretch;
     height: 94px;
   }
-
-  /* Hide arrow buttons — swipe handles navigation */
   .carousel-btn { display: none; }
-
-  /* Track wrapper = full viewport width, scroll-snap container */
   .carousel-track-wrapper {
     width: 100vw;
     max-width: 100vw;
@@ -789,13 +834,10 @@ input, select { font-family: var(--font); }
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    /* reset flex properties that constrain width */
     flex: none;
     min-width: 0;
   }
   .carousel-track-wrapper::-webkit-scrollbar { display: none; }
-
-  /* Track: no gap, no JS transform */
   .carousel-track {
     display: flex;
     gap: 0;
@@ -804,8 +846,6 @@ input, select { font-family: var(--font); }
     transform: none !important;
     transition: none !important;
   }
-
-  /* Each item = exactly 100vw, snaps one at a time */
   .carousel-item {
     flex: 0 0 100vw;
     width: 100vw;
@@ -823,7 +863,7 @@ input, select { font-family: var(--font); }
 }
 
 @media (max-width: 400px) {
-  .logo-img { height: 38px; }
+  .logo-img { height: 44px; }
   .business-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
   .tile-body { padding: 8px 8px 6px; }
   .tile-name { font-size: 0.78rem; }

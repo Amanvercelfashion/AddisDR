@@ -597,6 +597,13 @@
       "user_name": "Anonymous",
       "reason": " cnb",
       "created_at": "2026-05-14T00:56:19.860Z"
+    },
+    {
+      "id": 2,
+      "business_id": 10,
+      "user_name": "Aman from Summit",
+      "reason": "try",
+      "created_at": "2026-06-02T08:25:04.432Z"
     }
   ],
   "users": [
@@ -620,7 +627,7 @@
     "products": 25,
     "featured_items": 8,
     "ratings": 0,
-    "reports": 1,
+    "reports": 2,
     "users": 2
   }
 }
