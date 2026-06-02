@@ -610,44 +610,37 @@ sideMenu.querySelectorAll("a").forEach(a => a.addEventListener("click", closeMen
 
 /* ===== CAROUSEL ===== */
 let carouselIndex = 0;
-const ITEM_WIDTH = 280 + 14;
+const ITEM_WIDTH = 280 + 14; // desktop item width + gap
 let autoplayTimer = null;
 let touchStartX = 0;
-let touchEndX = 0;
 
-function visibleCarouselItems() {
-  const wrapper = document.querySelector(".carousel-track-wrapper");
-  const isMobile = window.innerWidth <= 640;
-  
-  if (isMobile) {
-    // On mobile, show 1 item at a time
-    return 1;
-  }
-  
-  return Math.floor(wrapper.offsetWidth / ITEM_WIDTH);
+function isMobileCarousel() {
+  return window.innerWidth <= 640;
 }
 
-function getItemWidth() {
+function visibleCarouselItems() {
+  if (isMobileCarousel()) return 1;
   const wrapper = document.querySelector(".carousel-track-wrapper");
-  const isMobile = window.innerWidth <= 640;
-  
-  if (isMobile) {
-    // On mobile, item width is the full wrapper width
-    return wrapper.offsetWidth + 14; // include gap
-  }
-  
-  return ITEM_WIDTH;
+  return Math.max(1, Math.floor(wrapper.offsetWidth / ITEM_WIDTH));
 }
 
 function updateCarousel() {
+  if (isMobileCarousel()) return; // handled by scroll-snap on mobile
   const track = document.getElementById("carouselTrack");
-  const itemWidth = getItemWidth();
   const maxIndex = Math.max(0, featuredProducts.length - visibleCarouselItems());
   carouselIndex = Math.max(0, Math.min(carouselIndex, maxIndex));
-  track.style.transform = `translateX(-${carouselIndex * itemWidth}px)`;
+  track.style.transform = `translateX(-${carouselIndex * ITEM_WIDTH}px)`;
 }
 
 function stepCarousel(dir) {
+  const wrapper = document.querySelector(".carousel-track-wrapper");
+
+  if (isMobileCarousel()) {
+    // Use native scroll-snap: scroll by the wrapper's own width
+    wrapper.scrollBy({ left: dir * wrapper.offsetWidth, behavior: 'smooth' });
+    return;
+  }
+
   const maxIndex = Math.max(0, featuredProducts.length - visibleCarouselItems());
   carouselIndex += dir;
   if (carouselIndex > maxIndex) carouselIndex = 0;
@@ -664,33 +657,6 @@ function stopAutoplay() {
   if (autoplayTimer) { clearInterval(autoplayTimer); autoplayTimer = null; }
 }
 
-// Handle swipe gestures
-function handleTouchStart(e) {
-  touchStartX = e.changedTouches[0].screenX;
-  stopAutoplay();
-}
-
-function handleTouchEnd(e) {
-  touchEndX = e.changedTouches[0].screenX;
-  handleSwipe();
-  startAutoplay();
-}
-
-function handleSwipe() {
-  const swipeThreshold = 50;
-  const diff = touchStartX - touchEndX;
-  
-  if (Math.abs(diff) > swipeThreshold) {
-    if (diff > 0) {
-      // Swipe left - next
-      stepCarousel(1);
-    } else {
-      // Swipe right - prev
-      stepCarousel(-1);
-    }
-  }
-}
-
 document.getElementById("carouselNext").addEventListener("click", () => {
   stepCarousel(1);
   startAutoplay();
@@ -701,16 +667,29 @@ document.getElementById("carouselPrev").addEventListener("click", () => {
 });
 
 const carouselWrapper = document.querySelector(".carousel-track-wrapper");
+
+// Mouse hover — desktop autoplay pause
 carouselWrapper.addEventListener("mouseenter", stopAutoplay);
 carouselWrapper.addEventListener("mouseleave", startAutoplay);
 
-// Touch event listeners
-carouselWrapper.addEventListener("touchstart", handleTouchStart, { passive: true });
-carouselWrapper.addEventListener("touchend", handleTouchEnd, { passive: true });
+// Touch swipe — for mobile the scroll-snap already handles drag,
+// but we also support a quick flick via touchstart/end on the wrapper.
+carouselWrapper.addEventListener("touchstart", (e) => {
+  touchStartX = e.changedTouches[0].clientX;
+  stopAutoplay();
+}, { passive: true });
 
-// Re-calculate on window resize
+carouselWrapper.addEventListener("touchend", (e) => {
+  const diff = touchStartX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 30) {
+    stepCarousel(diff > 0 ? 1 : -1);
+  }
+  startAutoplay();
+}, { passive: true });
+
+// Recalculate desktop offset on resize
 window.addEventListener("resize", () => {
-  updateCarousel();
+  if (!isMobileCarousel()) updateCarousel();
 });
 
 /* ===== STICKY FEATURED BAR ===== */
