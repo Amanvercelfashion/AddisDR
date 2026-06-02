@@ -610,7 +610,7 @@ sideMenu.querySelectorAll("a").forEach(a => a.addEventListener("click", closeMen
 
 /* ===== CAROUSEL ===== */
 let carouselIndex = 0;
-const ITEM_WIDTH = 280 + 14; // desktop item width + gap
+const ITEM_WIDTH = 280 + 14; // desktop: item width + gap
 let autoplayTimer = null;
 let touchStartX = 0;
 
@@ -625,7 +625,8 @@ function visibleCarouselItems() {
 }
 
 function updateCarousel() {
-  if (isMobileCarousel()) return; // handled by scroll-snap on mobile
+  // On mobile, scroll-snap handles everything — never touch transform
+  if (isMobileCarousel()) return;
   const track = document.getElementById("carouselTrack");
   const maxIndex = Math.max(0, featuredProducts.length - visibleCarouselItems());
   carouselIndex = Math.max(0, Math.min(carouselIndex, maxIndex));
@@ -636,8 +637,14 @@ function stepCarousel(dir) {
   const wrapper = document.querySelector(".carousel-track-wrapper");
 
   if (isMobileCarousel()) {
-    // Use native scroll-snap: scroll by the wrapper's own width
-    wrapper.scrollBy({ left: dir * wrapper.offsetWidth, behavior: 'smooth' });
+    // Scroll by exactly one viewport-width slot; snap points do the rest
+    const itemW = window.innerWidth;
+    const maxScroll = wrapper.scrollWidth - itemW;
+    let next = wrapper.scrollLeft + dir * itemW;
+    // wrap around
+    if (next > maxScroll + 1) next = 0;
+    if (next < -1) next = maxScroll;
+    wrapper.scrollTo({ left: next, behavior: 'smooth' });
     return;
   }
 
@@ -668,17 +675,18 @@ document.getElementById("carouselPrev").addEventListener("click", () => {
 
 const carouselWrapper = document.querySelector(".carousel-track-wrapper");
 
-// Mouse hover — desktop autoplay pause
+// Desktop: pause autoplay on hover
 carouselWrapper.addEventListener("mouseenter", stopAutoplay);
 carouselWrapper.addEventListener("mouseleave", startAutoplay);
 
-// Touch swipe — for mobile the scroll-snap already handles drag,
-// but we also support a quick flick via touchstart/end on the wrapper.
+// Touch: record start position and pause autoplay
 carouselWrapper.addEventListener("touchstart", (e) => {
   touchStartX = e.changedTouches[0].clientX;
   stopAutoplay();
 }, { passive: true });
 
+// Touch end: if it was a fast flick (not a slow drag the snap already caught),
+// nudge one step in the swipe direction
 carouselWrapper.addEventListener("touchend", (e) => {
   const diff = touchStartX - e.changedTouches[0].clientX;
   if (Math.abs(diff) > 30) {
@@ -687,7 +695,7 @@ carouselWrapper.addEventListener("touchend", (e) => {
   startAutoplay();
 }, { passive: true });
 
-// Recalculate desktop offset on resize
+// Desktop resize: recalculate translateX offset
 window.addEventListener("resize", () => {
   if (!isMobileCarousel()) updateCarousel();
 });
