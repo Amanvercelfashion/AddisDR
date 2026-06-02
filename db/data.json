@@ -590,8 +590,29 @@
     }
   ],
   "ratings": [],
-  "reports": [],
-  "users": [],
+  "reports": [
+    {
+      "id": 1,
+      "business_id": 10,
+      "user_name": "Anonymous",
+      "reason": " cnb",
+      "created_at": "2026-05-14T00:56:19.860Z"
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "name": "Aman",
+      "hood_id": 6,
+      "created_at": "2026-05-14T00:57:29.885Z"
+    },
+    {
+      "id": 2,
+      "name": "Aman",
+      "hood_id": 8,
+      "created_at": "2026-05-23T17:53:40.068Z"
+    }
+  ],
   "_counters": {
     "categories": 10,
     "hoods": 11,
@@ -599,7 +620,7 @@
     "products": 25,
     "featured_items": 8,
     "ratings": 0,
-    "reports": 0,
-    "users": 0
+    "reports": 1,
+    "users": 2
   }
 }

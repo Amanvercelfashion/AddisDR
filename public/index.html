@@ -4,19 +4,66 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AddisDR – Local Business Discovery</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="business-page.css" />
+  <link rel="stylesheet" href="styles.css?v=41" />
+  <link rel="stylesheet" href="business-page.css?v=6" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 </head>
 <body>
 
-  <!-- ===== TOP NAVIGATION ===== -->
-  <header class="navbar">
-    <div class="navbar-inner">
+  <!-- ===== UNIFIED HEADER (single row) ===== -->
+  <header class="topbar" id="topbar">
+    <div class="topbar-row1">
+
+      <!-- Logo — left, large -->
       <a href="#" class="logo">
         <img src="/images/addisdr-logo.png" alt="AddisDR" class="logo-img" />
       </a>
+
+      <!-- Product search — centre, stretches -->
+      <div class="product-search-wrap" id="productSearchBox">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input
+          type="text"
+          id="productSearchInput"
+          placeholder="Search products &amp; services…"
+          autocomplete="off"
+          aria-label="Search products and services"
+          aria-autocomplete="list"
+          aria-controls="productSearchResults"
+        />
+        <button class="product-search-clear" id="productSearchClear" aria-label="Clear search" hidden>&times;</button>
+        <ul class="product-search-results" id="productSearchResults" role="listbox" hidden></ul>
+      </div>
+
+      <!-- Filters — right side -->
+      <div class="topbar-filters">
+        <div class="filter-group" id="categoryFilter">
+          <button class="filter-btn" aria-haspopup="listbox" aria-expanded="false" id="catBtn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            <span id="catLabel">Category</span>
+            <svg class="chevron" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="dropdown-panel" id="catPanel" role="listbox">
+            <input type="text" class="dropdown-search" placeholder="Search category…" id="catSearch" />
+            <ul id="catList"><li data-value="all" class="active" role="option">All Categories</li></ul>
+          </div>
+        </div>
+
+        <div class="filter-group" id="hoodFilter">
+          <button class="filter-btn" aria-haspopup="listbox" aria-expanded="false" id="hoodBtn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            <span id="hoodLabel">Neighbourhood</span>
+            <svg class="chevron" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="dropdown-panel" id="hoodPanel" role="listbox">
+            <input type="text" class="dropdown-search" placeholder="Search neighbourhood…" id="hoodSearch" />
+            <ul id="hoodList"><li data-value="all" class="active" role="option">All Neighbourhoods</li></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hamburger — far right -->
       <button class="hamburger" id="menuToggle" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -34,64 +81,6 @@
     </nav>
     <div class="menu-overlay" id="menuOverlay"></div>
   </header>
-
-  <!-- ===== HERO / CONTROL BAR ===== -->
-  <section class="hero">
-    <div class="hero-text">
-      <h1>Discover Addis, <span>one business at a time.</span></h1>
-      <p>Find trusted local businesses in your neighbourhood.</p>
-    </div>
-
-    <div class="control-bar">
-      <!-- Category Filter -->
-      <div class="filter-group" id="categoryFilter">
-        <button class="filter-btn" aria-haspopup="listbox" aria-expanded="false" id="catBtn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-          <span id="catLabel">Category</span>
-          <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-        </button>
-        <div class="dropdown-panel" id="catPanel" role="listbox">
-          <input type="text" class="dropdown-search" placeholder="Search category…" id="catSearch" />
-          <ul id="catList">
-            <li data-value="all" class="active" role="option">All Categories</li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Hood Filter -->
-      <div class="filter-group" id="hoodFilter">
-        <button class="filter-btn" aria-haspopup="listbox" aria-expanded="false" id="hoodBtn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
-          <span id="hoodLabel">Neighbourhood</span>
-          <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-        </button>
-        <div class="dropdown-panel" id="hoodPanel" role="listbox">
-          <input type="text" class="dropdown-search" placeholder="Search neighbourhood…" id="hoodSearch" />
-          <ul id="hoodList">
-            <li data-value="all" class="active" role="option">All Neighbourhoods</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- Product / Service Search -->
-    <div class="product-search-wrap">
-      <div class="product-search-box" id="productSearchBox">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input
-          type="text"
-          id="productSearchInput"
-          placeholder="Search products &amp; services… (e.g. Macchiato, Massage)"
-          autocomplete="off"
-          aria-label="Search products and services"
-          aria-autocomplete="list"
-          aria-controls="productSearchResults"
-        />
-        <button class="product-search-clear" id="productSearchClear" aria-label="Clear search" hidden>&times;</button>
-      </div>
-      <ul class="product-search-results" id="productSearchResults" role="listbox" hidden></ul>
-    </div>
-  </section>
 
   <!-- ===== MAIN BUSINESS GRID ===== -->
   <main class="main-content">
@@ -158,7 +147,6 @@
     <!-- Right: other businesses sidebar -->
     <div class="biz-sidebar" id="bizSidebar">
       <p class="biz-sidebar-title">Other Businesses</p>
-      <!-- Injected by JS -->
     </div>
 
   </div>
@@ -166,22 +154,18 @@
   <!-- ===== FEATURED PRODUCTS (sticky bar) ===== -->
   <div class="featured-sticky" id="featuredSticky">
     <div class="featured-sticky-inner">
-      <div class="featured-sticky-header">
-        <h2>Featured Products</h2>
-        <div class="carousel-controls">
-          <button class="carousel-btn" id="carouselPrev" aria-label="Previous">&#8592;</button>
-          <button class="carousel-btn" id="carouselNext" aria-label="Next">&#8594;</button>
-        </div>
-      </div>
+      <button class="carousel-btn" id="carouselPrev" aria-label="Previous">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
       <div class="carousel-track-wrapper">
-        <div class="carousel-track" id="carouselTrack">
-          <!-- Injected by JS -->
-        </div>
+        <div class="carousel-track" id="carouselTrack"></div>
       </div>
+      <button class="carousel-btn" id="carouselNext" aria-label="Next">
+        <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+      </button>
     </div>
   </div>
 
-  <!-- Spacer so content isn't hidden behind sticky bar -->
   <div class="featured-spacer" id="featuredSpacer"></div>
 
   <!-- ===== FOOTER ===== -->
@@ -190,22 +174,10 @@
 
       <div class="footer-brand">
         <img src="/images/addisdr-logo.png" alt="AddisDR" class="logo-img-footer" />
-        <p>Your city. Your businesses.</p>
+        <p class="footer-tagline">Smart Digital Solutions for Modern Businesses</p>
+        <p class="footer-desc">Powering the future of Ethiopian businesses by transforming operations through technology. AddisNET is a modern platform that helps businesses simplify operations, manage customers, and grow digitally. From bookings to business management, we provide smart solutions designed for the digital future — helping Ethiopian businesses move from traditional systems to modern digital experiences.</p>
       </div>
 
-      <!-- Optional Sign In -->
-      <div class="footer-signin">
-        <h4>Stay in the loop</h4>
-        <form class="signin-form" id="signInForm">
-          <input type="text" placeholder="Your name" id="siName" autocomplete="name" required />
-          <select id="siHood" required>
-            <option value="">Your neighbourhood</option>
-          </select>
-          <button type="submit">Sign In</button>
-        </form>
-      </div>
-
-      <!-- Social Links -->
       <div class="footer-social">
         <h4>Follow Us</h4>
         <div class="social-links">
@@ -213,9 +185,9 @@
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
             LinkedIn
           </a>
-          <a href="#" class="social-link" aria-label="TikTok">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/></svg>
-            TikTok
+          <a href="https://www.youtube.com/@VisionTone-z5s/shorts" class="social-link" target="_blank" rel="noopener" aria-label="YouTube">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3.01 3.01 0 0 0-2.12-2.13C19.54 3.6 12 3.6 12 3.6s-7.54 0-9.38.47A3.01 3.01 0 0 0 .5 6.2 31.6 31.6 0 0 0 0 12a31.6 31.6 0 0 0 .5 5.8 3.01 3.01 0 0 0 2.12 2.13C4.46 20.4 12 20.4 12 20.4s7.54 0 9.38-.47a3.01 3.01 0 0 0 2.12-2.13A31.6 31.6 0 0 0 24 12a31.6 31.6 0 0 0-.5-5.8z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#071220"/></svg>
+            YouTube
           </a>
           <a href="#" class="social-link" aria-label="Telegram">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.17 13.667l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.978.892z"/></svg>
