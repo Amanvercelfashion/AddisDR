@@ -767,6 +767,11 @@ input, select { font-family: var(--font); }
     height: auto;
   }
 
+  /* Mobile gradient: solid black left half, brand gradient right half */
+  .topbar {
+    background: linear-gradient(to right, #000000 0%, #000000 45%, #003a5c 60%, #006688 72%, #00c8ff 88%, #00ff88 100%);
+  }
+
   /* Logo — spans all 3 rows, left column */
   .logo {
     grid-area: logo;
