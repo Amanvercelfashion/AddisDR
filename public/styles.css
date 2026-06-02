@@ -752,64 +752,88 @@ input, select { font-family: var(--font); }
 }
 
 @media (max-width: 640px) {
-  /* ── Navbar: two-row layout, ~20% taller than desktop 64px ── */
+  /* ── Mobile navbar: logo left, 3 inputs stacked right ── */
   .topbar-row1 {
+    display: grid;
+    grid-template-columns: auto 1fr;   /* col1=logo, col2=right stack */
+    grid-template-rows: auto auto auto; /* 3 rows: hood | cat+burger | search */
+    grid-template-areas:
+      "logo  hood"
+      "logo  cat"
+      "logo  search";
+    align-items: center;
+    gap: 5px 10px;
+    padding: 8px 10px;
     height: auto;
-    flex-wrap: wrap;
-    padding: 6px 12px;
-    gap: 0;
-    row-gap: 6px;
   }
 
-  /* Row 1a: logo (left) + hamburger (right), full width */
+  /* Logo — spans all 3 rows, left column */
   .logo {
-    flex: 1;                  /* stretch to push hamburger right */
-    min-width: 0;
+    grid-area: logo;
+    align-self: center;
   }
   .logo-img {
-    height: 52px;             /* bigger logo on mobile */
-  }
-  .hamburger {
-    order: 2;                 /* stays far right */
+    height: 72px;   /* tall, prominent */
+    width: auto;
   }
 
-  /* Row 1b: search + filters, full width below logo row */
-  .product-search-wrap {
-    flex: 1 1 0;              /* grow, take remaining space */
-    min-width: 0;
-    order: 3;                 /* below logo row */
-  }
-
-  /* Filters sit inline with the search bar in row 1b */
-  .topbar-filters {
-    order: 4;
-    flex-direction: column;
-    gap: 5px;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-
-  /* Filter buttons: slightly larger touch target on mobile */
-  .filter-btn {
-    padding: 6px 10px;
-    font-size: 0.76rem;
-  }
-
-  /* ── Separator between the two nav rows ── */
-  .topbar-row1::after {
-    content: '';
-    display: block;
-    order: 2;                 /* sits after hamburger, before search row */
+  /* Neighbourhood filter → row 1 of right column */
+  #hoodFilter {
+    grid-area: hood;
     width: 100%;
-    height: 0;
   }
 
-  /* Total navbar height: logo row ~64px + gap + search row ~36px = ~77px (~20% more) */
+  /* Category filter → row 2, takes most of the space */
+  #categoryFilter {
+    grid-area: cat;
+    width: 100%;
+    /* Category row also holds the hamburger — achieved via flex trick below */
+  }
+
+  /* Hamburger moves into the cat row, floated to the right */
+  .hamburger {
+    grid-area: cat;
+    justify-self: end;
+    align-self: center;
+    padding: 6px;
+  }
+
+  /* The cat filter-group must share its row with hamburger */
+  #categoryFilter {
+    justify-self: start;
+    /* let it take available space minus hamburger width */
+    width: calc(100% - 46px);
+  }
+
+  /* Product search → row 3, full width */
+  .product-search-wrap {
+    grid-area: search;
+    width: 100%;
+    min-width: 0;
+  }
+
+  /* topbar-filters wrapper is no longer a flex row — make it contents */
+  .topbar-filters {
+    display: contents;  /* children (hood, cat) participate directly in the grid */
+  }
+
+  /* Filter buttons: full width, comfortable tap target */
+  .filter-btn {
+    width: 100%;
+    padding: 7px 10px;
+    font-size: 0.8rem;
+    justify-content: space-between;
+  }
+
+  /* Dropdown panels: left-align under their button */
+  .dropdown-panel {
+    min-width: 200px;
+  }
 
   .business-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
   .main-content { padding: 12px 10px; }
 
-  /* ── Mobile sticky bar ── */
+  /* ── Mobile sticky bar (unchanged) ── */
   .featured-sticky {
     padding: 8px 0 0;
     height: 110px;
@@ -863,7 +887,7 @@ input, select { font-family: var(--font); }
 }
 
 @media (max-width: 400px) {
-  .logo-img { height: 44px; }
+  .logo-img { height: 58px; }
   .business-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
   .tile-body { padding: 8px 8px 6px; }
   .tile-name { font-size: 0.78rem; }
