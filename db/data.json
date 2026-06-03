@@ -110,8 +110,8 @@
       "image_url": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&q=80",
       "hook_text": "Traditional Ethiopian cuisine with live cultural shows nightly.",
       "price_indicator": "$$",
-      "rating_avg": 4.8,
-      "rating_count": 312,
+      "rating_avg": 5,
+      "rating_count": 1,
       "created_at": "2026-05-05T19:13:14.342Z"
     },
     {
@@ -140,8 +140,8 @@
       "image_url": "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80",
       "hook_text": "Modern and classic furniture crafted locally with premium materials.",
       "price_indicator": "From 3,500 ETB",
-      "rating_avg": 4.5,
-      "rating_count": 74,
+      "rating_avg": 5,
+      "rating_count": 1,
       "created_at": "2026-05-05T19:13:14.343Z"
     },
     {
@@ -266,7 +266,7 @@
     },
     {
       "id": 12,
-      "name": "Ayat Fresh Market",
+      "name": "Jinx Fresh Market",
       "category_id": 2,
       "hood_id": 7,
       "website_link": "https://example.com",
@@ -278,6 +278,21 @@
       "rating_avg": 4.1,
       "rating_count": 67,
       "created_at": "2026-05-05T19:13:14.344Z"
+    },
+    {
+      "id": 13,
+      "name": "Aman furniture store",
+      "category_id": 3,
+      "hood_id": 6,
+      "website_link": "http://localhost:3001/admin.html",
+      "phone_number": "+251988898022",
+      "location_link": "http://localhost:3001/admin.html",
+      "image_url": "/uploads/1780467552240-936640068.png",
+      "hook_text": "Aman yleyal alkuh iko",
+      "price_indicator": "From 2000 ETB",
+      "rating_avg": 5,
+      "rating_count": 1,
+      "created_at": "2026-06-03T06:19:12.275Z"
     }
   ],
   "products": [
@@ -505,6 +520,15 @@
       "price": "80 ETB",
       "image_url": null,
       "created_at": "2026-05-05T19:13:14.344Z"
+    },
+    {
+      "id": 26,
+      "business_id": 13,
+      "name": "sofa",
+      "description": "yabede sofa",
+      "price": "35,000 ETB",
+      "image_url": "/uploads/1780468283685-400306121.png",
+      "created_at": "2026-06-03T06:31:23.747Z"
     }
   ],
   "featured_items": [
@@ -589,7 +613,29 @@
       "created_at": "2026-05-05T19:13:14.344Z"
     }
   ],
-  "ratings": [],
+  "ratings": [
+    {
+      "id": 1,
+      "business_id": 13,
+      "user_id": 2,
+      "rating": 5,
+      "created_at": "2026-06-03T06:32:39.516Z"
+    },
+    {
+      "id": 2,
+      "business_id": 3,
+      "user_id": 2,
+      "rating": 5,
+      "created_at": "2026-06-03T06:50:12.332Z"
+    },
+    {
+      "id": 3,
+      "business_id": 1,
+      "user_id": 2,
+      "rating": 5,
+      "created_at": "2026-06-03T06:59:23.342Z"
+    }
+  ],
   "reports": [
     {
       "id": 1,
@@ -604,6 +650,13 @@
       "user_name": "Aman from Summit",
       "reason": "try",
       "created_at": "2026-06-02T08:25:04.432Z"
+    },
+    {
+      "id": 3,
+      "business_id": 1,
+      "user_name": "Aman from Summit",
+      "reason": "g",
+      "created_at": "2026-06-03T06:59:40.533Z"
     }
   ],
   "users": [
@@ -623,11 +676,11 @@
   "_counters": {
     "categories": 10,
     "hoods": 11,
-    "businesses": 12,
-    "products": 25,
+    "businesses": 13,
+    "products": 26,
     "featured_items": 8,
-    "ratings": 0,
-    "reports": 2,
+    "ratings": 3,
+    "reports": 3,
     "users": 2
   }
 }

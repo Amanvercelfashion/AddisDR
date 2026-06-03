@@ -55,7 +55,7 @@ async function fetchHoods() {
 
 async function submitRating(businessId, rating) {
   if (!currentUser) {
-    alert('Please sign in to rate businesses');
+    openAuthModal();
     return null;
   }
   
@@ -73,6 +73,11 @@ async function submitRating(businessId, rating) {
 }
 
 async function submitReport(businessId, reason) {
+  if (!currentUser) {
+    openAuthModal();
+    return null;
+  }
+  
   const userName = currentUser ? currentUser.display_name : 'Anonymous';
   
   const res = await fetch(`${API_BASE}/reports`, {
@@ -94,13 +99,116 @@ async function signIn(name, hoodId) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ name, hood_id: hoodId })
   });
-  
-  if (!res.ok) {
-    const error = await res.json();
-    throw new Error(error.error);
-  }
-  
+  if (!res.ok) { const e = await res.json(); throw new Error(e.error); }
   return await res.json();
+}
+
+/* ===== AUTH MODAL ===== */
+function openAuthModal(defaultTab) {
+  document.getElementById('authModalBackdrop').classList.add('open');
+  switchAuthTab(defaultTab || 'login');
+  const sel = document.getElementById('regHood');
+  if (sel.options.length <= 1 && hoods.length) {
+    hoods.forEach(h => {
+      const o = document.createElement('option');
+      o.value = h.id; o.textContent = h.name;
+      sel.appendChild(o);
+    });
+  }
+}
+function closeAuthModal() {
+  document.getElementById('authModalBackdrop').classList.remove('open');
+  document.getElementById('loginErr').textContent = '';
+  document.getElementById('registerErr').textContent = '';
+}
+function switchAuthTab(tab) {
+  document.getElementById('loginForm').style.display    = tab === 'login'    ? '' : 'none';
+  document.getElementById('registerForm').style.display = tab === 'register' ? '' : 'none';
+  document.getElementById('tabLogin').classList.toggle('active',    tab === 'login');
+  document.getElementById('tabRegister').classList.toggle('active', tab === 'register');
+}
+document.getElementById('authModalBackdrop').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeAuthModal();
+});
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return;
+  const backdrop = document.getElementById('authModalBackdrop');
+  if (!backdrop.classList.contains('open')) return;
+  if (document.getElementById('loginForm').style.display !== 'none') doLogin();
+  else doRegister();
+});
+
+async function doLogin() {
+  const phone    = document.getElementById('loginPhone').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  document.getElementById('loginErr').textContent = '';
+  if (!phone || !password) { document.getElementById('loginErr').textContent = 'Phone and password required'; return; }
+  try {
+    const res = await fetch(`${API_BASE}/users/login`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ phone, password })
+    });
+    const data = await res.json();
+    if (!res.ok) { document.getElementById('loginErr').textContent = data.error; return; }
+    onSignedIn(data);
+  } catch (_) { document.getElementById('loginErr').textContent = 'Network error'; }
+}
+
+async function doRegister() {
+  const name     = document.getElementById('regName').value.trim();
+  const hood_id  = document.getElementById('regHood').value;
+  const phone    = document.getElementById('regPhone').value.trim();
+  const password = document.getElementById('regPassword').value;
+  document.getElementById('registerErr').textContent = '';
+  if (!name || !hood_id || !phone || !password) {
+    document.getElementById('registerErr').textContent = 'All fields are required'; return;
+  }
+  try {
+    const res = await fetch(`${API_BASE}/users/register`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, hood_id, phone, password })
+    });
+    const data = await res.json();
+    if (!res.ok) { document.getElementById('registerErr').textContent = data.error; return; }
+    onSignedIn(data);
+  } catch (_) { document.getElementById('registerErr').textContent = 'Network error'; }
+}
+
+function onSignedIn(user) {
+  saveUser(user);
+  closeAuthModal();
+  updateUserUI();
+  renderGrid();
+}
+
+function doSignOut() {
+  if (!confirm('Sign out?')) return;
+  clearUser();
+  updateUserUI();
+  renderGrid();
+}
+
+function updateUserUI() {
+  const signinBtn   = document.getElementById('signinBtn');
+  const userPillBtn = document.getElementById('userPillBtn');
+  const menuSignIn  = document.getElementById('menuSignInItem');
+  const menuUser    = document.getElementById('menuUserItem');
+  const menuSignOut = document.getElementById('menuSignOutItem');
+  if (currentUser) {
+    signinBtn.style.display   = 'none';
+    userPillBtn.style.display = '';
+    document.getElementById('userPillName').textContent = currentUser.display_name;
+    document.getElementById('userAvatar').textContent   = currentUser.name.charAt(0).toUpperCase();
+    if (menuSignIn)  menuSignIn.style.display  = 'none';
+    if (menuUser)  { menuUser.style.display = ''; document.getElementById('menuUserName').textContent = '👤 ' + currentUser.display_name; }
+    if (menuSignOut) menuSignOut.style.display = '';
+  } else {
+    signinBtn.style.display   = '';
+    userPillBtn.style.display = 'none';
+    if (menuSignIn)  menuSignIn.style.display  = '';
+    if (menuUser)    menuUser.style.display    = 'none';
+    if (menuSignOut) menuSignOut.style.display = 'none';
+  }
 }
 
 /* ===== HELPERS ===== */
@@ -135,9 +243,9 @@ function buildTile(b) {
       <div class="tile-rating" onclick="event.stopPropagation()">
         ${renderStars(b.rating_avg)}
         <span class="rating-text">${b.rating_avg.toFixed(1)} (${b.rating_count})</span>
-        <button class="report-btn" onclick="reportIssue(${b.id})">
+        <button class="report-btn" onclick="event.stopPropagation(); reportIssue(${b.id})">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          Report
+          ${currentUser ? 'Report' : '<span class="login-gate-msg">Report <button onclick="openAuthModal();event.stopPropagation()">Sign in</button></span>'}
         </button>
       </div>
       <div class="tile-actions" onclick="event.stopPropagation()">
@@ -190,6 +298,15 @@ async function renderGrid() {
   const title = document.getElementById("gridTitle");
 
   businesses = await fetchBusinesses(activeCategory, activeHood);
+
+  // If user is logged in and no hood filter is active, float their hood to the top
+  if (currentUser && currentUser.hood_id && activeHood === 'all') {
+    const userHoodName = hoods.find(h => h.id === currentUser.hood_id)?.name || '';
+    businesses = [
+      ...businesses.filter(b => b.hood_name === userHoodName),
+      ...businesses.filter(b => b.hood_name !== userHoodName)
+    ];
+  }
 
   grid.innerHTML = businesses.slice(0, 20).map(buildTile).join("");
   const shown = Math.min(businesses.length, 20);
@@ -421,6 +538,10 @@ async function openBusinessPage(businessId) {
 
   // Report button
   document.getElementById('bizReportBtn').onclick = () => reportIssue(businessId);
+  document.getElementById('bizReportBtn').innerHTML = `
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    ${currentUser ? 'Report Issue' : '<span class="login-gate-msg">Report <button onclick="openAuthModal();event.stopPropagation()">Sign in</button></span>'}
+  `;
 
   // Products
   const pGrid = document.getElementById('bizProductsGrid');
@@ -506,7 +627,7 @@ document.getElementById('bizRateStars').addEventListener('click', async (e) => {
   const btn = e.target.closest('.biz-rate-star');
   if (!btn) return;
   if (!currentUser) {
-    alert('Please sign in to rate businesses.');
+    openAuthModal();
     return;
   }
   const val = parseInt(btn.dataset.val);
@@ -730,6 +851,10 @@ function initStickyFeatured() {
 
 /* ===== REPORT ISSUE ===== */
 async function reportIssue(id) {
+  if (!currentUser) {
+    openAuthModal();
+    return;
+  }
   const reason = prompt('Please describe the issue:');
   if (!reason) return;
   

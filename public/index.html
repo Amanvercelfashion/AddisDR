@@ -63,6 +63,18 @@
         </div>
       </div>
 
+      <!-- User pill / sign-in button — desktop -->
+      <div id="userPillWrap" style="flex-shrink:0">
+        <button class="signin-btn" id="signinBtn" onclick="openAuthModal()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          Sign In
+        </button>
+        <button class="user-pill" id="userPillBtn" style="display:none" onclick="doSignOut()">
+          <span class="avatar" id="userAvatar"></span>
+          <span id="userPillName"></span>
+        </button>
+      </div>
+
       <!-- Hamburger — far right -->
       <button class="hamburger" id="menuToggle" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
@@ -75,8 +87,11 @@
       <ul>
         <li><a href="#about">About Us</a></li>
         <li><a href="#contact">Contact Us</a></li>
+        <li id="menuSignInItem"><a href="#" onclick="openAuthModal();closeMenu();return false;">Sign In / Register</a></li>
+        <li id="menuUserItem" style="display:none"><a href="#" onclick="showUserMenu();closeMenu();return false;" id="menuUserName"></a></li>
+        <li id="menuSignOutItem" style="display:none"><a href="#" onclick="doSignOut();closeMenu();return false;">Sign Out</a></li>
         <li><a href="#digital-store" class="highlight-link">Get Your Digital Store</a></li>
-        <li><a href="#admin">Admin Panel</a></li>
+        <li><a href="/admin.html">Admin Panel</a></li>
       </ul>
     </nav>
     <div class="menu-overlay" id="menuOverlay"></div>
@@ -201,6 +216,55 @@
       <p>&copy; 2026 AddisDR. All rights reserved.</p>
     </div>
   </footer>
+
+  <!-- ===== AUTH MODAL ===== -->
+  <div class="auth-modal-backdrop" id="authModalBackdrop" role="dialog" aria-modal="true" aria-label="Sign in or register">
+    <div class="auth-modal">
+      <button class="auth-close" onclick="closeAuthModal()" aria-label="Close">&times;</button>
+      <h2>Welcome to AddisDR</h2>
+      <p class="auth-sub">Sign in or create an account to rate and report businesses.</p>
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">Sign In</button>
+        <button class="auth-tab" id="tabRegister" onclick="switchAuthTab('register')">Register</button>
+      </div>
+
+      <!-- Login form -->
+      <div id="loginForm">
+        <div class="auth-field">
+          <label>Phone Number</label>
+          <input type="tel" id="loginPhone" placeholder="+251911000000" autocomplete="tel" />
+        </div>
+        <div class="auth-field">
+          <label>Password</label>
+          <input type="password" id="loginPassword" placeholder="Your password" autocomplete="current-password" />
+        </div>
+        <div class="auth-err" id="loginErr"></div>
+        <button class="auth-btn" onclick="doLogin()">Sign In</button>
+      </div>
+
+      <!-- Register form -->
+      <div id="registerForm" style="display:none">
+        <div class="auth-field">
+          <label>Full Name *</label>
+          <input type="text" id="regName" placeholder="e.g. Abebe Bikila" autocomplete="name" />
+        </div>
+        <div class="auth-field">
+          <label>Neighbourhood *</label>
+          <select id="regHood"><option value="">— select your hood —</option></select>
+        </div>
+        <div class="auth-field">
+          <label>Phone Number *</label>
+          <input type="tel" id="regPhone" placeholder="+251911000000" autocomplete="tel" />
+        </div>
+        <div class="auth-field">
+          <label>Password *</label>
+          <input type="password" id="regPassword" placeholder="Choose a password (min 4 chars)" autocomplete="new-password" />
+        </div>
+        <div class="auth-err" id="registerErr"></div>
+        <button class="auth-btn" onclick="doRegister()">Create Account</button>
+      </div>
+    </div>
+  </div>
 
   <script src="app.js"></script>
 </body>

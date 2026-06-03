@@ -5,6 +5,28 @@ const path = require('path');
 const fs = require('fs');
 const dbModule = require('../db/database');
 
+// ===== ADMIN PASSWORD AUTH =====
+const ADMIN_PASSWORD = 'Yoakin@2906admin';
+
+router.use((req, res, next) => {
+  // Allow GET requests to the password-check endpoint without auth
+  if (req.path === '/auth' && req.method === 'POST') return next();
+  const token = req.headers['x-admin-token'] || req.query.token;
+  if (token !== ADMIN_PASSWORD) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+  next();
+});
+
+// POST /api/admin/auth — verify password, return token
+router.post('/auth', (req, res) => {
+  if (req.body.password === ADMIN_PASSWORD) {
+    res.json({ success: true, token: ADMIN_PASSWORD });
+  } else {
+    res.status(401).json({ error: 'Wrong password' });
+  }
+});
+
 // ===== MULTER SETUP =====
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
