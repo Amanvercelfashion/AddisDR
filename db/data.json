@@ -39,6 +39,22 @@
     {
       "id": 10,
       "name": "Auto Services"
+    },
+    {
+      "id": 11,
+      "name": "Gifts & Souvenirs"
+    },
+    {
+      "id": 12,
+      "name": "Education & Tutoring"
+    },
+    {
+      "id": 13,
+      "name": "Fitness & Recreation"
+    },
+    {
+      "id": 14,
+      "name": "Photography"
     }
   ],
   "hoods": [
@@ -170,8 +186,8 @@
       "image_url": "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=600&q=80",
       "hook_text": "General and specialist consultations with same-day appointments.",
       "price_indicator": "From 500 ETB",
-      "rating_avg": 4.7,
-      "rating_count": 156,
+      "rating_avg": 5,
+      "rating_count": 1,
       "created_at": "2026-05-05T19:13:14.343Z"
     },
     {
@@ -288,11 +304,161 @@
       "phone_number": "+251988898022",
       "location_link": "http://localhost:3001/admin.html",
       "image_url": "/uploads/1780467552240-936640068.png",
-      "hook_text": "Aman yleyal alkuh iko",
+      "hook_text": "Aman yleyal alkuh iko , Ychlal Aman Ychlal , Ychlal Aman Ychlal",
       "price_indicator": "From 2000 ETB",
       "rating_avg": 5,
       "rating_count": 1,
       "created_at": "2026-06-03T06:19:12.275Z"
+    },
+    {
+      "id": 14,
+      "name": "Home Comfort",
+      "category_id": 3,
+      "hood_id": 1,
+      "website_link": "https://stores-addisdr.vercel.app/home-comfort",
+      "phone_number": "+251911000014",
+      "location_link": "https://maps.google.com",
+      "image_url": "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80",
+      "hook_text": "Quality furniture and home decor to make your space truly comfortable.",
+      "price_indicator": "From 2,500 ETB",
+      "rating_avg": 0,
+      "rating_count": 0,
+      "created_at": "2026-06-16T00:00:00.000Z"
+    },
+    {
+      "id": 15,
+      "name": "Gift World",
+      "category_id": 11,
+      "hood_id": 2,
+      "website_link": "https://stores-addisdr.vercel.app/giftworld",
+      "phone_number": "+251911000015",
+      "location_link": "https://maps.google.com",
+      "image_url": "https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=600&q=80",
+      "hook_text": "Unique gifts and souvenirs for every occasion — wrapped with care.",
+      "price_indicator": "From 200 ETB",
+      "rating_avg": 0,
+      "rating_count": 0,
+      "created_at": "2026-06-16T00:00:00.000Z"
+    },
+    {
+      "id": 16,
+      "name": "Gadget Pro",
+      "category_id": 7,
+      "hood_id": 1,
+      "website_link": "https://stores-addisdr.vercel.app/gadgetpro",
+      "phone_number": "+251911000016",
+      "location_link": "https://maps.google.com",
+      "image_url": "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=600&q=80",
+      "hook_text": "Latest gadgets, accessories, and electronics at competitive prices.",
+      "price_indicator": "From 500 ETB",
+      "rating_avg": 0,
+      "rating_count": 0,
+      "created_at": "2026-06-16T00:00:00.000Z"
+    },
+    {
+      "id": 17,
+      "name": "Chic",
+      "category_id": 6,
+      "hood_id": 5,
+      "website_link": "https://stores-addisdr.vercel.app/chic",
+      "phone_number": "+251911000017",
+      "location_link": "https://maps.google.com",
+      "image_url": "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=600&q=80",
+      "hook_text": "Trendy fashion and apparel blending modern style with Ethiopian flair.",
+      "price_indicator": "$$",
+      "rating_avg": 0,
+      "rating_count": 0,
+      "created_at": "2026-06-16T00:00:00.000Z"
+    },
+    {
+      "id": 18,
+      "name": "BrightCare Dental Clinic",
+      "category_id": 5,
+      "hood_id": 1,
+      "website_link": "https://services-addisdr.vercel.app/brightcare-dental-clinic",
+      "phone_number": "+251911000018",
+      "location_link": "https://maps.google.com",
+      "image_url": "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=600&q=80",
+      "hook_text": "Comprehensive dental care with modern equipment and experienced dentists.",
+      "price_indicator": "From 500 ETB",
+      "rating_avg": 0,
+      "rating_count": 0,
+      "created_at": "2026-06-16T00:00:00.000Z"
+    },
+    {
+      "id": 19,
+      "name": "LinguaBridge Tutoring",
+      "category_id": 12,
+      "hood_id": 3,
+      "website_link": "https://services-addisdr.vercel.app/linguabridge-tutoring",
+      "phone_number": "+251911000019",
+      "location_link": "https://maps.google.com",
+      "image_url": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&q=80",
+      "hook_text": "Language and academic tutoring bridging students to success.",
+      "price_indicator": "From 300 ETB/hr",
+      "rating_avg": 0,
+      "rating_count": 0,
+      "created_at": "2026-06-16T00:00:00.000Z"
+    },
+    {
+      "id": 20,
+      "name": "Elevate Events and Fitness",
+      "category_id": 13,
+      "hood_id": 8,
+      "website_link": "https://services-addisdr.vercel.app/elevate-events-and-fitness",
+      "phone_number": "+251911000020",
+      "location_link": "https://maps.google.com",
+      "image_url": "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=600&q=80",
+      "hook_text": "Fitness training and event planning for a healthier, more vibrant lifestyle.",
+      "price_indicator": "From 1,000 ETB",
+      "rating_avg": 0,
+      "rating_count": 0,
+      "created_at": "2026-06-16T00:00:00.000Z"
+    },
+    {
+      "id": 21,
+      "name": "Refined Grooming Lounge",
+      "category_id": 8,
+      "hood_id": 1,
+      "website_link": "https://services-addisdr.vercel.app/refined-grooming-lounge",
+      "phone_number": "+251911000021",
+      "location_link": "https://maps.google.com",
+      "image_url": "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&q=80",
+      "hook_text": "Premium grooming and barber services for the modern gentleman.",
+      "price_indicator": "From 250 ETB",
+      "rating_avg": 0,
+      "rating_count": 0,
+      "created_at": "2026-06-16T00:00:00.000Z"
+    },
+    {
+      "id": 22,
+      "name": "Lens and Light Photography",
+      "category_id": 14,
+      "hood_id": 4,
+      "website_link": "https://services-addisdr.vercel.app/lens-and-light-photography",
+      "phone_number": "+251911000022",
+      "location_link": "https://maps.google.com",
+      "image_url": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=600&q=80",
+      "hook_text": "Professional photography for events, portraits, and commercial projects.",
+      "price_indicator": "From 3,000 ETB",
+      "rating_avg": 0,
+      "rating_count": 0,
+      "created_at": "2026-06-16T00:00:00.000Z"
+    },
+    {
+      "id": 23,
+      "name": "Savory Bites Restaurant",
+      "category_id": 1,
+      "hood_id": 2,
+      "website_link": "https://services-addisdr.vercel.app/savory-bites-restaurant",
+      "phone_number": "+251911000023",
+      "location_link": "https://maps.google.com",
+      "image_url": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&q=80",
+      "hook_text": "Delicious local and international cuisine in a warm, inviting atmosphere.",
+      "price_indicator": "$$",
+      "rating_avg": 0,
+      "rating_count": 0,
+      "created_at": "2026-06-16T00:00:00.000Z"
     }
   ],
   "products": [
@@ -634,6 +800,13 @@
       "user_id": 2,
       "rating": 5,
       "created_at": "2026-06-03T06:59:23.342Z"
+    },
+    {
+      "id": 4,
+      "business_id": 5,
+      "user_id": 2,
+      "rating": 5,
+      "created_at": "2026-06-03T07:03:04.510Z"
     }
   ],
   "reports": [
@@ -674,12 +847,12 @@
     }
   ],
   "_counters": {
-    "categories": 10,
+    "categories": 14,
     "hoods": 11,
-    "businesses": 13,
+    "businesses": 23,
     "products": 26,
     "featured_items": 8,
-    "ratings": 3,
+    "ratings": 4,
     "reports": 3,
     "users": 2
   }
