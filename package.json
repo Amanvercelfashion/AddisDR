@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "dev:backend": "node api/index.js",
-    "build": "vite build",
+    "build": "npm install --prefix frontend && npm run build --prefix frontend",
     "preview": "vite preview"
   },
   "dependencies": {

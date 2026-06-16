@@ -9,7 +9,7 @@ const bcrypt = require('bcryptjs');
 const serverless = require('serverless-http');
 
 // ── In-memory database ──────────────────────────────────────────
-const dbPath = path.join(__dirname, 'db', 'data.json');
+const dbPath = path.join(__dirname, 'data.json');
 
 const defaultData = {
   categories: [], hoods: [], businesses: [], products: [],
