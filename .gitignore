@@ -1,7 +1,6 @@
 # Dependencies
 node_modules/
 frontend/node_modules/
-backend/node_modules/
 
 # Build output
 frontend/dist/
@@ -9,7 +8,6 @@ frontend/dist/
 # Environment files
 .env
 frontend/.env
-backend/.env
 
 # OS / editor
 .DS_Store
