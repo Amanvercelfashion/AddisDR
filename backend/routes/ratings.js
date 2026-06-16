@@ -11,6 +11,12 @@ router.post('/', (req, res) => {
     if (!user_id) {
       return res.status(401).json({ error: 'You must be signed in to rate' });
     }
+
+    // Verify the user actually exists in the database
+    const user = db.users.find(u => u.id === user_id);
+    if (!user) {
+      return res.status(401).json({ error: 'You must be signed in to rate' });
+    }
     
     if (!rating || rating < 1 || rating > 5) {
       return res.status(400).json({ error: 'Rating must be between 1 and 5' });

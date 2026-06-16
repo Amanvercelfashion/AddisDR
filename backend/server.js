@@ -30,8 +30,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Static files
-app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use(express.static(path.join(__dirname, '..', 'public')));
 
 // API Routes
 app.use('/api/businesses', businessRoutes);
@@ -49,9 +49,10 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// Serve frontend
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+// In production (Vercel), routes are handled by vercel.json
+// In development, serve the old frontend for admin panel
+app.get('/admin.html', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'public', 'admin.html'));
 });
 
 // Error handler
@@ -60,6 +61,12 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Something went wrong!', message: err.message });
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 AddisNET server running on http://localhost:${PORT}`);
-});
+// Export for Vercel serverless
+module.exports = app;
+
+// Start server if running directly (not on Vercel)
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`🚀 AddisNET server running on http://localhost:${PORT}`);
+  });
+}

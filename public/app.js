@@ -973,6 +973,22 @@ setupDropdown("hoodBtn", "hoodPanel", "hoodSearch", "hoodList", (val) => {
 });
 
 (async function init() {
+  // Validate stored session against the server — clears stale localStorage
+  // sessions that exist locally but not in the current database (e.g. after a
+  // DB reset or when switching between local and deployed environments).
+  if (currentUser) {
+    try {
+      const res = await fetch(`${API_BASE}/users/${currentUser.id}`);
+      if (!res.ok) {
+        // User no longer exists in this DB — clear the stale session
+        clearUser();
+        updateUserUI();
+      }
+    } catch (_) {
+      // Network error — keep the session, don't penalise offline use
+    }
+  }
+
   await populateFilters();
   await renderGrid();
   await renderCarousel();
