@@ -4,15 +4,12 @@
   "description": "Local business discovery platform for Addis Ababa",
   "private": true,
   "scripts": {
-    "dev": "vite",
-    "dev:backend": "node api/index.js",
+    "dev": "npm run dev --prefix frontend",
+    "dev:backend": "node backend/server.js",
     "build": "npm install --prefix frontend && npm run build --prefix frontend",
-    "preview": "vite preview"
+    "preview": "npm run preview --prefix frontend"
   },
   "dependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "@supabase/supabase-js": "^2.39.0",
     "bcryptjs": "3.0.3",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
@@ -22,8 +19,6 @@
     "serverless-http": "^3.2.0"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^4.2.1",
-    "vite": "^5.4.0",
     "nodemon": "^3.0.2"
   },
   "keywords": ["business", "directory", "addis", "ethiopia"],
