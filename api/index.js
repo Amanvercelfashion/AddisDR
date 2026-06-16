@@ -28,7 +28,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use(express.static(path.join(__dirname, '..', 'public')));
 
 app.use('/api/businesses', businessRoutes);
 app.use('/api/featured', featuredRoutes);
@@ -42,10 +41,6 @@ app.use('/api/products', productRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
-});
-
-app.get('/admin.html', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'public', 'admin.html'));
 });
 
 app.use((err, req, res, next) => {
