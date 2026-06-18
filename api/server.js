@@ -627,9 +627,4 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Something went wrong!', message: err.message });
 });
 
-if (require.main === module) {
-  const port = process.env.PORT || 4000;
-  app.listen(port, () => console.log(`Server running on port ${port}`));
-}
-
 module.exports = serverless(app);
