@@ -31,9 +31,9 @@ app.use(cors({
   origin: [
     'http://localhost:5173',
     'http://localhost:3000',
-    'https://addis-dr.vercel.app',
-    'https://addis-dr-backend.vercel.app'
-  ],
+    process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null,
+    'https://addis-dr.vercel.app'
+  ].filter(Boolean),
   credentials: true
 }));
 app.use(compression());

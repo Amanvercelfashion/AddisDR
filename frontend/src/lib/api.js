@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL || 'https://addis-dr-backend.vercel.app'
+const API_URL = import.meta.env.VITE_API_URL || '/api'
 
 export async function fetchBusinesses(category = 'all', hood = 'all') {
   const params = new URLSearchParams()

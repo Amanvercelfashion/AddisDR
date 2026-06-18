@@ -4,7 +4,9 @@
   "description": "Local business discovery platform for Addis Ababa",
   "private": true,
   "scripts": {
-    "dev:backend": "node api/server.js"
+    "dev": "node api/server.js",
+    "dev:backend": "node api/server.js",
+    "vercel-build": "cd frontend && npm install && npm run build"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.108.2",
