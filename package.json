@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node api/server.js",
     "dev:backend": "node api/server.js",
-    "vercel-build": "cd frontend && npm install && npm run build"
+    "vercel-build": "npm --prefix frontend install && npm --prefix frontend run build"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.108.2",
