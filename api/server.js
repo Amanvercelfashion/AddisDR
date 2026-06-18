@@ -7,18 +7,18 @@ const bcrypt = require('bcryptjs');
 const serverless = require('serverless-http');
 const { createClient } = require('@supabase/supabase-js');
 
+const app = express();
+
+app.get('/api/ping', (req, res) => {
+  res.json({ pong: true });
+});
+
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_SERVICE_KEY
 );
 
 const ADMIN_PASSWORD = 'Yoakin@2906admin';
-
-const app = express();
-
-app.get('/api/ping', (req, res) => {
-  res.json({ pong: true });
-});
 
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(cors({
