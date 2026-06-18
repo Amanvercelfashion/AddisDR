@@ -16,6 +16,10 @@ const ADMIN_PASSWORD = 'Yoakin@2906admin';
 
 const app = express();
 
+app.get('/api/ping', (req, res) => {
+  res.json({ pong: true });
+});
+
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(cors({
   origin: [
