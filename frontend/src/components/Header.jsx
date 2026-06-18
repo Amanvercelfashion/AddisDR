@@ -23,7 +23,7 @@ export default function Header({
       <header className="topbar" id="topbar">
         <div className="topbar-row1">
           <a href="/" className="logo" aria-label="AddisDR home">
-            <img src="/images/addisdr-logo.png" alt="AddisDR" className="logo-img" />
+            <img src="/images/addisdr-logo.svg" alt="AddisDR" className="logo-img" />
           </a>
 
           <div className="product-search-wrap" id="productSearchBox">

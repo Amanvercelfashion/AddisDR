@@ -3,7 +3,7 @@ export default function Footer() {
     <footer className="footer" id="siteFooter">
       <div className="footer-inner">
         <div className="footer-brand">
-          <img src="/images/addisdr-logo.png" alt="AddisDR" className="logo-img-footer" />
+          <img src="/images/addisdr-logo.svg" alt="AddisDR" className="logo-img-footer" />
           <p className="footer-tagline">Smart Digital Solutions for Modern Businesses</p>
           <p className="footer-desc">
             Powering the future of Ethiopian businesses by transforming operations through technology.
