@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AddisDR – Admin Panel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --brand: #00a8d4; --brand-dark: #006e8a; --brand-darker: #004a5e;
+  --brand-glow: #00c8ff; --accent: #00ff88; --accent-dark: #00cc6a;
+  --text-primary: #0a1628; --text-secondary: #3d5a72; --text-muted: #7a9ab0;
+  --bg: #f0f8fc; --surface: #ffffff; --border: #c8e8f4; --border-light: #e8f5fb;
+  --shadow-sm: 0 1px 3px rgba(0,120,180,.07),0 1px 2px rgba(0,120,180,.05);
+  --shadow-md: 0 4px 14px rgba(0,120,180,.12);
+  --radius: 12px; --radius-sm: 8px; --radius-lg: 16px;
+  --font: 'Inter',system-ui,sans-serif;
+  --nav-w: 240px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font); background: var(--bg); color: var(--text-primary); line-height: 1.5; }
+button { cursor: pointer; font-family: var(--font); }
+input,textarea,select { font-family: var(--font); }
+
+/* LOGIN */
+#loginScreen {
+  position: fixed; inset: 0; background: #071220;
+  display: flex; align-items: center; justify-content: center; z-index: 999;
+}
+.login-card {
+  background: var(--surface); border-radius: var(--radius-lg); padding: 40px;
+  width: 380px; max-width: 90vw; box-shadow: var(--shadow-lg);
+}
+.login-card h1 { font-size: 1.5rem; margin-bottom: 4px; }
+.login-card h1 span { color: var(--brand-glow); }
+.login-card p { color: var(--text-muted); font-size: .85rem; margin-bottom: 24px; }
+.login-card label { font-size: .8rem; font-weight: 600; color: var(--text-secondary); display: block; margin-bottom: 4px; }
+.login-card input[type=password] {
+  width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  font-size: .9rem; margin-bottom: 16px; outline: none; transition: border .15s;
+}
+.login-card input[type=password]:focus { border-color: var(--brand-glow); box-shadow: 0 0 0 3px rgba(0,200,255,.15); }
+.login-card button {
+  width: 100%; padding: 10px; border: none; border-radius: var(--radius-sm);
+  background: linear-gradient(135deg,var(--brand-glow),var(--accent));
+  color: #fff; font-weight: 600; font-size: .9rem; transition: opacity .15s;
+}
+.login-card button:hover { opacity: .85; }
+.login-error { color: #e74c3c; font-size: .8rem; margin-top: 8px; display: none; }
+
+/* LAYOUT */
+#app { display: none; }
+.with-nav { display: flex; min-height: 100vh; }
+
+/* SIDEBAR */
+.sidebar {
+  width: var(--nav-w); background: #071220; color: #c8e8f4;
+  padding: 20px 0; position: fixed; top: 0; left: 0; height: 100vh; overflow-y: auto;
+  display: flex; flex-direction: column;
+}
+.sidebar h2 { font-size: 1.1rem; padding: 0 20px 16px; border-bottom: 1px solid rgba(0,200,255,.1); }
+.sidebar h2 span { color: var(--brand-glow); }
+.sidebar nav { flex: 1; padding: 12px 0; }
+.sidebar nav a {
+  display: block; padding: 10px 20px; color: #7a9ab0; font-size: .85rem; font-weight: 500;
+  text-decoration: none; transition: all .15s; border-left: 3px solid transparent;
+}
+.sidebar nav a:hover { color: #c8e8f4; background: rgba(0,200,255,.04); }
+.sidebar nav a.active { color: var(--brand-glow); border-left-color: var(--brand-glow); background: rgba(0,200,255,.08); }
+.sidebar .logout-btn {
+  margin: 12px 20px 0; padding: 8px; border: 1px solid rgba(255,255,255,.1); border-radius: var(--radius-sm);
+  background: transparent; color: #7a9ab0; font-size: .8rem; transition: all .15s;
+}
+.sidebar .logout-btn:hover { color: #e74c3c; border-color: rgba(231,76,60,.3); }
+
+/* MAIN */
+.main { flex: 1; margin-left: var(--nav-w); padding: 24px 32px; max-width: 1200px; }
+.main h2 { font-size: 1.3rem; margin-bottom: 20px; }
+
+/* TOOLBAR */
+.toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 8px; }
+.toolbar button {
+  padding: 8px 18px; border: none; border-radius: var(--radius-sm);
+  background: linear-gradient(135deg,var(--brand-glow),var(--accent)); color: #fff;
+  font-weight: 600; font-size: .8rem; transition: opacity .15s;
+}
+.toolbar button:hover { opacity: .8; }
+
+/* TABLE */
+.table-wrap { overflow-x: auto; background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-sm); }
+table { width: 100%; border-collapse: collapse; font-size: .8rem; }
+th { text-align: left; padding: 12px 14px; font-weight: 600; color: var(--text-secondary);
+  background: var(--bg); border-bottom: 1px solid var(--border); white-space: nowrap; }
+td { padding: 10px 14px; border-bottom: 1px solid var(--border-light); color: var(--text-primary); }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(0,200,255,.02); }
+td.actions { white-space: nowrap; }
+td.actions button {
+  padding: 4px 10px; border: none; border-radius: 4px; font-size: .75rem; font-weight: 500; margin-right: 4px;
+  transition: opacity .15s;
+}
+td.actions button:hover { opacity: .7; }
+.btn-edit { background: #3498db; color: #fff; }
+.btn-delete { background: #e74c3c; color: #fff; }
+.btn-view { background: #2ecc71; color: #fff; }
+
+/* MODAL */
+.modal {
+  display: none; position: fixed; inset: 0; background: rgba(7,18,32,.6); z-index: 1000;
+  align-items: center; justify-content: center;
+}
+.modal.open { display: flex; }
+.modal-card {
+  background: var(--surface); border-radius: var(--radius-lg); padding: 28px 32px;
+  width: 520px; max-width: 92vw; max-height: 85vh; overflow-y: auto; box-shadow: var(--shadow-lg);
+}
+.modal-card h3 { font-size: 1.1rem; margin-bottom: 16px; }
+.modal-card label { font-size: .8rem; font-weight: 600; color: var(--text-secondary); display: block; margin-bottom: 3px; }
+.modal-card input,.modal-card textarea,.modal-card select {
+  width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  font-size: .85rem; margin-bottom: 12px; outline: none; transition: border .15s;
+}
+.modal-card input:focus,.modal-card textarea:focus,.modal-card select:focus { border-color: var(--brand-glow); box-shadow: 0 0 0 3px rgba(0,200,255,.15); }
+.modal-card textarea { resize: vertical; min-height: 60px; }
+.modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 8px; }
+.modal-actions button { padding: 8px 18px; border: none; border-radius: var(--radius-sm); font-size: .8rem; font-weight: 600; }
+.modal-actions .btn-cancel { background: var(--bg); color: var(--text-secondary); }
+.modal-actions .btn-save { background: linear-gradient(135deg,var(--brand-glow),var(--accent)); color: #fff; }
+.modal-actions .btn-cancel:hover { opacity: .7; }
+.modal-actions .btn-save:hover { opacity: .8; }
+
+/* EMPTY / LOADING */
+.empty-state { padding: 40px; text-align: center; color: var(--text-muted); font-size: .85rem; }
+.loading { padding: 40px; text-align: center; color: var(--text-muted); font-size: .85rem; }
+
+/* SECTION VISIBILITY */
+.section { display: none; }
+.section.active { display: block; }
+
+/* REPORTS */
+.report-reason { max-width: 250px; white-space: normal; word-break: break-word; }
+
+@media (max-width: 768px) {
+  .sidebar { width: 56px; overflow: hidden; }
+  .sidebar h2 { font-size: 0; }
+  .sidebar h2::after { content: "AD"; font-size: 1.1rem; }
+  .sidebar nav a { padding: 12px 16px; font-size: 0; }
+  .sidebar nav a::before { font-size: .85rem; content: attr(data-short); }
+  .sidebar .logout-btn { font-size: 0; }
+  .main { margin-left: 56px; padding: 16px; }
+}
+</style>
+</head>
+<body>
+
+<div id="loginScreen">
+  <div class="login-card">
+    <h1><span>AddisDR</span> Admin</h1>
+    <p>Enter the admin password to continue.</p>
+    <label for="password">Password</label>
+    <input type="password" id="password" placeholder="Enter admin password" autocomplete="off">
+    <button onclick="login()">Sign In</button>
+    <div class="login-error" id="loginError">Wrong password. Try again.</div>
+  </div>
+</div>
+
+<div id="app">
+<div class="with-nav">
+
+<aside class="sidebar">
+  <h2><span>AddisDR</span> Admin</h2>
+  <nav>
+    <a href="#" class="active" data-section="categories" data-short="Cat">Categories</a>
+    <a href="#" data-section="hoods" data-short="Hood">Neighbourhoods</a>
+    <a href="#" data-section="businesses" data-short="Biz">Businesses</a>
+    <a href="#" data-section="featured" data-short="Feat">Featured</a>
+    <a href="#" data-section="products" data-short="Prod">Products</a>
+    <a href="#" data-section="reports" data-short="Rpt">Reports</a>
+  </nav>
+  <button class="logout-btn" onclick="logout()">Sign Out</button>
+</aside>
+
+<main class="main">
+
+<div id="section-categories" class="section active">
+  <h2>Categories</h2>
+  <div class="toolbar"><button onclick="openModal('categories')">+ Add Category</button></div>
+  <div class="table-wrap"><table><thead><tr><th>ID</th><th>Name</th><th>Actions</th></tr></thead><tbody id="categoriesBody"></tbody></table></div>
+</div>
+
+<div id="section-hoods" class="section">
+  <h2>Neighbourhoods</h2>
+  <div class="toolbar"><button onclick="openModal('hoods')">+ Add Neighbourhood</button></div>
+  <div class="table-wrap"><table><thead><tr><th>ID</th><th>Name</th><th>Description</th><th>Actions</th></tr></thead><tbody id="hoodsBody"></tbody></table></div>
+</div>
+
+<div id="section-businesses" class="section">
+  <h2>Businesses</h2>
+  <div class="toolbar"><button onclick="openModal('businesses')">+ Add Business</button></div>
+  <div class="table-wrap"><table><thead><tr><th>ID</th><th>Name</th><th>Category</th><th>Hood</th><th>Phone</th><th>Actions</th></tr></thead><tbody id="businessesBody"></tbody></table></div>
+</div>
+
+<div id="section-featured" class="section">
+  <h2>Featured Items</h2>
+  <div class="toolbar"><button onclick="openModal('featured')">+ Add Featured</button></div>
+  <div class="table-wrap"><table><thead><tr><th>ID</th><th>Title</th><th>Business</th><th>Price</th><th>Actions</th></tr></thead><tbody id="featuredBody"></tbody></table></div>
+</div>
+
+<div id="section-products" class="section">
+  <h2>Products</h2>
+  <div class="toolbar"><button onclick="openModal('products')">+ Add Product</button></div>
+  <div class="table-wrap"><table><thead><tr><th>ID</th><th>Name</th><th>Business</th><th>Price</th><th>Actions</th></tr></thead><tbody id="productsBody"></tbody></table></div>
+</div>
+
+<div id="section-reports" class="section">
+  <h2>Reports</h2>
+  <div class="table-wrap"><table><thead><tr><th>ID</th><th>Business</th><th>User</th><th>Reason</th><th>Date</th><th>Actions</th></tr></thead><tbody id="reportsBody"></tbody></table></div>
+</div>
+
+</main>
+</div>
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-card">
+    <h3 id="modalTitle">Title</h3>
+    <div id="modalBody"></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-save" id="modalSaveBtn" onclick="saveModal()">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = '/api/admin';
+let TOKEN = null;
+let editingId = null;
+let editingSection = null;
+
+/* ── AUTH ── */
+function login() {
+  const pw = document.getElementById('password').value;
+  fetch(`${API}/auth`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({password:pw}) })
+    .then(r => r.json())
+    .then(d => {
+      if (d.success) {
+        TOKEN = d.token;
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+        loadAll();
+      } else {
+        document.getElementById('loginError').style.display = 'block';
+      }
+    })
+    .catch(() => { document.getElementById('loginError').style.display = 'block'; });
+}
+document.getElementById('password').addEventListener('keydown',e => { if(e.key==='Enter') login(); });
+
+function logout() {
+  TOKEN = null;
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('password').value = '';
+  document.getElementById('loginError').style.display = 'none';
+}
+
+/* ── HEADERS ── */
+function authHeaders() { return { 'x-admin-token': TOKEN, 'Content-Type': 'application/json' }; }
+
+/* ── NAV ── */
+document.querySelectorAll('.sidebar nav a').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelectorAll('.sidebar nav a').forEach(x => x.classList.remove('active'));
+    a.classList.add('active');
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById('section-' + a.dataset.section).classList.add('active');
+  });
+});
+
+/* ── LOAD ALL ── */
+function loadAll() { loadCategories(); loadHoods(); loadBusinesses(); loadFeatured(); loadProducts(); loadReports(); }
+
+/* ── CATEGORIES ── */
+function loadCategories() {
+  const tbody = document.getElementById('categoriesBody');
+  tbody.innerHTML = '<tr><td colspan="3" class="loading">Loading…</td></tr>';
+  fetch(`${API}/categories`, { headers: authHeaders() })
+    .then(r => r.json())
+    .then(data => {
+      if (!Array.isArray(data)) { tbody.innerHTML = '<tr><td colspan="3" class="empty-state">Error loading</td></tr>'; return; }
+      if (!data.length) { tbody.innerHTML = '<tr><td colspan="3" class="empty-state">No categories yet.</td></tr>'; return; }
+      tbody.innerHTML = data.map(c => `<tr>
+        <td>${c.id}</td><td>${esc(c.name)}</td>
+        <td class="actions">
+          <button class="btn-edit" onclick="openModal('categories',${c.id})">Edit</button>
+          <button class="btn-delete" onclick="del('categories',${c.id})">Delete</button>
+        </td>
+      </tr>`).join('');
+    });
+}
+
+/* ── HOODS ── */
+function loadHoods() {
+  const tbody = document.getElementById('hoodsBody');
+  tbody.innerHTML = '<tr><td colspan="4" class="loading">Loading…</td></tr>';
+  fetch(`${API}/hoods`, { headers: authHeaders() })
+    .then(r => r.json())
+    .then(data => {
+      if (!Array.isArray(data)) { tbody.innerHTML = '<tr><td colspan="4" class="empty-state">Error loading</td></tr>'; return; }
+      if (!data.length) { tbody.innerHTML = '<tr><td colspan="4" class="empty-state">No neighbourhoods yet.</td></tr>'; return; }
+      tbody.innerHTML = data.map(h => `<tr>
+        <td>${h.id}</td><td>${esc(h.name)}</td><td>${esc(h.description||'')}</td>
+        <td class="actions">
+          <button class="btn-edit" onclick="openModal('hoods',${h.id})">Edit</button>
+          <button class="btn-delete" onclick="del('hoods',${h.id})">Delete</button>
+        </td>
+      </tr>`).join('');
+    });
+}
+
+/* ── BUSINESSES ── */
+function loadBusinesses() {
+  const tbody = document.getElementById('businessesBody');
+  tbody.innerHTML = '<tr><td colspan="6" class="loading">Loading…</td></tr>';
+  fetch(`${API}/businesses`, { headers: authHeaders() })
+    .then(r => r.json())
+    .then(data => {
+      if (!Array.isArray(data)) { tbody.innerHTML = '<tr><td colspan="6" class="empty-state">Error loading</td></tr>'; return; }
+      if (!data.length) { tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No businesses yet.</td></tr>'; return; }
+      tbody.innerHTML = data.map(b => `<tr>
+        <td>${b.id}</td><td>${esc(b.name)}</td><td>${esc(b.category_name||'')}</td><td>${esc(b.hood_name||'')}</td><td>${esc(b.phone_number||'')}</td>
+        <td class="actions">
+          <button class="btn-edit" onclick="openModal('businesses',${b.id})">Edit</button>
+          <button class="btn-delete" onclick="del('businesses',${b.id})">Delete</button>
+        </td>
+      </tr>`).join('');
+    });
+}
+
+/* ── FEATURED ── */
+function loadFeatured() {
+  const tbody = document.getElementById('featuredBody');
+  tbody.innerHTML = '<tr><td colspan="5" class="loading">Loading…</td></tr>';
+  fetch(`${API}/featured`, { headers: authHeaders() })
+    .then(r => r.json())
+    .then(data => {
+      if (!Array.isArray(data)) { tbody.innerHTML = '<tr><td colspan="5" class="empty-state">Error loading</td></tr>'; return; }
+      if (!data.length) { tbody.innerHTML = '<tr><td colspan="5" class="empty-state">No featured items yet.</td></tr>'; return; }
+      tbody.innerHTML = data.map(f => `<tr>
+        <td>${f.id}</td><td>${esc(f.title||'')}</td><td>${esc(f.business_name||'')}</td><td>${esc(f.exact_price||'')}</td>
+        <td class="actions">
+          <button class="btn-edit" onclick="openModal('featured',${f.id})">Edit</button>
+          <button class="btn-delete" onclick="del('featured',${f.id})">Delete</button>
+        </td>
+      </tr>`).join('');
+    });
+}
+
+/* ── PRODUCTS ── */
+function loadProducts() {
+  const tbody = document.getElementById('productsBody');
+  tbody.innerHTML = '<tr><td colspan="5" class="loading">Loading…</td></tr>';
+  fetch(`${API}/products`, { headers: authHeaders() })
+    .then(r => r.json())
+    .then(data => {
+      if (!Array.isArray(data)) { tbody.innerHTML = '<tr><td colspan="5" class="empty-state">Error loading</td></tr>'; return; }
+      if (!data.length) { tbody.innerHTML = '<tr><td colspan="5" class="empty-state">No products yet.</td></tr>'; return; }
+      tbody.innerHTML = data.map(p => `<tr>
+        <td>${p.id}</td><td>${esc(p.name)}</td><td>${esc(p.business_name||'')}</td><td>${esc(p.price||'')}</td>
+        <td class="actions">
+          <button class="btn-edit" onclick="openModal('products',${p.id})">Edit</button>
+          <button class="btn-delete" onclick="del('products',${p.id})">Delete</button>
+        </td>
+      </tr>`).join('');
+    });
+}
+
+/* ── REPORTS ── */
+function loadReports() {
+  const tbody = document.getElementById('reportsBody');
+  tbody.innerHTML = '<tr><td colspan="6" class="loading">Loading…</td></tr>';
+  fetch(`${API}/reports`, { headers: authHeaders() })
+    .then(r => r.json())
+    .then(data => {
+      if (!Array.isArray(data)) { tbody.innerHTML = '<tr><td colspan="6" class="empty-state">Error loading</td></tr>'; return; }
+      if (!data.length) { tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No reports yet.</td></tr>'; return; }
+      tbody.innerHTML = data.map(r => `<tr>
+        <td>${r.id}</td><td>${esc(r.business_name||'')}</td><td>${esc(r.user_name)}</td>
+        <td class="report-reason">${esc(r.reason)}</td>
+        <td>${r.created_at ? new Date(r.created_at).toLocaleDateString() : ''}</td>
+        <td class="actions">
+          <button class="btn-delete" onclick="del('reports',${r.id})">Delete</button>
+        </td>
+      </tr>`).join('');
+    });
+}
+
+/* ── DELETE ── */
+function del(section, id) {
+  if (!confirm(`Delete this ${section.slice(0,-1)}? This cannot be undone.`)) return;
+  fetch(`${API}/${section}/${id}`, { method: 'DELETE', headers: authHeaders() })
+    .then(r => r.json())
+    .then(d => { if (d.success) loadSection(section); else alert(d.error || 'Delete failed'); })
+    .catch(e => alert(e.message));
+}
+
+/* ── MODAL ── */
+function openModal(section, id) {
+  editingSection = section;
+  editingId = id || null;
+  const title = document.getElementById('modalTitle');
+  title.textContent = id ? `Edit ${section.slice(0,-1).replace(/e$/,'')}` : `Add ${section.slice(0,-1).replace(/e$/,'')}`;
+
+  if (id) {
+    fetch(`${API}/${section}/${id}`, { headers: authHeaders() })
+      .then(r => {
+        if (section === 'categories' || section === 'hoods') return r.json();
+        return r.json();
+      })
+      .then(data => {
+        let item;
+        if (Array.isArray(data)) item = data.find(x => x.id == id);
+        else item = data;
+        if (!item) { alert('Not found'); return; }
+        buildModal(section, item);
+        document.getElementById('modal').classList.add('open');
+      });
+  } else {
+    buildModal(section, null);
+    document.getElementById('modal').classList.add('open');
+  }
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  editingId = null; editingSection = null;
+}
+
+function buildModal(section, item) {
+  const body = document.getElementById('modalBody');
+  const isEdit = !!item;
+
+  const fields = {
+    categories: [{name:'name',label:'Name',type:'text',required:true}],
+    hoods: [
+      {name:'name',label:'Name',type:'text',required:true},
+      {name:'description',label:'Description',type:'textarea'}
+    ],
+    businesses: [
+      {name:'name',label:'Name',type:'text',required:true},
+      {name:'category_id',label:'Category ID',type:'number',required:true},
+      {name:'hood_id',label:'Hood ID',type:'number',required:true},
+      {name:'phone_number',label:'Phone',type:'text'},
+      {name:'website_link',label:'Website URL',type:'text'},
+      {name:'location_link',label:'Location URL',type:'text'},
+      {name:'hook_text',label:'Hook Text',type:'text'},
+      {name:'price_indicator',label:'Price Indicator',type:'text'}
+    ],
+    featured: [
+      {name:'business_id',label:'Business ID',type:'number',required:true},
+      {name:'title',label:'Title',type:'text',required:true},
+      {name:'hook_text',label:'Hook Text',type:'textarea'},
+      {name:'exact_price',label:'Exact Price',type:'text'},
+      {name:'location_text',label:'Location Text',type:'text'}
+    ],
+    products: [
+      {name:'business_id',label:'Business ID',type:'number',required:true},
+      {name:'name',label:'Name',type:'text',required:true},
+      {name:'description',label:'Description',type:'textarea'},
+      {name:'price',label:'Price',type:'text'}
+    ]
+  };
+
+  const fs = fields[section] || [];
+  let html = '';
+  for (const f of fs) {
+    const val = item ? (item[f.name] || '') : '';
+    if (f.type === 'textarea') {
+      html += `<label>${f.label}</label><textarea name="${f.name}" ${f.required?'required':''}>${esc(val)}</textarea>`;
+    } else {
+      html += `<label>${f.label}</label><input type="${f.type}" name="${f.name}" value="${esc(val)}" ${f.required?'required':''}>`;
+    }
+  }
+  if (!isEdit && (section==='businesses'||section==='featured'||section==='products')) {
+    html += '<label>Image URL (optional)</label><input type="text" name="image_url" placeholder="https://...">';
+  }
+  body.innerHTML = html;
+}
+
+/* ── SAVE MODAL ── */
+function saveModal() {
+  const section = editingSection;
+  const id = editingId;
+  const inputs = document.querySelectorAll('#modalBody input, #modalBody textarea');
+  const body = {};
+  let valid = true;
+  inputs.forEach(inp => {
+    if (inp.hasAttribute('required') && !inp.value.trim()) valid = false;
+    body[inp.name] = inp.value;
+  });
+  if (!valid) { alert('Please fill in all required fields.'); return; }
+
+  const url = id ? `${API}/${section}/${id}` : `${API}/${section}`;
+  const method = id ? 'PUT' : 'POST';
+
+  fetch(url, { method, headers: authHeaders(), body: JSON.stringify(body) })
+    .then(r => r.json())
+    .then(d => {
+      if (d.success || d.id) {
+        closeModal();
+        loadSection(section);
+      } else {
+        alert(d.error || 'Save failed');
+      }
+    })
+    .catch(e => alert(e.message));
+}
+
+function loadSection(section) {
+  const map = { categories:'loadCategories', hoods:'loadHoods', businesses:'loadBusinesses', featured:'loadFeatured', products:'loadProducts', reports:'loadReports' };
+  if (map[section]) window[map[section]]();
+}
+
+function esc(s) { if (!s) return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+</script>
+
+</body>
+</html>
