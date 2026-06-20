@@ -648,6 +648,11 @@ app.delete('/api/admin/reports/:id', adminAuth, async (req, res) => {
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
+// ── 404 catch-all ─────────────────────────────────────────────
+app.use((req, res) => {
+  res.status(404).json({ error: 'Not found', path: req.originalUrl });
+});
+
 // ── Error handler ──────────────────────────────────────────────
 app.use((err, req, res, next) => {
   console.error(err.stack);
