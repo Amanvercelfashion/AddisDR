@@ -4,7 +4,6 @@ const compression = require('compression');
 const helmet = require('helmet');
 const multer = require('multer');
 const bcrypt = require('bcryptjs');
-const serverless = require('serverless-http');
 const { createClient } = require('@supabase/supabase-js');
 
 const app = express();
@@ -655,4 +654,4 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Something went wrong!', message: err.message });
 });
 
-module.exports = serverless(app);
+module.exports = app;
