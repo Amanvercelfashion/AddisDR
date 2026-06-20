@@ -5,7 +5,6 @@ const helmet = require('helmet');
 const multer = require('multer');
 const bcrypt = require('bcryptjs');
 const serverless = require('serverless-http');
-const ws = require('ws');
 const { createClient } = require('@supabase/supabase-js');
 
 const app = express();
@@ -16,12 +15,7 @@ app.get('/api/ping', (req, res) => {
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY,
-  {
-    realtime: {
-      transport: ws
-    }
-  }
+  process.env.SUPABASE_SERVICE_KEY
 );
 
 // Helper to flatten Supabase joined results (views alternative)

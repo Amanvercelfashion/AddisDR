@@ -27,9 +27,7 @@ if (!supabaseUrl || !supabaseKey) {
   process.exit(1);
 }
 
-const supabase = createClient(supabaseUrl, supabaseKey, {
-  realtime: { transport: require('ws') },
-});
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 const uploadsDir = path.resolve(__dirname, '..', 'api', 'uploads');
 
