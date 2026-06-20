@@ -24,6 +24,22 @@ const supabase = createClient(
   }
 );
 
+// Helper to flatten Supabase joined results (views alternative)
+function flattenRow(row) {
+  if (!row) return row;
+  const r = { ...row };
+  if (r.categories) { r.category_name = r.categories?.name || null; delete r.categories; }
+  if (r.hoods) { r.hood_name = r.hoods?.name || null; delete r.hoods; }
+  if (r.businesses) { r.business_name = r.businesses?.name || null; delete r.businesses; }
+  if (r.name !== undefined && r.hood_name !== undefined) {
+    r.display_name = `${r.name} from ${r.hood_name}`;
+  }
+  return r;
+}
+function flattenRows(data) {
+  return (data || []).map(flattenRow);
+}
+
 const ADMIN_PASSWORD = 'Yoakin@2906admin';
 
 app.use(helmet({ contentSecurityPolicy: false }));
@@ -83,19 +99,19 @@ app.get('/api/businesses', async (req, res) => {
   try {
     const { category, hood } = req.query;
     let query = supabase
-      .from('vw_businesses')
-      .select('*')
+      .from('businesses')
+      .select('*, categories(name), hoods(name)')
       .order('rating_avg', { ascending: false })
       .order('rating_count', { ascending: false });
     if (category && category !== 'all') {
-      query = query.eq('category_name', category);
+      query = query.eq('categories.name', category);
     }
     if (hood && hood !== 'all') {
-      query = query.eq('hood_name', hood);
+      query = query.eq('hoods.name', hood);
     }
     const { data, error } = await query;
     if (error) throw error;
-    res.json(data);
+    res.json(flattenRows(data));
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -104,12 +120,12 @@ app.get('/api/businesses', async (req, res) => {
 app.get('/api/businesses/:id', async (req, res) => {
   try {
     const { data, error } = await supabase
-      .from('vw_businesses')
-      .select('*')
+      .from('businesses')
+      .select('*, categories(name), hoods(name)')
       .eq('id', req.params.id)
       .single();
     if (error) return res.status(404).json({ error: 'Business not found' });
-    res.json(data);
+    res.json(flattenRow(data));
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -118,11 +134,11 @@ app.get('/api/businesses/:id', async (req, res) => {
 app.get('/api/featured', async (req, res) => {
   try {
     const { data, error } = await supabase
-      .from('vw_featured_items')
-      .select('*')
+      .from('featured_items')
+      .select('*, businesses(name)')
       .order('id');
     if (error) throw error;
-    res.json(data);
+    res.json(flattenRows(data));
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -133,12 +149,12 @@ app.get('/api/products/search', async (req, res) => {
     const q = (req.query.q || '').trim();
     if (!q || q.length < 2) return res.json([]);
     const { data, error } = await supabase
-      .from('vw_products')
-      .select('*')
+      .from('products')
+      .select('*, businesses(name)')
       .or(`name.ilike.%${q}%,description.ilike.%${q}%`)
       .limit(20);
     if (error) throw error;
-    res.json(data);
+    res.json(flattenRows(data));
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -258,12 +274,12 @@ app.post('/api/users/register', async (req, res) => {
     if (insertErr) throw insertErr;
 
     const { data: enriched } = await supabase
-      .from('vw_users')
-      .select('*')
+      .from('users')
+      .select('*, hoods(name)')
       .eq('id', user.id)
       .single();
 
-    res.json(enriched);
+    res.json(flattenRow(enriched));
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -287,12 +303,12 @@ app.post('/api/users/login', async (req, res) => {
     }
 
     const { data: enriched } = await supabase
-      .from('vw_users')
-      .select('*')
+      .from('users')
+      .select('*, hoods(name)')
       .eq('id', user.id)
       .single();
 
-    res.json(enriched);
+    res.json(flattenRow(enriched));
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -321,12 +337,12 @@ app.post('/api/users/signin', async (req, res) => {
     }
 
     const { data: enriched } = await supabase
-      .from('vw_users')
-      .select('*')
+      .from('users')
+      .select('*, hoods(name)')
       .eq('id', user.id)
       .single();
 
-    res.json(enriched);
+    res.json(flattenRow(enriched));
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -335,12 +351,12 @@ app.post('/api/users/signin', async (req, res) => {
 app.get('/api/users/:id', async (req, res) => {
   try {
     const { data, error } = await supabase
-      .from('vw_users')
-      .select('*')
+      .from('users')
+      .select('*, hoods(name)')
       .eq('id', req.params.id)
       .single();
     if (error) return res.status(404).json({ error: 'User not found' });
-    res.json(data);
+    res.json(flattenRow(data));
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -438,9 +454,9 @@ app.delete('/api/admin/hoods/:id', adminAuth, async (req, res) => {
 
 app.get('/api/admin/businesses', adminAuth, async (req, res) => {
   try {
-    const { data, error } = await supabase.from('vw_businesses').select('*').order('id');
+    const { data, error } = await supabase.from('businesses').select('*, categories(name), hoods(name)').order('id');
     if (error) throw error;
-    res.json(data);
+    res.json(flattenRows(data));
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
@@ -494,9 +510,9 @@ app.delete('/api/admin/businesses/:id', adminAuth, async (req, res) => {
 
 app.get('/api/admin/featured', adminAuth, async (req, res) => {
   try {
-    const { data, error } = await supabase.from('vw_featured_items').select('*').order('id');
+    const { data, error } = await supabase.from('featured_items').select('*, businesses(name)').order('id');
     if (error) throw error;
-    res.json(data);
+    res.json(flattenRows(data));
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
@@ -548,13 +564,13 @@ app.delete('/api/admin/featured/:id', adminAuth, async (req, res) => {
 
 app.get('/api/admin/products', adminAuth, async (req, res) => {
   try {
-    let query = supabase.from('vw_products').select('*').order('id');
+    let query = supabase.from('products').select('*, businesses(name)').order('id');
     if (req.query.business_id) {
       query = query.eq('business_id', req.query.business_id);
     }
     const { data, error } = await query;
     if (error) throw error;
-    res.json(data);
+    res.json(flattenRows(data));
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
@@ -605,11 +621,11 @@ app.delete('/api/admin/products/:id', adminAuth, async (req, res) => {
 app.get('/api/admin/reports', adminAuth, async (req, res) => {
   try {
     const { data, error } = await supabase
-      .from('vw_reports')
-      .select('*')
+      .from('reports')
+      .select('*, businesses(name)')
       .order('created_at', { ascending: false });
     if (error) throw error;
-    res.json(data);
+    res.json(flattenRows(data));
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 

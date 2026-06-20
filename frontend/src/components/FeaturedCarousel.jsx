@@ -56,7 +56,7 @@ export default function FeaturedCarousel({ items, onSelect }) {
     })
   }
 
-  if (items.length === 0) return null
+  if (!items || !Array.isArray(items) || items.length === 0) return null
 
   return (
     <>

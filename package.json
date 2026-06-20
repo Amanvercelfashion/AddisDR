@@ -4,6 +4,9 @@
   "description": "Local business discovery platform for Addis Ababa",
   "private": true,
   "workspaces": ["frontend"],
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "dev": "node api/server.js",
     "dev:backend": "node api/server.js",

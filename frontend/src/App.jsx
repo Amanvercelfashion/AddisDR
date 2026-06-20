@@ -50,25 +50,29 @@ export default function App() {
   }, [])
 
   const loadData = useCallback(async (category, hood) => {
-    const [biz, cats, hds, feat] = await Promise.all([
+    const results = await Promise.allSettled([
       fetchBusinesses(category, hood),
       fetchCategories(),
       fetchHoods(),
       fetchFeatured(),
     ])
-    setCategories(cats)
-    setHoods(hds)
-    setFeatured(feat)
+    const [biz, cats, hds, feat] = results.map(r => r.status === 'fulfilled' ? r.value : [])
+    const catsArr = Array.isArray(cats) ? cats : []
+    const hdsArr = Array.isArray(hds) ? hds : []
+    setCategories(catsArr)
+    setHoods(hdsArr)
+    setFeatured(Array.isArray(feat) ? feat : [])
 
+    const bizData = Array.isArray(biz) ? biz : []
     if (currentUser && currentUser.hood_id && hood === 'all') {
-      const userHood = hds.find(h => h.id === currentUser.hood_id)?.name || ''
-      biz.sort((a, b) => {
+      const userHood = hdsArr.find(h => h.id === currentUser.hood_id)?.name || ''
+      bizData.sort((a, b) => {
         if (a.hood_name === userHood && b.hood_name !== userHood) return -1
         if (a.hood_name !== userHood && b.hood_name === userHood) return 1
         return 0
       })
     }
-    setBusinesses(biz)
+    setBusinesses(bizData)
   }, [currentUser])
 
   useEffect(() => {
