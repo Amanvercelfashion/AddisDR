@@ -4,6 +4,8 @@ const compression = require('compression');
 const helmet = require('helmet');
 const multer = require('multer');
 const bcrypt = require('bcryptjs');
+const fs = require('fs');
+const path = require('path');
 const { createClient } = require('@supabase/supabase-js');
 
 const app = express();
@@ -646,6 +648,25 @@ app.delete('/api/admin/reports/:id', adminAuth, async (req, res) => {
     if (error) throw error;
     res.json({ success: true });
   } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// ── Static file serving ────────────────────────────────────────
+const distDir = path.resolve(__dirname, '../frontend/dist');
+
+app.use((req, res, next) => {
+  if (req.path.startsWith('/api/')) return next();
+
+  const filePath = path.join(distDir, req.path === '/' ? '/index.html' : req.path);
+  if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+    return res.sendFile(filePath);
+  }
+
+  const indexHtml = path.join(distDir, 'index.html');
+  if (fs.existsSync(indexHtml)) {
+    return res.sendFile(indexHtml);
+  }
+
+  next();
 });
 
 // ── 404 catch-all ─────────────────────────────────────────────
