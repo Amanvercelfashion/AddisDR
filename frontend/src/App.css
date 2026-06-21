@@ -611,22 +611,47 @@ input, select { font-family: var(--font); }
   position: absolute;
   inset: 0;
   background:
-    repeating-linear-gradient(
-      90deg,
-      transparent 0, transparent 40px,
-      rgba(255,255,255,.08) 40px, rgba(255,255,255,.08) 42px,
-      transparent 42px, transparent 50px,
-      rgba(255,255,255,.04) 50px, rgba(255,255,255,.04) 51px,
-      transparent 51px, transparent 60px,
-      rgba(0,200,255,.1) 60px, rgba(0,255,136,.1) 61px,
-      transparent 61px, transparent 70px,
-      rgba(0,200,255,.06) 70px, rgba(0,255,136,.06) 71px,
-      transparent 71px, transparent 80px,
-      rgba(255,255,255,.05) 80px, rgba(255,255,255,.05) 82px,
-      transparent 82px, transparent 90px
+    repeating-linear-gradient(45deg,
+      transparent 0, transparent 79px,
+      rgba(255,255,255,.06) 79px, rgba(255,255,255,.06) 80px,
+      transparent 80px, transparent 160px
+    ),
+    repeating-linear-gradient(-45deg,
+      transparent 0, transparent 79px,
+      rgba(255,255,255,.06) 79px, rgba(255,255,255,.06) 80px,
+      transparent 80px, transparent 160px
+    ),
+    repeating-linear-gradient(45deg,
+      transparent 0, transparent 39px,
+      rgba(0,200,255,.07) 39px, rgba(0,255,136,.07) 40px,
+      transparent 40px, transparent 80px
+    ),
+    repeating-linear-gradient(-45deg,
+      transparent 0, transparent 39px,
+      rgba(0,200,255,.07) 39px, rgba(0,255,136,.07) 40px,
+      transparent 40px, transparent 80px
+    ),
+    repeating-linear-gradient(45deg,
+      transparent 0, transparent 19px,
+      rgba(255,255,255,.05) 19px, rgba(255,255,255,.05) 20px,
+      transparent 20px, transparent 40px
+    ),
+    repeating-linear-gradient(-45deg,
+      transparent 0, transparent 19px,
+      rgba(255,255,255,.05) 19px, rgba(255,255,255,.05) 20px,
+      transparent 20px, transparent 40px
+    ),
+    repeating-linear-gradient(45deg,
+      transparent 0, transparent 9px,
+      rgba(0,200,255,.08) 9px, rgba(0,255,136,.08) 10px,
+      transparent 10px, transparent 20px
+    ),
+    repeating-linear-gradient(-45deg,
+      transparent 0, transparent 9px,
+      rgba(0,200,255,.08) 9px, rgba(0,255,136,.08) 10px,
+      transparent 10px, transparent 20px
     );
-  background-size: 90px 100%;
-  opacity: .6;
+  opacity: .5;
   pointer-events: none;
 }
 .footer-inner,
