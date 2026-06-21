@@ -599,7 +599,7 @@ input, select { font-family: var(--font); }
 
 /* ===== FOOTER ===== */
 .footer {
-  background: #071220;
+  background: linear-gradient(to right, #000000 0%, #000000 15%, #001a2e 30%, #003a5c 50%, #006688 68%, #00c8ff 85%, #00ff88 100%);
   color: #c8e8f4;
   padding: 48px 20px 0;
   border-top: 1px solid rgba(0,200,255,.15);
