@@ -1,4 +1,4 @@
-export default function Logo({ className, height = 52 }) {
+export default function Logo({ className, height = 78 }) {
   return (
     <img
       src="/images/addisdr-logo.png"

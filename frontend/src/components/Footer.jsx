@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="footer" id="siteFooter">
       <div className="footer-inner">
         <div className="footer-brand">
-          <Logo height={40} className="logo-img-footer" />
+          <Logo height={60} className="logo-img-footer" />
           <p className="footer-tagline">Smart Digital Solutions for Modern Businesses</p>
           <p className="footer-desc">
             Powering the future of Ethiopian businesses by transforming operations through technology.
