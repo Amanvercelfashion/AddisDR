@@ -69,14 +69,17 @@ async function uploadImage(file) {
 app.get('/api/settings', async (req, res) => {
   try {
     const { data, error } = await supabase.from('site_settings').select('key, value');
-    if (error) throw error;
+    if (error) {
+      // table may not exist yet
+      return res.json({ logo_url: '' });
+    }
     const settings = {};
     for (const row of data) {
       settings[row.key] = row.value;
     }
     res.json(settings);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.json({ logo_url: '' });
   }
 });
 

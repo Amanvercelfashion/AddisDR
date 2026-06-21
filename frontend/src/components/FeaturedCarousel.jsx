@@ -9,6 +9,8 @@ export default function FeaturedCarousel({ items, onSelect }) {
   const touchStartRef = useRef(0)
   const itemWidth = 280 + 14
 
+  const stepRef = useRef(null)
+
   const isMobile = () => window.innerWidth <= 640
 
   const visibleCount = () => {
@@ -25,11 +27,6 @@ export default function FeaturedCarousel({ items, onSelect }) {
   }, [items.length, maxIndex])
 
   useEffect(() => {
-    startAutoplay()
-    return () => stopAutoplay()
-  }, [])
-
-  useEffect(() => {
     const footer = document.getElementById('siteFooter')
     if (!footer) return
     const observer = new IntersectionObserver(
@@ -39,15 +36,6 @@ export default function FeaturedCarousel({ items, onSelect }) {
     observer.observe(footer)
     return () => observer.disconnect()
   }, [])
-
-  const startAutoplay = () => {
-    stopAutoplay()
-    timerRef.current = setInterval(() => step(1), 3000)
-  }
-
-  const stopAutoplay = () => {
-    if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null }
-  }
 
   const step = (dir) => {
     if (isMobile()) {
@@ -68,6 +56,22 @@ export default function FeaturedCarousel({ items, onSelect }) {
       return next
     })
   }
+
+  stepRef.current = step
+
+  const startAutoplay = () => {
+    stopAutoplay()
+    timerRef.current = setInterval(() => stepRef.current(1), 3000)
+  }
+
+  const stopAutoplay = () => {
+    if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null }
+  }
+
+  useEffect(() => {
+    startAutoplay()
+    return () => stopAutoplay()
+  }, [])
 
   if (!items || !Array.isArray(items) || items.length === 0) return null
 

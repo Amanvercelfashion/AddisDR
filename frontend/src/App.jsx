@@ -22,7 +22,8 @@ export default function App() {
   const [authOpen, setAuthOpen] = useState(false)
   const [authTab, setAuthTab] = useState('login')
   const [selectedBusiness, setSelectedBusiness] = useState(null)
-  const [logoUrl, setLogoUrl] = useState(import.meta.env.VITE_LOGO_URL || '/images/addisdr-logo.svg')
+  const defaultLogo = import.meta.env.VITE_LOGO_URL || 'https://biezesxrofebizlirpxk.supabase.co/storage/v1/object/public/uploads/logo-1782025248081.svg'
+  const [logoUrl, setLogoUrl] = useState(defaultLogo)
 
   useEffect(() => {
     getSettings().then(s => { if (s?.logo_url) setLogoUrl(s.logo_url) }).catch(() => {})
