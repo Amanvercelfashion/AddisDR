@@ -55,6 +55,7 @@ export default function ProductSearch({ onSelect }) {
       </svg>
       <input
         type="text"
+        id="productSearchInput"
         ref={inputRef}
         placeholder="Search products & services…"
         autoComplete="off"

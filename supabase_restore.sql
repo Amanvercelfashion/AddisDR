@@ -84,6 +84,12 @@ CREATE TABLE reports (
   created_at TIMESTAMPTZ DEFAULT now()
 );
 
+-- Site settings (key-value store for config like logo URL)
+CREATE TABLE site_settings (
+  key TEXT PRIMARY KEY,
+  value TEXT NOT NULL
+);
+
 -- ============================================================
 -- 2. INDEXES
 -- ============================================================
@@ -174,6 +180,12 @@ CREATE POLICY "Service role update ratings" ON ratings FOR UPDATE USING (auth.ro
 -- Reports — anyone can insert, service_role can read
 CREATE POLICY "Service role read reports" ON reports FOR SELECT USING (auth.role() = 'service_role');
 CREATE POLICY "Anyone insert reports" ON reports FOR INSERT WITH CHECK (true);
+
+-- Site settings — public read, service_role write
+ALTER TABLE site_settings ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Public read site settings" ON site_settings FOR SELECT USING (true);
+CREATE POLICY "Service role write site settings" ON site_settings FOR INSERT WITH CHECK (auth.role() = 'service_role');
+CREATE POLICY "Service role update site settings" ON site_settings FOR UPDATE USING (auth.role() = 'service_role');
 
 -- Users — service_role only (app uses phone/password auth, not Supabase Auth)
 -- NOTE: auth.uid() = id removed to avoid uuid = bigint type mismatch
@@ -339,3 +351,8 @@ VALUES
   (2, 10, 'Aman from Summit', 'try', '2026-06-02T08:25:04.432Z'),
   (3, 1,  'Aman from Summit', 'g',   '2026-06-03T06:59:40.533Z');
 SELECT setval('reports_id_seq', 3);
+
+-- Site settings (logo URL will be updated by upload script)
+INSERT INTO site_settings (key, value) VALUES
+  ('logo_url', '/images/addisdr-logo.svg')
+ON CONFLICT (key) DO NOTHING;

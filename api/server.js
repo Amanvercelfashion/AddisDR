@@ -66,6 +66,20 @@ async function uploadImage(file) {
 
 // ── PUBLIC ROUTES ─────────────────────────────────────────────
 
+app.get('/api/settings', async (req, res) => {
+  try {
+    const { data, error } = await supabase.from('site_settings').select('key, value');
+    if (error) throw error;
+    const settings = {};
+    for (const row of data) {
+      settings[row.key] = row.value;
+    }
+    res.json(settings);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });

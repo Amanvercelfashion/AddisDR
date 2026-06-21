@@ -2,7 +2,9 @@ import { useRef, useEffect, useState } from 'react'
 
 export default function FeaturedCarousel({ items, onSelect }) {
   const trackRef = useRef(null)
+  const carouselRef = useRef(null)
   const [index, setIndex] = useState(0)
+  const [hidden, setHidden] = useState(false)
   const timerRef = useRef(null)
   const touchStartRef = useRef(0)
   const itemWidth = 280 + 14
@@ -25,6 +27,17 @@ export default function FeaturedCarousel({ items, onSelect }) {
   useEffect(() => {
     startAutoplay()
     return () => stopAutoplay()
+  }, [])
+
+  useEffect(() => {
+    const footer = document.getElementById('siteFooter')
+    if (!footer) return
+    const observer = new IntersectionObserver(
+      ([entry]) => setHidden(entry.isIntersecting),
+      { threshold: 0.1 }
+    )
+    observer.observe(footer)
+    return () => observer.disconnect()
   }, [])
 
   const startAutoplay = () => {
@@ -60,7 +73,7 @@ export default function FeaturedCarousel({ items, onSelect }) {
 
   return (
     <>
-      <div className="featured-sticky" id="featuredSticky">
+      <div className={`featured-sticky${hidden ? ' hidden' : ''}`} id="featuredSticky" ref={carouselRef}>
         <div className="featured-sticky-inner">
           <button className="carousel-btn" onClick={() => { step(-1); startAutoplay() }} aria-label="Previous">
             <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>

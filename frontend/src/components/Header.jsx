@@ -3,7 +3,8 @@ import ProductSearch from './ProductSearch'
 
 export default function Header({
   categories, hoods, activeCategory, activeHood,
-  onCategoryChange, onHoodChange, currentUser, onSignOut, onOpenAuth, onBusinessSelect
+  onCategoryChange, onHoodChange, currentUser, onSignOut, onOpenAuth, onBusinessSelect,
+  logoUrl
 }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const [catOpen, setCatOpen] = useState(false)
@@ -23,7 +24,7 @@ export default function Header({
       <header className="topbar" id="topbar">
         <div className="topbar-row1">
           <a href="/" className="logo" aria-label="AddisDR home">
-            <img src="/images/addisdr-logo.svg" alt="AddisDR" className="logo-img" />
+            <img src={logoUrl} alt="AddisDR" className="logo-img" />
           </a>
 
           <div className="product-search-wrap" id="productSearchBox">

@@ -104,3 +104,8 @@ export async function searchProducts(query) {
   const res = await fetch(`${API_URL}/products/search?q=${encodeURIComponent(query)}`)
   return res.json()
 }
+
+export async function getSettings() {
+  const res = await fetch(`${API_URL}/settings`)
+  return res.json()
+}

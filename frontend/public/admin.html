@@ -484,8 +484,12 @@ function buildModal(section, item) {
       html += `<label>${f.label}</label><input type="${f.type}" name="${f.name}" value="${esc(val)}" ${f.required?'required':''}>`;
     }
   }
-  if (!isEdit && (section==='businesses'||section==='featured'||section==='products')) {
-    html += '<label>Image URL (optional)</label><input type="text" name="image_url" placeholder="https://...">';
+  if (section==='businesses'||section==='featured'||section==='products') {
+    html += '<label>Image URL</label><input type="text" name="image_url" placeholder="https://...">';
+    html += '<label>Or upload image</label><input type="file" name="image" accept="image/*">';
+    if (isEdit && item && item.image_url) {
+      html += `<div style="margin-bottom:12px"><img src="${esc(item.image_url)}" style="max-width:120px;max-height:80px;border-radius:4px;object-fit:cover"></div>`;
+    }
   }
   body.innerHTML = html;
 }
@@ -494,9 +498,11 @@ function buildModal(section, item) {
 function saveModal() {
   const section = editingSection;
   const id = editingId;
-  const inputs = document.querySelectorAll('#modalBody input, #modalBody textarea');
-  const body = {};
+  const inputs = document.querySelectorAll('#modalBody input:not([type=file]), #modalBody textarea');
+  const fileInput = document.querySelector('#modalBody input[type=file]');
+  const hasFile = fileInput && fileInput.files && fileInput.files[0];
   let valid = true;
+  const body = {};
   inputs.forEach(inp => {
     if (inp.hasAttribute('required') && !inp.value.trim()) valid = false;
     body[inp.name] = inp.value;
@@ -506,7 +512,17 @@ function saveModal() {
   const url = id ? `${API}/${section}/${id}` : `${API}/${section}`;
   const method = id ? 'PUT' : 'POST';
 
-  fetch(url, { method, headers: authHeaders(), body: JSON.stringify(body) })
+  let fetchOpts;
+  if (hasFile) {
+    const fd = new FormData();
+    for (const key in body) { fd.append(key, body[key]); }
+    fd.append('image', fileInput.files[0]);
+    fetchOpts = { method, headers: { 'x-admin-token': TOKEN }, body: fd };
+  } else {
+    fetchOpts = { method, headers: authHeaders(), body: JSON.stringify(body) };
+  }
+
+  fetch(url, fetchOpts)
     .then(r => r.json())
     .then(d => {
       if (d.success || d.id) {
