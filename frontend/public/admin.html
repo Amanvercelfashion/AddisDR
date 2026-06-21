@@ -415,15 +415,10 @@ function openModal(section, id) {
   title.textContent = id ? `Edit ${section.slice(0,-1).replace(/e$/,'')}` : `Add ${section.slice(0,-1).replace(/e$/,'')}`;
 
   if (id) {
-    fetch(`${API}/${section}/${id}`, { headers: authHeaders() })
-      .then(r => {
-        if (section === 'categories' || section === 'hoods') return r.json();
-        return r.json();
-      })
+    fetch(`${API}/${section}`, { headers: authHeaders() })
+      .then(r => r.json())
       .then(data => {
-        let item;
-        if (Array.isArray(data)) item = data.find(x => x.id == id);
-        else item = data;
+        const item = Array.isArray(data) ? data.find(x => x.id == id) : null;
         if (!item) { alert('Not found'); return; }
         buildModal(section, item);
         document.getElementById('modal').classList.add('open');
@@ -485,7 +480,8 @@ function buildModal(section, item) {
     }
   }
   if (section==='businesses'||section==='featured'||section==='products') {
-    html += '<label>Image URL</label><input type="text" name="image_url" placeholder="https://...">';
+    const imgVal = item ? (item.image_url || '') : '';
+    html += '<label>Image URL</label><input type="text" name="image_url" value="' + esc(imgVal) + '" placeholder="https://...">';
     html += '<label>Or upload image</label><input type="file" name="image" accept="image/*">';
     if (isEdit && item && item.image_url) {
       html += `<div style="margin-bottom:12px"><img src="${esc(item.image_url)}" style="max-width:120px;max-height:80px;border-radius:4px;object-fit:cover"></div>`;
