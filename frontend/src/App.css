@@ -651,6 +651,7 @@ input, select { font-family: var(--font); }
       rgba(0,200,255,.08) 9px, rgba(0,255,136,.08) 10px,
       transparent 10px, transparent 20px
     );
+  filter: blur(1px);
   opacity: .5;
   pointer-events: none;
 }
