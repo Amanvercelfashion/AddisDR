@@ -25,7 +25,7 @@
   --radius-sm: 8px;
   --radius-lg: 16px;
   --font: 'Inter', system-ui, sans-serif;
-  --nav-h: 64px;
+  --nav-h: 90px;
 }
 
 html { scroll-behavior: smooth; }
@@ -56,8 +56,8 @@ input, select { font-family: var(--font); }
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 4px 16px;
-  height: 64px;
+  padding: 6px 16px;
+  height: 90px;
   max-width: 1400px;
   margin: 0 auto;
 }
