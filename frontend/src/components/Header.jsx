@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import ProductSearch from './ProductSearch'
+import Logo from './Logo'
 
 export default function Header({
   categories, hoods, activeCategory, activeHood,
-  onCategoryChange, onHoodChange, currentUser, onSignOut, onOpenAuth, onBusinessSelect,
-  logoUrl
+  onCategoryChange, onHoodChange, currentUser, onSignOut, onOpenAuth, onBusinessSelect
 }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const [catOpen, setCatOpen] = useState(false)
@@ -24,7 +24,7 @@ export default function Header({
       <header className="topbar" id="topbar">
         <div className="topbar-row1">
           <a href="/" className="logo" aria-label="AddisDR home">
-            <img src={logoUrl} alt="AddisDR" className="logo-img" />
+            <Logo className="logo-img" />
           </a>
 
           <div className="product-search-wrap" id="productSearchBox">

@@ -5,7 +5,7 @@ import BusinessPage from './components/BusinessPage'
 import FeaturedCarousel from './components/FeaturedCarousel'
 import AuthModal from './components/AuthModal'
 import Footer from './components/Footer'
-import { fetchBusinesses, fetchCategories, fetchHoods, fetchFeatured, getSettings } from './lib/api'
+import { fetchBusinesses, fetchCategories, fetchHoods, fetchFeatured } from './lib/api'
 
 function toSlug(name) {
   return name.toLowerCase().replace(/[''`]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
@@ -22,12 +22,6 @@ export default function App() {
   const [authOpen, setAuthOpen] = useState(false)
   const [authTab, setAuthTab] = useState('login')
   const [selectedBusiness, setSelectedBusiness] = useState(null)
-  const defaultLogo = import.meta.env.VITE_LOGO_URL || 'https://biezesxrofebizlirpxk.supabase.co/storage/v1/object/public/uploads/logo-1782025248081.svg'
-  const [logoUrl, setLogoUrl] = useState(defaultLogo)
-
-  useEffect(() => {
-    getSettings().then(s => { if (s?.logo_url) setLogoUrl(s.logo_url) }).catch(() => {})
-  }, [])
 
   useEffect(() => {
     const stored = localStorage.getItem('addisdr_user')
@@ -171,7 +165,6 @@ export default function App() {
         onSignOut={handleSignOut}
         onOpenAuth={openAuth}
         onBusinessSelect={openBusinessPage}
-        logoUrl={logoUrl}
       />
 
       <main className="main-content">
@@ -200,7 +193,7 @@ export default function App() {
         onSelect={openBusinessPage}
       />
 
-      <Footer logoUrl={logoUrl} />
+      <Footer />
 
       {authOpen && (
         <AuthModal

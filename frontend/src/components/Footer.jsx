@@ -1,9 +1,11 @@
-export default function Footer({ logoUrl }) {
+import Logo from './Logo'
+
+export default function Footer() {
   return (
     <footer className="footer" id="siteFooter">
       <div className="footer-inner">
         <div className="footer-brand">
-          <img src={logoUrl} alt="AddisDR" className="logo-img-footer" />
+          <Logo height={40} className="logo-img-footer" />
           <p className="footer-tagline">Smart Digital Solutions for Modern Businesses</p>
           <p className="footer-desc">
             Powering the future of Ethiopian businesses by transforming operations through technology.
