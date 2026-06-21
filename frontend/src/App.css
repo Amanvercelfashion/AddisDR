@@ -599,7 +599,7 @@ input, select { font-family: var(--font); }
 
 /* ===== FOOTER ===== */
 .footer {
-  background: #000000;
+  background: linear-gradient(to right, #000000 0%, #000000 15%, #001a2e 30%, #003a5c 50%, #006688 68%, #00c8ff 85%, #00ff88 100%);
   color: #c8e8f4;
   padding: 48px 20px 0;
   border-top: 1px solid rgba(0,200,255,.15);
@@ -610,11 +610,23 @@ input, select { font-family: var(--font); }
   content: '';
   position: absolute;
   inset: 0;
-  background-image:
-    repeating-linear-gradient(0deg, transparent, transparent 59px, #00c8ff 59px, #00ff88 60px),
-    repeating-linear-gradient(90deg, transparent, transparent 59px, #00c8ff 59px, #00ff88 60px);
-  background-size: 60px 60px;
-  opacity: .25;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0, transparent 40px,
+      rgba(255,255,255,.08) 40px, rgba(255,255,255,.08) 42px,
+      transparent 42px, transparent 50px,
+      rgba(255,255,255,.04) 50px, rgba(255,255,255,.04) 51px,
+      transparent 51px, transparent 60px,
+      rgba(0,200,255,.1) 60px, rgba(0,255,136,.1) 61px,
+      transparent 61px, transparent 70px,
+      rgba(0,200,255,.06) 70px, rgba(0,255,136,.06) 71px,
+      transparent 71px, transparent 80px,
+      rgba(255,255,255,.05) 80px, rgba(255,255,255,.05) 82px,
+      transparent 82px, transparent 90px
+    );
+  background-size: 90px 100%;
+  opacity: .6;
   pointer-events: none;
 }
 .footer-inner,
