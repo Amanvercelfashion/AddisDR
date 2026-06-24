@@ -622,7 +622,7 @@ input, select { font-family: var(--font); }
   background-size: auto 100%;
   background-repeat: repeat-x;
   background-position: left center;
-  opacity: 0.35;
+  opacity: 0.5;
   z-index: 0;
   pointer-events: none;
 }
