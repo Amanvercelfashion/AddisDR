@@ -242,8 +242,8 @@ const API = '/api/admin';
 let TOKEN = null;
 let editingId = null;
 let editingSection = null;
-let CATEGORIES = [];
-let HOODS = [];
+var CATEGORIES = [];
+var HOODS = [];
 
 /* ── AUTH ── */
 function login() {
@@ -287,12 +287,7 @@ document.querySelectorAll('.sidebar nav a').forEach(a => {
 });
 
 /* ── LOAD ALL ── */
-function loadAll() {
-  Promise.all([
-    fetch(`${API}/categories`, { headers: authHeaders() }).then(r => r.json()).then(d => { if (Array.isArray(d)) CATEGORIES = d; }),
-    fetch(`${API}/hoods`, { headers: authHeaders() }).then(r => r.json()).then(d => { if (Array.isArray(d)) HOODS = d; }),
-  ]).then(() => { loadCategories(); loadHoods(); loadBusinesses(); loadFeatured(); loadProducts(); loadReports(); });
-}
+function loadAll() { loadCategories(); loadHoods(); loadBusinesses(); loadFeatured(); loadProducts(); loadReports(); }
 
 /* ── CATEGORIES ── */
 function loadCategories() {
@@ -301,6 +296,7 @@ function loadCategories() {
   fetch(`${API}/categories`, { headers: authHeaders() })
     .then(r => r.json())
     .then(data => {
+      if (Array.isArray(data)) CATEGORIES = data;
       if (!Array.isArray(data)) { tbody.innerHTML = '<tr><td colspan="3" class="empty-state">Error loading</td></tr>'; return; }
       if (!data.length) { tbody.innerHTML = '<tr><td colspan="3" class="empty-state">No categories yet.</td></tr>'; return; }
       tbody.innerHTML = data.map(c => `<tr>
@@ -320,6 +316,7 @@ function loadHoods() {
   fetch(`${API}/hoods`, { headers: authHeaders() })
     .then(r => r.json())
     .then(data => {
+      if (Array.isArray(data)) HOODS = data;
       if (!Array.isArray(data)) { tbody.innerHTML = '<tr><td colspan="4" class="empty-state">Error loading</td></tr>'; return; }
       if (!data.length) { tbody.innerHTML = '<tr><td colspan="4" class="empty-state">No neighbourhoods yet.</td></tr>'; return; }
       tbody.innerHTML = data.map(h => `<tr>
