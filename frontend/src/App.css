@@ -599,12 +599,20 @@ input, select { font-family: var(--font); }
 
 /* ===== FOOTER ===== */
 .footer {
-  background: linear-gradient(to right, #000000 0%, transparent 100%);
+  background: #000000;
   color: #c8e8f4;
   padding: 48px 20px 0;
   border-top: 1px solid rgba(0,200,255,.15);
   position: relative;
   overflow: hidden;
+}
+.footer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, #000000 0%, transparent 100%);
+  z-index: 1;
+  pointer-events: none;
 }
 
 .footer-bg-image {
