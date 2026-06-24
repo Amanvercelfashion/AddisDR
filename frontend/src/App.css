@@ -1067,6 +1067,43 @@ input, select { font-family: var(--font); }
   line-height: 1.7;
 }
 .about-content p { margin-bottom: 12px; }
+.about-content h3 {
+  color: #00c8ff;
+  font-size: 1rem;
+  margin: 20px 0 8px;
+  font-weight: 600;
+}
+.about-content ul {
+  margin: 8px 0 16px;
+  padding-left: 18px;
+  list-style: none;
+}
+.about-content ul li {
+  margin-bottom: 10px;
+  position: relative;
+  padding-left: 14px;
+}
+.about-content ul li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: #00c8ff;
+}
+.about-cta {
+  font-weight: 600;
+  color: #e0f0ff;
+  margin-top: 16px;
+}
+.about-contact {
+  background: rgba(0,200,255,.08);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-top: 12px;
+}
+.about-contact p {
+  font-weight: 500;
+  margin-bottom: 4px !important;
+}
 
 /* ===== USER PILL ===== */
 .user-pill {
