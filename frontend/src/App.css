@@ -610,7 +610,7 @@ input, select { font-family: var(--font); }
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(to right, #000000 0%, transparent 50%);
+  background: linear-gradient(to right, #000000 0%, transparent 75%);
   z-index: 1;
   pointer-events: none;
 }
@@ -622,7 +622,7 @@ input, select { font-family: var(--font); }
   background-size: auto 100%;
   background-repeat: repeat-x;
   background-position: left center;
-  opacity: 0.55;
+  opacity: 0.5;
   z-index: 0;
   pointer-events: none;
 }
