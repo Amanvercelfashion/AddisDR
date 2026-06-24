@@ -167,7 +167,8 @@ export default function App() {
         onSignOut={handleSignOut}
         onOpenAuth={openAuth}
         onBusinessSelect={openBusinessPage}
-      />
+        onOpenAbout={() => setAboutOpen(true)}
+        />
 
       <main className="main-content">
         <BusinessGrid
