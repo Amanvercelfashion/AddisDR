@@ -599,7 +599,7 @@ input, select { font-family: var(--font); }
 
 /* ===== FOOTER ===== */
 .footer {
-  background: linear-gradient(to right, #000000 0%, #000000 15%, #001a2e 30%, #003a5c 50%, #006688 68%, #00c8ff 85%, #00ff88 100%);
+  background: linear-gradient(to right, #000000 0%, transparent 100%);
   color: #c8e8f4;
   padding: 48px 20px 0;
   border-top: 1px solid rgba(0,200,255,.15);
@@ -660,10 +660,10 @@ input, select { font-family: var(--font); }
   position: absolute;
   inset: 0;
   background-image: url('/images/footer-bg.png');
-  background-size: cover;
-  background-position: center;
-  filter: blur(6px);
-  opacity: 0.2;
+  background-size: auto 100%;
+  background-repeat: repeat-x;
+  background-position: left center;
+  opacity: 0.35;
   z-index: 0;
   pointer-events: none;
 }
