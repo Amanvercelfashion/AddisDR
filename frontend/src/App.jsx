@@ -4,6 +4,7 @@ import BusinessGrid from './components/BusinessGrid'
 import BusinessPage from './components/BusinessPage'
 import FeaturedCarousel from './components/FeaturedCarousel'
 import AuthModal from './components/AuthModal'
+import AboutModal from './components/AboutModal'
 import Footer from './components/Footer'
 import { fetchBusinesses, fetchCategories, fetchHoods, fetchFeatured } from './lib/api'
 
@@ -21,6 +22,7 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState(null)
   const [authOpen, setAuthOpen] = useState(false)
   const [authTab, setAuthTab] = useState('login')
+  const [aboutOpen, setAboutOpen] = useState(false)
   const [selectedBusiness, setSelectedBusiness] = useState(null)
 
   useEffect(() => {
@@ -185,6 +187,7 @@ export default function App() {
           currentUser={currentUser}
           onOpenAuth={openAuth}
           onBusinessSelect={openBusinessPage}
+          onOpenAbout={() => setAboutOpen(true)}
         />
       )}
 
@@ -194,6 +197,8 @@ export default function App() {
       />
 
       <Footer />
+
+      {aboutOpen && <AboutModal onClose={() => setAboutOpen(false)} />}
 
       {authOpen && (
         <AuthModal

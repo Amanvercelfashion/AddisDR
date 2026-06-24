@@ -4,7 +4,8 @@ import Logo from './Logo'
 
 export default function Header({
   categories, hoods, activeCategory, activeHood,
-  onCategoryChange, onHoodChange, currentUser, onSignOut, onOpenAuth, onBusinessSelect
+  onCategoryChange, onHoodChange, currentUser, onSignOut, onOpenAuth, onBusinessSelect,
+  onOpenAbout
 }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const [catOpen, setCatOpen] = useState(false)
@@ -135,8 +136,8 @@ export default function Header({
         <nav className={`side-menu ${menuOpen ? 'open' : ''}`} id="sideMenu" aria-hidden={!menuOpen}>
           <button className="menu-close" onClick={() => setMenuOpen(false)}>&times;</button>
           <ul>
-            <li><a href="#about">About Us</a></li>
-            <li><a href="#contact">Contact Us</a></li>
+            <li><a href="#" onClick={(e) => { e.preventDefault(); setMenuOpen(false); onOpenAbout() }}>About Us</a></li>
+            <li><a href="#" onClick={(e) => { e.preventDefault(); setMenuOpen(false); document.getElementById('siteFooter')?.scrollIntoView({ behavior: 'smooth' }) }}>Contact Us</a></li>
             {!currentUser ? (
               <li><a href="#" onClick={(e) => { e.preventDefault(); setMenuOpen(false); onOpenAuth('login') }}>Sign In / Register</a></li>
             ) : (
@@ -145,7 +146,7 @@ export default function Header({
                 <li><a href="#" onClick={(e) => { e.preventDefault(); setMenuOpen(false); onSignOut() }}>Sign Out</a></li>
               </>
             )}
-            <li><a href="#digital-store" className="highlight-link">Get Your Digital Store</a></li>
+            <li><a href="tel:+251941958769" className="highlight-link" onClick={() => setMenuOpen(false)}>Get Your Digital Store</a></li>
           </ul>
         </nav>
         <div className={`menu-overlay ${menuOpen ? 'visible' : ''}`} onClick={() => setMenuOpen(false)}></div>
