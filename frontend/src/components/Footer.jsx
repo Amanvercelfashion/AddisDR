@@ -3,6 +3,7 @@ import Logo from './Logo'
 export default function Footer() {
   return (
     <footer className="footer" id="siteFooter">
+      <div className="footer-bg-image" />
       <div className="footer-inner">
         <div className="footer-brand">
           <Logo height={60} className="logo-img-footer" />

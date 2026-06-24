@@ -654,11 +654,23 @@ input, select { font-family: var(--font); }
   filter: blur(1px);
   opacity: .5;
   pointer-events: none;
+  z-index: 1;
+}
+.footer-bg-image {
+  position: absolute;
+  inset: 0;
+  background-image: url('/images/footer-bg.png');
+  background-size: cover;
+  background-position: center;
+  filter: blur(6px);
+  opacity: 0.2;
+  z-index: 0;
+  pointer-events: none;
 }
 .footer-inner,
 .footer-bottom {
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 .footer-inner {
   max-width: 1200px;
