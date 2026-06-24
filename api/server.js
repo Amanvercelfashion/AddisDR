@@ -669,6 +669,13 @@ app.delete('/api/admin/reports/:id', adminAuth, async (req, res) => {
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
+// ── Admin page routes ─────────────────────────────────────────
+const adminHtmlPath = path.resolve(__dirname, '../frontend/dist/admin.html');
+app.get('/admin', (req, res) => {
+  if (fs.existsSync(adminHtmlPath)) return res.sendFile(adminHtmlPath);
+  res.redirect('/admin.html');
+});
+
 // ── Static file serving ────────────────────────────────────────
 const distDir = path.resolve(__dirname, '../frontend/dist');
 

@@ -146,7 +146,6 @@ export default function Header({
               </>
             )}
             <li><a href="#digital-store" className="highlight-link">Get Your Digital Store</a></li>
-            <li><a href="/admin.html">Admin Panel</a></li>
           </ul>
         </nav>
         <div className={`menu-overlay ${menuOpen ? 'visible' : ''}`} onClick={() => setMenuOpen(false)}></div>
