@@ -267,8 +267,22 @@ VALUES
 -- Advance sequences past seed IDs
 SELECT setval('businesses_id_seq', 23);
 
--- Featured items (all previously referenced example businesses which are now removed)
--- Add new featured items for real businesses as needed
+-- Featured items
+INSERT INTO featured_items (id, business_id, image_url, title, hook_text, exact_price, location_text, created_at)
+OVERRIDING SYSTEM VALUE
+VALUES
+  (9,  13, '/uploads/1780467552240-936640068.png',                                 'Modern Sofa Set',        'Comfort meets style — premium sofa crafted for your living room.',              '35,000 ETB',     'Gerji',     '2026-06-24T12:14:27.092Z'),
+  (10, 14, 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&q=80', 'Home Comfort Furniture', 'Quality furniture and home decor to make your space truly comfortable.',          'From 2,500 ETB', 'Bole',      '2026-06-24T12:14:27.367Z'),
+  (11, 15, 'https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=400&q=80', 'Gift Box Special',      'Unique gifts and souvenirs for every occasion — wrapped with care.',              'From 200 ETB',   'Megenagna', '2026-06-24T12:14:27.557Z'),
+  (12, 16, 'https://images.unsplash.com/photo-1498049794561-7780e7231661?w=400&q=80', 'Latest Gadgets',         'Latest gadgets, accessories, and electronics at competitive prices.',             'From 500 ETB',   'Bole',      '2026-06-24T12:14:27.740Z'),
+  (13, 17, 'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=400&q=80', 'Ethiopian Fashion',      'Trendy fashion and apparel blending modern style with Ethiopian flair.',          '$$',             'Sarbet',    '2026-06-24T12:14:27.922Z'),
+  (14, 18, 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=400&q=80', 'Dental Checkup',         'Comprehensive dental care with modern equipment and experienced dentists.',       'From 500 ETB',   'Bole',      '2026-06-24T12:14:28.106Z'),
+  (15, 19, 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&q=80', 'Language Tutoring',      'Language and academic tutoring bridging students to success.',                    'From 300 ETB/hr','Kazanchis', '2026-06-24T12:14:28.286Z'),
+  (16, 20, 'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=400&q=80', 'Fitness Training',       'Fitness training and event planning for a healthier, more vibrant lifestyle.',    'From 1,000 ETB', 'Summit',    '2026-06-24T12:14:28.452Z'),
+  (17, 21, 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&q=80', 'Premium Grooming',        'Premium grooming and barber services for the modern gentleman.',                  'From 250 ETB',   'Bole',      '2026-06-24T12:14:28.629Z'),
+  (18, 22, 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&q=80', 'Photography Session',    'Professional photography for events, portraits, and commercial projects.',        'From 3,000 ETB', 'Piassa',    '2026-06-24T12:14:28.798Z'),
+  (19, 23, 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&q=80', 'Savory Bites Platter',    'Delicious local and international cuisine in a warm, inviting atmosphere.',       '$$',             'Megenagna', '2026-06-24T12:14:28.964Z');
+SELECT setval('featured_items_id_seq', 19);
 
 -- Products
 INSERT INTO products (id, business_id, name, description, price, image_url, created_at)
