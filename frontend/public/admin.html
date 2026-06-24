@@ -141,6 +141,10 @@ td.actions button:hover { opacity: .7; }
 /* REPORTS */
 .report-reason { max-width: 250px; white-space: normal; word-break: break-word; }
 
+.type-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: .7rem; font-weight: 600; text-transform: uppercase; }
+.type-product { background: #e8f5e9; color: #2e7d32; }
+.type-service { background: #e3f2fd; color: #1565c0; }
+
 @media (max-width: 768px) {
   .sidebar { width: 56px; overflow: hidden; }
   .sidebar h2 { font-size: 0; }
@@ -198,7 +202,7 @@ td.actions button:hover { opacity: .7; }
 <div id="section-businesses" class="section">
   <h2>Businesses</h2>
   <div class="toolbar"><button onclick="openModal('businesses')">+ Add Business</button></div>
-  <div class="table-wrap"><table><thead><tr><th>ID</th><th>Name</th><th>Category</th><th>Hood</th><th>Phone</th><th>Actions</th></tr></thead><tbody id="businessesBody"></tbody></table></div>
+  <div class="table-wrap"><table><thead><tr><th>ID</th><th>Name</th><th>Category</th><th>Hood</th><th>Type</th><th>Phone</th><th>Actions</th></tr></thead><tbody id="businessesBody"></tbody></table></div>
 </div>
 
 <div id="section-featured" class="section">
@@ -324,14 +328,16 @@ function loadHoods() {
 /* ── BUSINESSES ── */
 function loadBusinesses() {
   const tbody = document.getElementById('businessesBody');
-  tbody.innerHTML = '<tr><td colspan="6" class="loading">Loading…</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="7" class="loading">Loading…</td></tr>';
   fetch(`${API}/businesses`, { headers: authHeaders() })
     .then(r => r.json())
     .then(data => {
-      if (!Array.isArray(data)) { tbody.innerHTML = '<tr><td colspan="6" class="empty-state">Error loading</td></tr>'; return; }
-      if (!data.length) { tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No businesses yet.</td></tr>'; return; }
+      if (!Array.isArray(data)) { tbody.innerHTML = '<tr><td colspan="7" class="empty-state">Error loading</td></tr>'; return; }
+      if (!data.length) { tbody.innerHTML = '<tr><td colspan="7" class="empty-state">No businesses yet.</td></tr>'; return; }
       tbody.innerHTML = data.map(b => `<tr>
-        <td>${b.id}</td><td>${esc(b.name)}</td><td>${esc(b.category_name||'')}</td><td>${esc(b.hood_name||'')}</td><td>${esc(b.phone_number||'')}</td>
+        <td>${b.id}</td><td>${esc(b.name)}</td><td>${esc(b.category_name||'')}</td><td>${esc(b.hood_name||'')}</td>
+        <td><span class="type-badge type-${b.business_type||'service'}">${b.business_type||'service'}</span></td>
+        <td>${esc(b.phone_number||'')}</td>
         <td class="actions">
           <button class="btn-edit" onclick="openModal('businesses',${b.id})">Edit</button>
           <button class="btn-delete" onclick="del('businesses',${b.id})">Delete</button>
@@ -449,6 +455,7 @@ function buildModal(section, item) {
       {name:'category_id',label:'Category ID',type:'number',required:true},
       {name:'hood_id',label:'Hood ID',type:'number',required:true},
       {name:'phone_number',label:'Phone',type:'text'},
+      {name:'business_type',label:'Business Type',type:'select',options:[{value:'service',label:'Service Provider (Reserve Now)'},{value:'product',label:'Product Provider (Choose & Order)'}]},
       {name:'website_link',label:'Website URL',type:'text'},
       {name:'location_link',label:'Location URL',type:'text'},
       {name:'hook_text',label:'Hook Text',type:'text'},
@@ -475,6 +482,12 @@ function buildModal(section, item) {
     const val = item ? (item[f.name] || '') : '';
     if (f.type === 'textarea') {
       html += `<label>${f.label}</label><textarea name="${f.name}" ${f.required?'required':''}>${esc(val)}</textarea>`;
+    } else if (f.type === 'select') {
+      html += `<label>${f.label}</label><select name="${f.name}">`;
+      for (const opt of f.options) {
+        html += `<option value="${opt.value}" ${val === opt.value ? 'selected' : ''}>${opt.label}</option>`;
+      }
+      html += `</select>`;
     } else {
       html += `<label>${f.label}</label><input type="${f.type}" name="${f.name}" value="${esc(val)}" ${f.required?'required':''}>`;
     }
@@ -494,7 +507,7 @@ function buildModal(section, item) {
 function saveModal() {
   const section = editingSection;
   const id = editingId;
-  const inputs = document.querySelectorAll('#modalBody input:not([type=file]), #modalBody textarea');
+  const inputs = document.querySelectorAll('#modalBody input:not([type=file]), #modalBody textarea, #modalBody select');
   const fileInput = document.querySelector('#modalBody input[type=file]');
   const hasFile = fileInput && fileInput.files && fileInput.files[0];
   let valid = true;

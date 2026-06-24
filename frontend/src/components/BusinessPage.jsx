@@ -112,21 +112,20 @@ export default function BusinessPage({ businessId, onClose, currentUser, onOpenA
                 </div>
               </div>
               <div className="biz-actions" id="bizActions">
-                {biz.phone_number && (
-                  <a href={`tel:${biz.phone_number}`} className="biz-action-btn call">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.82a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
-                    </svg>
-                    Call
-                  </a>
-                )}
-                {biz.website_link && (
-                  <a href={biz.website_link} target="_blank" rel="noopener" className="biz-action-btn">
+                {biz.business_type === 'product' ? (
+                  <a href={biz.website_link || '#'} target={biz.website_link ? '_blank' : '_self'} rel="noopener" className="biz-action-btn cta-btn">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                       <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
                       <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
                     </svg>
-                    Website
+                    Choose & Order
+                  </a>
+                ) : (
+                  <a href={biz.website_link || '#'} target={biz.website_link ? '_blank' : '_self'} rel="noopener" className="biz-action-btn cta-btn">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.82a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+                    </svg>
+                    Reserve Now
                   </a>
                 )}
                 {biz.location_link && (
@@ -144,6 +143,25 @@ export default function BusinessPage({ businessId, onClose, currentUser, onOpenA
                   </svg>
                   Share
                 </button>
+              </div>
+              <div className="biz-address-section">
+                <h3 className="biz-address-title">Address & Contact</h3>
+                {biz.hood_name && (
+                  <div className="biz-contact-row">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/>
+                    </svg>
+                    <span>{biz.hood_name}</span>
+                  </div>
+                )}
+                {biz.phone_number && (
+                  <div className="biz-contact-row">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.82a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+                    </svg>
+                    <a href={`tel:${biz.phone_number}`} className="biz-contact-link">{biz.phone_number}</a>
+                  </div>
+                )}
               </div>
               <div className="biz-report-row">
                 <button className="biz-report-btn" onClick={handleReport}>

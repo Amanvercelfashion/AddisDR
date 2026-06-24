@@ -474,7 +474,7 @@ app.get('/api/admin/businesses', adminAuth, async (req, res) => {
 
 app.post('/api/admin/businesses', adminAuth, upload.single('image'), async (req, res) => {
   try {
-    const { name, category_id, hood_id, website_link, phone_number, location_link, hook_text, price_indicator } = req.body;
+    const { name, category_id, hood_id, website_link, phone_number, location_link, hook_text, price_indicator, business_type } = req.body;
     let image_url = req.body.image_url || null;
     if (req.file) {
       image_url = await uploadImage(req.file);
@@ -483,7 +483,8 @@ app.post('/api/admin/businesses', adminAuth, upload.single('image'), async (req,
       name, category_id: parseInt(category_id), hood_id: parseInt(hood_id),
       website_link: website_link || null, phone_number: phone_number || null,
       location_link: location_link || null, image_url, hook_text: hook_text || null,
-      price_indicator: price_indicator || null, rating_avg: 0, rating_count: 0,
+      price_indicator: price_indicator || null, business_type: business_type || 'service',
+      rating_avg: 0, rating_count: 0,
     }).select().single();
     if (error) throw error;
     res.json({ id: data.id, success: true });
@@ -492,12 +493,12 @@ app.post('/api/admin/businesses', adminAuth, upload.single('image'), async (req,
 
 app.put('/api/admin/businesses/:id', adminAuth, upload.single('image'), async (req, res) => {
   try {
-    const { name, category_id, hood_id, website_link, phone_number, location_link, hook_text, price_indicator } = req.body;
+    const { name, category_id, hood_id, website_link, phone_number, location_link, hook_text, price_indicator, business_type } = req.body;
     const updates = {
       name, category_id: parseInt(category_id), hood_id: parseInt(hood_id),
       website_link: website_link || null, phone_number: phone_number || null,
       location_link: location_link || null, hook_text: hook_text || null,
-      price_indicator: price_indicator || null,
+      price_indicator: price_indicator || null, business_type: business_type || 'service',
     };
     if (req.file) {
       updates.image_url = await uploadImage(req.file);

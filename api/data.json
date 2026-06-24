@@ -1,156 +1,487 @@
 {
   "categories": [
-    { "id": 1, "name": "Restaurants" },
-    { "id": 2, "name": "Grocery" },
-    { "id": 3, "name": "Furniture" },
-    { "id": 4, "name": "Pharmacy" },
-    { "id": 5, "name": "Clinics" },
-    { "id": 6, "name": "Fashion" },
-    { "id": 7, "name": "Electronics" },
-    { "id": 8, "name": "Beauty & Spa" },
-    { "id": 9, "name": "Bakery & Café" },
-    { "id": 10, "name": "Auto Services" },
-    { "id": 11, "name": "Gifts & Souvenirs" },
-    { "id": 12, "name": "Education & Tutoring" },
-    { "id": 13, "name": "Fitness & Recreation" },
-    { "id": 14, "name": "Photography" }
+    {
+      "id": 1,
+      "name": "Restaurants"
+    },
+    {
+      "id": 2,
+      "name": "Grocery"
+    },
+    {
+      "id": 3,
+      "name": "Furniture"
+    },
+    {
+      "id": 4,
+      "name": "Pharmacy"
+    },
+    {
+      "id": 5,
+      "name": "Clinics"
+    },
+    {
+      "id": 6,
+      "name": "Fashion"
+    },
+    {
+      "id": 7,
+      "name": "Electronics"
+    },
+    {
+      "id": 8,
+      "name": "Beauty & Spa"
+    },
+    {
+      "id": 9,
+      "name": "Bakery & Café"
+    },
+    {
+      "id": 10,
+      "name": "Auto Services"
+    },
+    {
+      "id": 11,
+      "name": "Gifts & Souvenirs"
+    },
+    {
+      "id": 12,
+      "name": "Education & Tutoring"
+    },
+    {
+      "id": 13,
+      "name": "Fitness & Recreation"
+    },
+    {
+      "id": 14,
+      "name": "Photography"
+    }
   ],
   "hoods": [
-    { "id": 1, "name": "Bole", "description": "Central business district" },
-    { "id": 2, "name": "Megenagna", "description": "Residential and commercial area" },
-    { "id": 3, "name": "Kazanchis", "description": "Embassy district" },
-    { "id": 4, "name": "Piassa", "description": "Historic downtown" },
-    { "id": 5, "name": "Sarbet", "description": "Residential neighbourhood" },
-    { "id": 6, "name": "Gerji", "description": "Growing commercial area" },
-    { "id": 7, "name": "Ayat", "description": "Residential area" },
-    { "id": 8, "name": "Summit", "description": "Upscale neighbourhood" },
-    { "id": 9, "name": "Mexico", "description": "Central area" },
-    { "id": 10, "name": "4 Kilo", "description": "University area" },
-    { "id": 11, "name": "6 Kilo", "description": "Residential area" }
+    {
+      "id": 1,
+      "name": "Bole",
+      "description": "Central business district"
+    },
+    {
+      "id": 2,
+      "name": "Megenagna",
+      "description": "Residential and commercial area"
+    },
+    {
+      "id": 3,
+      "name": "Kazanchis",
+      "description": "Embassy district"
+    },
+    {
+      "id": 4,
+      "name": "Piassa",
+      "description": "Historic downtown"
+    },
+    {
+      "id": 5,
+      "name": "Sarbet",
+      "description": "Residential neighbourhood"
+    },
+    {
+      "id": 6,
+      "name": "Gerji",
+      "description": "Growing commercial area"
+    },
+    {
+      "id": 7,
+      "name": "Ayat",
+      "description": "Residential area"
+    },
+    {
+      "id": 8,
+      "name": "Summit",
+      "description": "Upscale neighbourhood"
+    },
+    {
+      "id": 9,
+      "name": "Mexico",
+      "description": "Central area"
+    },
+    {
+      "id": 10,
+      "name": "4 Kilo",
+      "description": "University area"
+    },
+    {
+      "id": 11,
+      "name": "6 Kilo",
+      "description": "Residential area"
+    }
   ],
   "businesses": [
     {
-      "id": 13, "name": "Aman furniture store", "category_id": 3, "hood_id": 6,
-      "website_link": "http://localhost:3001/admin.html", "phone_number": "+251988898022",
-      "location_link": "http://localhost:3001/admin.html", "image_url": "/uploads/1780467552240-936640068.png",
+      "id": 13,
+      "name": "Aman furniture store",
+      "category_id": 3,
+      "hood_id": 6,
+      "website_link": "http://localhost:3001/admin.html",
+      "phone_number": "+251988898022",
+      "location_link": "http://localhost:3001/admin.html",
+      "image_url": "/uploads/1780467552240-936640068.png",
       "hook_text": "Aman yleyal alkuh iko , Ychlal Aman Ychlal , Ychlal Aman Ychlal",
-      "price_indicator": "From 2000 ETB", "rating_avg": 5, "rating_count": 1,
+      "price_indicator": "From 2000 ETB",
+      "business_type": "product",
+      "rating_avg": 5,
+      "rating_count": 1,
       "created_at": "2026-06-03T06:19:12.275Z"
     },
     {
-      "id": 14, "name": "Home Comfort", "category_id": 3, "hood_id": 1,
-      "website_link": "https://stores-addisdr.vercel.app/home-comfort", "phone_number": "+251911000014",
-      "location_link": "https://maps.google.com", "image_url": "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80",
+      "id": 14,
+      "name": "Home Comfort",
+      "category_id": 3,
+      "hood_id": 1,
+      "website_link": "https://stores-addisdr.vercel.app/home-comfort",
+      "phone_number": "+251911000014",
+      "location_link": "https://maps.google.com",
+      "image_url": "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80",
       "hook_text": "Quality furniture and home decor to make your space truly comfortable.",
-      "price_indicator": "From 2,500 ETB", "rating_avg": 0, "rating_count": 0,
+      "price_indicator": "From 2,500 ETB",
+      "business_type": "service",
+      "rating_avg": 0,
+      "rating_count": 0,
       "created_at": "2026-06-16T00:00:00.000Z"
     },
     {
-      "id": 15, "name": "Gift World", "category_id": 11, "hood_id": 2,
-      "website_link": "https://stores-addisdr.vercel.app/giftworld", "phone_number": "+251911000015",
-      "location_link": "https://maps.google.com", "image_url": "https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=600&q=80",
+      "id": 15,
+      "name": "Gift World",
+      "category_id": 11,
+      "hood_id": 2,
+      "website_link": "https://stores-addisdr.vercel.app/giftworld",
+      "phone_number": "+251911000015",
+      "location_link": "https://maps.google.com",
+      "image_url": "https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=600&q=80",
       "hook_text": "Unique gifts and souvenirs for every occasion — wrapped with care.",
-      "price_indicator": "From 200 ETB", "rating_avg": 0, "rating_count": 0,
+      "price_indicator": "From 200 ETB",
+      "business_type": "product",
+      "rating_avg": 0,
+      "rating_count": 0,
       "created_at": "2026-06-16T00:00:00.000Z"
     },
     {
-      "id": 16, "name": "Gadget Pro", "category_id": 7, "hood_id": 1,
-      "website_link": "https://stores-addisdr.vercel.app/gadgetpro", "phone_number": "+251911000016",
-      "location_link": "https://maps.google.com", "image_url": "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=600&q=80",
+      "id": 16,
+      "name": "Gadget Pro",
+      "category_id": 7,
+      "hood_id": 1,
+      "website_link": "https://stores-addisdr.vercel.app/gadgetpro",
+      "phone_number": "+251911000016",
+      "location_link": "https://maps.google.com",
+      "image_url": "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=600&q=80",
       "hook_text": "Latest gadgets, accessories, and electronics at competitive prices.",
-      "price_indicator": "From 500 ETB", "rating_avg": 0, "rating_count": 0,
-      "created_at": "2026-06-16T00:00:00.000Z"
+      "price_indicator": "From 500 ETB",
+      "rating_avg": 0,
+      "rating_count": 0,
+      "created_at": "2026-06-16T00:00:00.000Z",
+      "business_type": "product"
     },
     {
-      "id": 17, "name": "Chic", "category_id": 6, "hood_id": 5,
-      "website_link": "https://stores-addisdr.vercel.app/chic", "phone_number": "+251911000017",
-      "location_link": "https://maps.google.com", "image_url": "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=600&q=80",
+      "id": 17,
+      "name": "Chic",
+      "category_id": 6,
+      "hood_id": 5,
+      "website_link": "https://stores-addisdr.vercel.app/chic",
+      "phone_number": "+251911000017",
+      "location_link": "https://maps.google.com",
+      "image_url": "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=600&q=80",
       "hook_text": "Trendy fashion and apparel blending modern style with Ethiopian flair.",
-      "price_indicator": "$$", "rating_avg": 0, "rating_count": 0,
-      "created_at": "2026-06-16T00:00:00.000Z"
+      "price_indicator": "$$",
+      "rating_avg": 0,
+      "rating_count": 0,
+      "created_at": "2026-06-16T00:00:00.000Z",
+      "business_type": "product"
     },
     {
-      "id": 18, "name": "BrightCare Dental Clinic", "category_id": 5, "hood_id": 1,
-      "website_link": "https://services-addisdr.vercel.app/brightcare-dental-clinic", "phone_number": "+251911000018",
-      "location_link": "https://maps.google.com", "image_url": "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=600&q=80",
+      "id": 18,
+      "name": "BrightCare Dental Clinic",
+      "category_id": 5,
+      "hood_id": 1,
+      "website_link": "https://services-addisdr.vercel.app/brightcare-dental-clinic",
+      "phone_number": "+251911000018",
+      "location_link": "https://maps.google.com",
+      "image_url": "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=600&q=80",
       "hook_text": "Comprehensive dental care with modern equipment and experienced dentists.",
-      "price_indicator": "From 500 ETB", "rating_avg": 0, "rating_count": 0,
-      "created_at": "2026-06-16T00:00:00.000Z"
+      "price_indicator": "From 500 ETB",
+      "rating_avg": 0,
+      "rating_count": 0,
+      "created_at": "2026-06-16T00:00:00.000Z",
+      "business_type": "service"
     },
     {
-      "id": 19, "name": "LinguaBridge Tutoring", "category_id": 12, "hood_id": 3,
-      "website_link": "https://services-addisdr.vercel.app/linguabridge-tutoring", "phone_number": "+251911000019",
-      "location_link": "https://maps.google.com", "image_url": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&q=80",
+      "id": 19,
+      "name": "LinguaBridge Tutoring",
+      "category_id": 12,
+      "hood_id": 3,
+      "website_link": "https://services-addisdr.vercel.app/linguabridge-tutoring",
+      "phone_number": "+251911000019",
+      "location_link": "https://maps.google.com",
+      "image_url": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&q=80",
       "hook_text": "Language and academic tutoring bridging students to success.",
-      "price_indicator": "From 300 ETB/hr", "rating_avg": 0, "rating_count": 0,
-      "created_at": "2026-06-16T00:00:00.000Z"
+      "price_indicator": "From 300 ETB/hr",
+      "rating_avg": 0,
+      "rating_count": 0,
+      "created_at": "2026-06-16T00:00:00.000Z",
+      "business_type": "service"
     },
     {
-      "id": 20, "name": "Elevate Events and Fitness", "category_id": 13, "hood_id": 8,
-      "website_link": "https://services-addisdr.vercel.app/elevate-events-and-fitness", "phone_number": "+251911000020",
-      "location_link": "https://maps.google.com", "image_url": "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=600&q=80",
+      "id": 20,
+      "name": "Elevate Events and Fitness",
+      "category_id": 13,
+      "hood_id": 8,
+      "website_link": "https://services-addisdr.vercel.app/elevate-events-and-fitness",
+      "phone_number": "+251911000020",
+      "location_link": "https://maps.google.com",
+      "image_url": "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=600&q=80",
       "hook_text": "Fitness training and event planning for a healthier, more vibrant lifestyle.",
-      "price_indicator": "From 1,000 ETB", "rating_avg": 0, "rating_count": 0,
-      "created_at": "2026-06-16T00:00:00.000Z"
+      "price_indicator": "From 1,000 ETB",
+      "rating_avg": 0,
+      "rating_count": 0,
+      "created_at": "2026-06-16T00:00:00.000Z",
+      "business_type": "service"
     },
     {
-      "id": 21, "name": "Refined Grooming Lounge", "category_id": 8, "hood_id": 1,
-      "website_link": "https://services-addisdr.vercel.app/refined-grooming-lounge", "phone_number": "+251911000021",
-      "location_link": "https://maps.google.com", "image_url": "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&q=80",
+      "id": 21,
+      "name": "Refined Grooming Lounge",
+      "category_id": 8,
+      "hood_id": 1,
+      "website_link": "https://services-addisdr.vercel.app/refined-grooming-lounge",
+      "phone_number": "+251911000021",
+      "location_link": "https://maps.google.com",
+      "image_url": "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&q=80",
       "hook_text": "Premium grooming and barber services for the modern gentleman.",
-      "price_indicator": "From 250 ETB", "rating_avg": 0, "rating_count": 0,
-      "created_at": "2026-06-16T00:00:00.000Z"
+      "price_indicator": "From 250 ETB",
+      "rating_avg": 0,
+      "rating_count": 0,
+      "created_at": "2026-06-16T00:00:00.000Z",
+      "business_type": "service"
     },
     {
-      "id": 22, "name": "Lens and Light Photography", "category_id": 14, "hood_id": 4,
-      "website_link": "https://services-addisdr.vercel.app/lens-and-light-photography", "phone_number": "+251911000022",
-      "location_link": "https://maps.google.com", "image_url": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=600&q=80",
+      "id": 22,
+      "name": "Lens and Light Photography",
+      "category_id": 14,
+      "hood_id": 4,
+      "website_link": "https://services-addisdr.vercel.app/lens-and-light-photography",
+      "phone_number": "+251911000022",
+      "location_link": "https://maps.google.com",
+      "image_url": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=600&q=80",
       "hook_text": "Professional photography for events, portraits, and commercial projects.",
-      "price_indicator": "From 3,000 ETB", "rating_avg": 0, "rating_count": 0,
-      "created_at": "2026-06-16T00:00:00.000Z"
+      "price_indicator": "From 3,000 ETB",
+      "rating_avg": 0,
+      "rating_count": 0,
+      "created_at": "2026-06-16T00:00:00.000Z",
+      "business_type": "service"
     },
     {
-      "id": 23, "name": "Savory Bites Restaurant", "category_id": 1, "hood_id": 2,
-      "website_link": "https://services-addisdr.vercel.app/savory-bites-restaurant", "phone_number": "+251911000023",
-      "location_link": "https://maps.google.com", "image_url": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&q=80",
+      "id": 23,
+      "name": "Savory Bites Restaurant",
+      "category_id": 1,
+      "hood_id": 2,
+      "website_link": "https://services-addisdr.vercel.app/savory-bites-restaurant",
+      "phone_number": "+251911000023",
+      "location_link": "https://maps.google.com",
+      "image_url": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&q=80",
       "hook_text": "Delicious local and international cuisine in a warm, inviting atmosphere.",
-      "price_indicator": "$$", "rating_avg": 0, "rating_count": 0,
-      "created_at": "2026-06-16T00:00:00.000Z"
+      "price_indicator": "$$",
+      "rating_avg": 0,
+      "rating_count": 0,
+      "created_at": "2026-06-16T00:00:00.000Z",
+      "business_type": "service"
     }
   ],
   "products": [
-    {
-      "id": 26, "business_id": 13, "name": "sofa", "description": "yabede sofa",
-      "price": "35,000 ETB", "image_url": "/uploads/1780468283685-400306121.png",
-      "created_at": "2026-06-03T06:31:23.747Z"
-    }
+    {"id":27,"business_id":13,"name":"Modern Sofa Set","description":"Premium comfort meets modern design — a centerpiece for your living room.","price":"35,000 ETB","image_url":"https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":28,"business_id":13,"name":"Wooden Dining Table","description":"Solid wood dining table that seats 6–8, perfect for family gatherings.","price":"25,000 ETB","image_url":"https://images.unsplash.com/photo-1530018607912-eff2daa1bac4?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":29,"business_id":13,"name":"Queen Size Bed Frame","description":"Elegant and sturdy bed frame with a contemporary finish.","price":"18,000 ETB","image_url":"https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":30,"business_id":13,"name":"Office Desk","description":"Spacious desk with built-in storage for a productive workspace.","price":"12,000 ETB","image_url":"https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":31,"business_id":14,"name":"Furniture Assembly Service","description":"Professional assembly for all types of furniture.","price":"From 500 ETB","image_url":"https://images.unsplash.com/photo-1581783898377-1c85bf937427?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":32,"business_id":14,"name":"Interior Design Consultation","description":"Expert advice to transform your space with style.","price":"From 2,000 ETB","image_url":"https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":33,"business_id":14,"name":"Custom Furniture Making","description":"Bespoke furniture crafted to your exact specifications.","price":"From 5,000 ETB","image_url":"https://images.unsplash.com/photo-1505798577917-a65157d3320a?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":34,"business_id":14,"name":"Furniture Repair & Restoration","description":"Give your old furniture a new lease on life.","price":"From 1,000 ETB","image_url":"https://images.unsplash.com/photo-1581539250439-c96689b516dd?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":35,"business_id":15,"name":"Gift Box Special","description":"Curated gift boxes for every occasion — beautifully wrapped.","price":"From 200 ETB","image_url":"https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":36,"business_id":15,"name":"Handcrafted Souvenirs","description":"Unique Ethiopian souvenirs made by local artisans.","price":"From 350 ETB","image_url":"https://images.unsplash.com/photo-1603400521630-9f2de124b33b?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":37,"business_id":15,"name":"Birthday Gift Basket","description":"Thoughtfully arranged basket with treats and surprises.","price":"From 500 ETB","image_url":"https://images.unsplash.com/photo-1549465220-1a8b9238cd50?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":38,"business_id":15,"name":"Corporate Gift Sets","description":"Professional gift sets for clients and employees.","price":"From 1,000 ETB","image_url":"https://images.unsplash.com/photo-1513202331-3e9dc46abd0e?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":39,"business_id":16,"name":"Wireless Headphones","description":"High-quality wireless headphones with noise cancellation.","price":"2,500 ETB","image_url":"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":40,"business_id":16,"name":"Phone Accessories Pack","description":"Screen protector, case, and charger in one convenient pack.","price":"From 500 ETB","image_url":"https://images.unsplash.com/photo-1498049794561-7780e7231661?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":41,"business_id":16,"name":"Smart Watch","description":"Feature-packed smartwatch for fitness and daily use.","price":"8,000 ETB","image_url":"https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":42,"business_id":16,"name":"Bluetooth Speaker","description":"Portable speaker with rich sound and deep bass.","price":"1,500 ETB","image_url":"https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":43,"business_id":17,"name":"Habesha Kemis","description":"Elegant traditional Ethiopian dress for special occasions.","price":"From 3,000 ETB","image_url":"https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":44,"business_id":17,"name":"Modern Dress","description":"Stylish contemporary dress for casual and formal wear.","price":"From 1,500 ETB","image_url":"https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":45,"business_id":17,"name":"Men's Suit","description":"Tailored suit with modern fit for the professional gentleman.","price":"From 5,000 ETB","image_url":"https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":46,"business_id":17,"name":"Traditional Accessories","description":"Complete your look with handcrafted jewelry and scarves.","price":"From 500 ETB","image_url":"https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":47,"business_id":18,"name":"Dental Checkup","description":"Comprehensive dental examination with modern equipment.","price":"From 500 ETB","image_url":"https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":48,"business_id":18,"name":"Teeth Whitening","description":"Professional teeth whitening for a brighter smile.","price":"From 2,000 ETB","image_url":"https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":49,"business_id":18,"name":"Tooth Extraction","description":"Safe and gentle tooth removal by experienced dentists.","price":"From 800 ETB","image_url":"https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":50,"business_id":18,"name":"Dental Filling","description":"Durable fillings to restore damaged teeth.","price":"From 1,000 ETB","image_url":"https://images.unsplash.com/photo-1631382927884-6e59678ae866?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":51,"business_id":19,"name":"English Language Tutoring","description":"Improve your English speaking, writing, and comprehension.","price":"From 300 ETB/hr","image_url":"https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":52,"business_id":19,"name":"Mathematics Tutoring","description":"From basic arithmetic to advanced calculus — we cover it all.","price":"From 300 ETB/hr","image_url":"https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":53,"business_id":19,"name":"SAT & Exam Preparation","description":"Intensive prep courses for SAT, TOEFL, and local exams.","price":"From 500 ETB/hr","image_url":"https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":54,"business_id":19,"name":"Amharic Language Course","description":"Learn Amharic from beginner to conversational fluency.","price":"From 250 ETB/hr","image_url":"https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":55,"business_id":20,"name":"Personal Fitness Training","description":"One-on-one training tailored to your fitness goals.","price":"From 1,000 ETB","image_url":"https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":56,"business_id":20,"name":"Group Fitness Classes","description":"Energetic group sessions for motivation and fun.","price":"From 500 ETB/session","image_url":"https://images.unsplash.com/photo-1534258936925-c58bed479fcb?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":57,"business_id":20,"name":"Event Planning Service","description":"Full-service event planning for weddings, parties, and corporate events.","price":"From 5,000 ETB","image_url":"https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":58,"business_id":20,"name":"Yoga & Wellness Sessions","description":"Relax and rejuvenate with guided yoga and meditation.","price":"From 400 ETB","image_url":"https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":59,"business_id":21,"name":"Premium Haircut","description":"Expert haircut tailored to your style and preference.","price":"From 250 ETB","image_url":"https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":60,"business_id":21,"name":"Beard Grooming","description":"Precision beard trim, shaping, and conditioning.","price":"From 200 ETB","image_url":"https://images.unsplash.com/photo-1621607512214-68297480165e?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":61,"business_id":21,"name":"Facial Treatment","description":"Deep cleansing and rejuvenating facial for healthy skin.","price":"From 400 ETB","image_url":"https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":62,"business_id":21,"name":"Full Grooming Package","description":"Haircut, beard trim, facial, and hot towel finish.","price":"From 800 ETB","image_url":"https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":63,"business_id":22,"name":"Portrait Photography","description":"Professional portrait sessions for individuals and families.","price":"From 3,000 ETB","image_url":"https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":64,"business_id":22,"name":"Wedding Photography","description":"Complete wedding day coverage with stunning results.","price":"From 15,000 ETB","image_url":"https://images.unsplash.com/photo-1519741497674-611481863552?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":65,"business_id":22,"name":"Event Photography","description":"Capture your corporate events, parties, and gatherings.","price":"From 5,000 ETB","image_url":"https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":66,"business_id":22,"name":"Commercial Product Shoot","description":"High-quality product photography for your business.","price":"From 4,000 ETB","image_url":"https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":67,"business_id":23,"name":"Special Tibs Platter","description":"Tender meat sautéed with onions, peppers, and aromatic spices.","price":"350 ETB","image_url":"https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":68,"business_id":23,"name":"Pasta Special","description":"Delicious pasta tossed in house-made sauce with fresh ingredients.","price":"250 ETB","image_url":"https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":69,"business_id":23,"name":"Grilled Fish","description":"Freshly grilled fish served with seasonal vegetables.","price":"400 ETB","image_url":"https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"},
+    {"id":70,"business_id":23,"name":"Mixed Juice","description":"Refreshing blend of seasonal fruits — served chilled.","price":"80 ETB","image_url":"https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?w=400&q=80","created_at":"2026-06-24T12:00:00.000Z"}
   ],
   "featured_items": [
-    { "id": 9, "business_id": 13, "image_url": "/uploads/1780467552240-936640068.png", "title": "Modern Sofa Set", "hook_text": "Comfort meets style — premium sofa crafted for your living room.", "exact_price": "35,000 ETB", "location_text": "Gerji", "created_at": "2026-06-24T12:14:27.092Z" },
-    { "id": 10, "business_id": 14, "image_url": "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&q=80", "title": "Home Comfort Furniture", "hook_text": "Quality furniture and home decor to make your space truly comfortable.", "exact_price": "From 2,500 ETB", "location_text": "Bole", "created_at": "2026-06-24T12:14:27.367Z" },
-    { "id": 11, "business_id": 15, "image_url": "https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=400&q=80", "title": "Gift Box Special", "hook_text": "Unique gifts and souvenirs for every occasion — wrapped with care.", "exact_price": "From 200 ETB", "location_text": "Megenagna", "created_at": "2026-06-24T12:14:27.557Z" },
-    { "id": 12, "business_id": 16, "image_url": "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=400&q=80", "title": "Latest Gadgets", "hook_text": "Latest gadgets, accessories, and electronics at competitive prices.", "exact_price": "From 500 ETB", "location_text": "Bole", "created_at": "2026-06-24T12:14:27.740Z" },
-    { "id": 13, "business_id": 17, "image_url": "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=400&q=80", "title": "Ethiopian Fashion", "hook_text": "Trendy fashion and apparel blending modern style with Ethiopian flair.", "exact_price": "$$", "location_text": "Sarbet", "created_at": "2026-06-24T12:14:27.922Z" },
-    { "id": 14, "business_id": 18, "image_url": "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=400&q=80", "title": "Dental Checkup", "hook_text": "Comprehensive dental care with modern equipment and experienced dentists.", "exact_price": "From 500 ETB", "location_text": "Bole", "created_at": "2026-06-24T12:14:28.106Z" },
-    { "id": 15, "business_id": 19, "image_url": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&q=80", "title": "Language Tutoring", "hook_text": "Language and academic tutoring bridging students to success.", "exact_price": "From 300 ETB/hr", "location_text": "Kazanchis", "created_at": "2026-06-24T12:14:28.286Z" },
-    { "id": 16, "business_id": 20, "image_url": "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=400&q=80", "title": "Fitness Training", "hook_text": "Fitness training and event planning for a healthier, more vibrant lifestyle.", "exact_price": "From 1,000 ETB", "location_text": "Summit", "created_at": "2026-06-24T12:14:28.452Z" },
-    { "id": 17, "business_id": 21, "image_url": "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&q=80", "title": "Premium Grooming", "hook_text": "Premium grooming and barber services for the modern gentleman.", "exact_price": "From 250 ETB", "location_text": "Bole", "created_at": "2026-06-24T12:14:28.629Z" },
-    { "id": 18, "business_id": 22, "image_url": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&q=80", "title": "Photography Session", "hook_text": "Professional photography for events, portraits, and commercial projects.", "exact_price": "From 3,000 ETB", "location_text": "Piassa", "created_at": "2026-06-24T12:14:28.798Z" },
-    { "id": 19, "business_id": 23, "image_url": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&q=80", "title": "Savory Bites Platter", "hook_text": "Delicious local and international cuisine in a warm, inviting atmosphere.", "exact_price": "$$", "location_text": "Megenagna", "created_at": "2026-06-24T12:14:28.964Z" }
+    {
+      "id": 9,
+      "business_id": 13,
+      "image_url": "/uploads/1780467552240-936640068.png",
+      "title": "Modern Sofa Set",
+      "hook_text": "Comfort meets style — premium sofa crafted for your living room.",
+      "exact_price": "35,000 ETB",
+      "location_text": "Gerji",
+      "created_at": "2026-06-24T12:14:27.092Z"
+    },
+    {
+      "id": 10,
+      "business_id": 14,
+      "image_url": "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&q=80",
+      "title": "Home Comfort Furniture",
+      "hook_text": "Quality furniture and home decor to make your space truly comfortable.",
+      "exact_price": "From 2,500 ETB",
+      "location_text": "Bole",
+      "created_at": "2026-06-24T12:14:27.367Z"
+    },
+    {
+      "id": 11,
+      "business_id": 15,
+      "image_url": "https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=400&q=80",
+      "title": "Gift Box Special",
+      "hook_text": "Unique gifts and souvenirs for every occasion — wrapped with care.",
+      "exact_price": "From 200 ETB",
+      "location_text": "Megenagna",
+      "created_at": "2026-06-24T12:14:27.557Z"
+    },
+    {
+      "id": 12,
+      "business_id": 16,
+      "image_url": "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=400&q=80",
+      "title": "Latest Gadgets",
+      "hook_text": "Latest gadgets, accessories, and electronics at competitive prices.",
+      "exact_price": "From 500 ETB",
+      "location_text": "Bole",
+      "created_at": "2026-06-24T12:14:27.740Z"
+    },
+    {
+      "id": 13,
+      "business_id": 17,
+      "image_url": "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=400&q=80",
+      "title": "Ethiopian Fashion",
+      "hook_text": "Trendy fashion and apparel blending modern style with Ethiopian flair.",
+      "exact_price": "$$",
+      "location_text": "Sarbet",
+      "created_at": "2026-06-24T12:14:27.922Z"
+    },
+    {
+      "id": 14,
+      "business_id": 18,
+      "image_url": "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=400&q=80",
+      "title": "Dental Checkup",
+      "hook_text": "Comprehensive dental care with modern equipment and experienced dentists.",
+      "exact_price": "From 500 ETB",
+      "location_text": "Bole",
+      "created_at": "2026-06-24T12:14:28.106Z"
+    },
+    {
+      "id": 15,
+      "business_id": 19,
+      "image_url": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&q=80",
+      "title": "Language Tutoring",
+      "hook_text": "Language and academic tutoring bridging students to success.",
+      "exact_price": "From 300 ETB/hr",
+      "location_text": "Kazanchis",
+      "created_at": "2026-06-24T12:14:28.286Z"
+    },
+    {
+      "id": 16,
+      "business_id": 20,
+      "image_url": "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=400&q=80",
+      "title": "Fitness Training",
+      "hook_text": "Fitness training and event planning for a healthier, more vibrant lifestyle.",
+      "exact_price": "From 1,000 ETB",
+      "location_text": "Summit",
+      "created_at": "2026-06-24T12:14:28.452Z"
+    },
+    {
+      "id": 17,
+      "business_id": 21,
+      "image_url": "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&q=80",
+      "title": "Premium Grooming",
+      "hook_text": "Premium grooming and barber services for the modern gentleman.",
+      "exact_price": "From 250 ETB",
+      "location_text": "Bole",
+      "created_at": "2026-06-24T12:14:28.629Z"
+    },
+    {
+      "id": 18,
+      "business_id": 22,
+      "image_url": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&q=80",
+      "title": "Photography Session",
+      "hook_text": "Professional photography for events, portraits, and commercial projects.",
+      "exact_price": "From 3,000 ETB",
+      "location_text": "Piassa",
+      "created_at": "2026-06-24T12:14:28.798Z"
+    },
+    {
+      "id": 19,
+      "business_id": 23,
+      "image_url": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&q=80",
+      "title": "Savory Bites Platter",
+      "hook_text": "Delicious local and international cuisine in a warm, inviting atmosphere.",
+      "exact_price": "$$",
+      "location_text": "Megenagna",
+      "created_at": "2026-06-24T12:14:28.964Z"
+    }
   ],
   "ratings": [
     {
-      "id": 1, "business_id": 13, "user_id": 2, "rating": 5,
+      "id": 1,
+      "business_id": 13,
+      "user_id": 2,
+      "rating": 5,
       "created_at": "2026-06-03T06:32:39.516Z"
     }
   ],
   "reports": [],
   "users": [
-    { "id": 1, "name": "Aman", "hood_id": 6, "created_at": "2026-05-14T00:57:29.885Z" },
-    { "id": 2, "name": "Aman", "hood_id": 8, "created_at": "2026-05-23T17:53:40.068Z" }
+    {
+      "id": 1,
+      "name": "Aman",
+      "hood_id": 6,
+      "created_at": "2026-05-14T00:57:29.885Z"
+    },
+    {
+      "id": 2,
+      "name": "Aman",
+      "hood_id": 8,
+      "created_at": "2026-05-23T17:53:40.068Z"
+    }
   ],
   "_counters": {
-    "categories": 14, "hoods": 11, "businesses": 11,
-    "products": 1, "featured_items": 11, "ratings": 1, "reports": 0, "users": 2
+    "categories": 14,
+    "hoods": 11,
+    "businesses": 11,
+    "products": 44,
+    "featured_items": 11,
+    "ratings": 1,
+    "reports": 0,
+    "users": 2
   }
 }
