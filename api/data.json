@@ -127,6 +127,7 @@
       "hook_text": "Aman yleyal alkuh iko , Ychlal Aman Ychlal , Ychlal Aman Ychlal",
       "price_indicator": "From 2000 ETB",
       "business_type": "product",
+      "address": "Gerji, Addis Ababa, near Gerji Mazoria",
       "rating_avg": 5,
       "rating_count": 1,
       "created_at": "2026-06-03T06:19:12.275Z"
@@ -143,6 +144,7 @@
       "hook_text": "Quality furniture and home decor to make your space truly comfortable.",
       "price_indicator": "From 2,500 ETB",
       "business_type": "product",
+      "address": "Bole, Addis Ababa, around Bole Medhanealem",
       "rating_avg": 0,
       "rating_count": 0,
       "created_at": "2026-06-16T00:00:00.000Z"
@@ -159,6 +161,7 @@
       "hook_text": "Unique gifts and souvenirs for every occasion — wrapped with care.",
       "price_indicator": "From 200 ETB",
       "business_type": "product",
+      "address": "Megenagna, Addis Ababa, near Megenagna Mall",
       "rating_avg": 0,
       "rating_count": 0,
       "created_at": "2026-06-16T00:00:00.000Z"
@@ -177,7 +180,8 @@
       "rating_avg": 0,
       "rating_count": 0,
       "created_at": "2026-06-16T00:00:00.000Z",
-      "business_type": "product"
+      "business_type": "product",
+      "address": "Megenagna, Addis Ababa, near Megenagna Mall"
     },
     {
       "id": 17,
@@ -193,7 +197,8 @@
       "rating_avg": 0,
       "rating_count": 0,
       "created_at": "2026-06-16T00:00:00.000Z",
-      "business_type": "product"
+      "business_type": "product",
+      "address": "Sarbet, Addis Ababa, near Sarbet Bus Terminal"
     },
     {
       "id": 18,
@@ -209,7 +214,8 @@
       "rating_avg": 0,
       "rating_count": 0,
       "created_at": "2026-06-16T00:00:00.000Z",
-      "business_type": "service"
+      "business_type": "service",
+      "address": "Bole, Addis Ababa, behind Bole General Hospital"
     },
     {
       "id": 19,
@@ -225,7 +231,8 @@
       "rating_avg": 0,
       "rating_count": 0,
       "created_at": "2026-06-16T00:00:00.000Z",
-      "business_type": "service"
+      "business_type": "service",
+      "address": "Kazanchis, Addis Ababa, near Kazanchis Police Station"
     },
     {
       "id": 20,
@@ -241,7 +248,8 @@
       "rating_avg": 0,
       "rating_count": 0,
       "created_at": "2026-06-16T00:00:00.000Z",
-      "business_type": "service"
+      "business_type": "service",
+      "address": "Summit, Addis Ababa, near Summit Fitness Center"
     },
     {
       "id": 21,
@@ -257,7 +265,8 @@
       "rating_avg": 0,
       "rating_count": 0,
       "created_at": "2026-06-16T00:00:00.000Z",
-      "business_type": "service"
+      "business_type": "service",
+      "address": "Bole, Addis Ababa, near Bole Dembel City Center"
     },
     {
       "id": 22,
@@ -273,7 +282,8 @@
       "rating_avg": 0,
       "rating_count": 0,
       "created_at": "2026-06-16T00:00:00.000Z",
-      "business_type": "service"
+      "business_type": "service",
+      "address": "Piassa, Addis Ababa, near Piassa Meskel Square"
     },
     {
       "id": 23,
@@ -289,7 +299,8 @@
       "rating_avg": 0,
       "rating_count": 0,
       "created_at": "2026-06-16T00:00:00.000Z",
-      "business_type": "service"
+      "business_type": "service",
+      "address": "Megenagna, Addis Ababa, opposite Megenagna Church"
     }
   ],
   "products": [
