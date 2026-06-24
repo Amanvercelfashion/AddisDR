@@ -717,9 +717,12 @@ input, select { font-family: var(--font); }
 @media (max-width: 640px) {
   .topbar-row1 {
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: auto 1fr auto;
     grid-template-rows: auto auto auto;
-    grid-template-areas: "logo hood" "logo cat" "logo search";
+    grid-template-areas:
+      "logo search actions"
+      "logo cat cat"
+      "logo hood hood";
     align-items: center;
     gap: 4px 8px;
     padding: 6px 8px;
@@ -728,27 +731,32 @@ input, select { font-family: var(--font); }
   .topbar { background: linear-gradient(to right, #000000 0%, #000000 45%, #003a5c 60%, #006688 72%, #00c8ff 88%, #00ff88 100%); }
   .logo { grid-area: logo; align-self: center; }
   .logo-img { height: 72px; width: auto; }
-  #hoodFilter { grid-area: hood; width: 100%; }
-  #categoryFilter { grid-area: cat; width: 100%; }
-  .hamburger { grid-area: cat; justify-self: end; align-self: center; padding: 4px; }
-  #categoryFilter { justify-self: start; width: calc(100% - 88px); }
-  #userPillWrap { grid-area: cat; justify-self: end; align-self: center; margin-right: 36px; }
+  .topbar-actions {
+    grid-area: actions;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .hamburger { position: static; padding: 4px; }
   #userPillWrap .signin-btn { padding: 4px 8px; font-size: 0.72rem; }
   #userPillWrap .user-pill { padding: 2px 6px; font-size: 0.7rem; }
   #userPillWrap .avatar { width: 22px; height: 22px; font-size: 0.65rem; }
   .product-search-wrap { grid-area: search; width: 100%; min-width: 0; padding: 6px 10px; }
+  #hoodFilter { grid-area: hood; width: 100%; }
+  #categoryFilter { grid-area: cat; width: 100%; }
   .topbar-filters { display: contents; }
   .filter-btn { width: 100%; padding: 5px 8px; font-size: 0.72rem; justify-content: space-between; }
   .dropdown-panel { min-width: 180px; }
-  .business-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+  .business-grid { grid-template-columns: repeat(2, 1fr); gap: 5px; }
   .main-content { padding: 8px 8px; }
   .tile { border-radius: 10px; }
   .tile-body { padding: 8px 8px 6px; gap: 3px; }
-  .tile-name { font-size: 0.8rem; }
-  .tile-hook { font-size: 0.7rem; -webkit-line-clamp: 1; }
+  .tile-top { flex-wrap: wrap; gap: 3px; }
+  .tile-name { font-size: 0.82rem; white-space: normal; overflow: visible; text-overflow: unset; -webkit-line-clamp: 2; display: -webkit-box; -webkit-box-orient: vertical; }
+  .tile-hook { font-size: 0.7rem; -webkit-line-clamp: 2; }
   .tile-tag { font-size: 0.67rem; }
   .tile-price { font-size: 0.65rem; padding: 1px 5px; }
-  .tile-rating { margin-top: 1px; }
+  .tile-rating { margin-top: 1px; flex-wrap: wrap; }
   .rating-text { font-size: 0.62rem; }
   .action-btn { height: 30px; font-size: 0.7rem; border-radius: 6px; }
   .action-btn.cta-btn { font-size: 0.7rem; }
@@ -764,14 +772,16 @@ input, select { font-family: var(--font); }
 }
 @media (max-width: 400px) {
   .logo-img { height: 60px; }
-  .business-grid { gap: 5px; }
+  .business-grid { gap: 4px; }
   .tile-body { padding: 6px 6px 5px; }
-  .tile-name { font-size: 0.75rem; }
+  .tile-name { font-size: 0.76rem; }
   .tile-hook { font-size: 0.65rem; }
   .tile-tag { font-size: 0.6rem; }
   .tile-price { font-size: 0.6rem; padding: 1px 4px; }
   .action-btn { height: 28px; font-size: 0.65rem; }
   .action-btn.cta-btn { font-size: 0.65rem; }
+  .topbar-actions { gap: 2px; }
+  #userPillWrap .signin-btn { padding: 3px 6px; font-size: 0.65rem; }
 }
 
 .dropdown-panel ul::-webkit-scrollbar { width: 4px; }

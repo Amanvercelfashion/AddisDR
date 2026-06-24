@@ -106,31 +106,32 @@ export default function Header({
             </div>
           </div>
 
-          <div id="userPillWrap" style={{ flexShrink: 0 }}>
-            {!currentUser ? (
-              <button className="signin-btn" onClick={() => onOpenAuth('login')}>
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
-                </svg>
-                Sign In
-              </button>
-            ) : (
-              <button className="user-pill" onClick={onSignOut}>
-                <span className="avatar">{currentUser.name?.charAt(0).toUpperCase()}</span>
-                <span>{currentUser.display_name || currentUser.name}</span>
-              </button>
-            )}
+          <div className="topbar-actions">
+            <div id="userPillWrap" style={{ flexShrink: 0 }}>
+              {!currentUser ? (
+                <button className="signin-btn" onClick={() => onOpenAuth('login')}>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                  </svg>
+                  Sign In
+                </button>
+              ) : (
+                <button className="user-pill" onClick={onSignOut}>
+                  <span className="avatar">{currentUser.name?.charAt(0).toUpperCase()}</span>
+                  <span>{currentUser.display_name || currentUser.name}</span>
+                </button>
+              )}
+            </div>
+            <button
+              className="hamburger"
+              id="menuToggle"
+              aria-label="Open menu"
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen(!menuOpen)}
+            >
+              <span></span><span></span><span></span>
+            </button>
           </div>
-
-          <button
-            className="hamburger"
-            id="menuToggle"
-            aria-label="Open menu"
-            aria-expanded={menuOpen}
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
-            <span></span><span></span><span></span>
-          </button>
         </div>
 
         <nav className={`side-menu ${menuOpen ? 'open' : ''}`} id="sideMenu" aria-hidden={!menuOpen}>
