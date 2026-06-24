@@ -606,56 +606,7 @@ input, select { font-family: var(--font); }
   position: relative;
   overflow: hidden;
 }
-.footer::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    repeating-linear-gradient(45deg,
-      transparent 0, transparent 79px,
-      rgba(255,255,255,.06) 79px, rgba(255,255,255,.06) 80px,
-      transparent 80px, transparent 160px
-    ),
-    repeating-linear-gradient(-45deg,
-      transparent 0, transparent 79px,
-      rgba(255,255,255,.06) 79px, rgba(255,255,255,.06) 80px,
-      transparent 80px, transparent 160px
-    ),
-    repeating-linear-gradient(45deg,
-      transparent 0, transparent 39px,
-      rgba(0,200,255,.07) 39px, rgba(0,255,136,.07) 40px,
-      transparent 40px, transparent 80px
-    ),
-    repeating-linear-gradient(-45deg,
-      transparent 0, transparent 39px,
-      rgba(0,200,255,.07) 39px, rgba(0,255,136,.07) 40px,
-      transparent 40px, transparent 80px
-    ),
-    repeating-linear-gradient(45deg,
-      transparent 0, transparent 19px,
-      rgba(255,255,255,.05) 19px, rgba(255,255,255,.05) 20px,
-      transparent 20px, transparent 40px
-    ),
-    repeating-linear-gradient(-45deg,
-      transparent 0, transparent 19px,
-      rgba(255,255,255,.05) 19px, rgba(255,255,255,.05) 20px,
-      transparent 20px, transparent 40px
-    ),
-    repeating-linear-gradient(45deg,
-      transparent 0, transparent 9px,
-      rgba(0,200,255,.08) 9px, rgba(0,255,136,.08) 10px,
-      transparent 10px, transparent 20px
-    ),
-    repeating-linear-gradient(-45deg,
-      transparent 0, transparent 9px,
-      rgba(0,200,255,.08) 9px, rgba(0,255,136,.08) 10px,
-      transparent 10px, transparent 20px
-    );
-  filter: blur(1px);
-  opacity: .5;
-  pointer-events: none;
-  z-index: 1;
-}
+
 .footer-bg-image {
   position: absolute;
   inset: 0;
