@@ -242,6 +242,8 @@ const API = '/api/admin';
 let TOKEN = null;
 let editingId = null;
 let editingSection = null;
+let CATEGORIES = [];
+let HOODS = [];
 
 /* ── AUTH ── */
 function login() {
@@ -285,7 +287,12 @@ document.querySelectorAll('.sidebar nav a').forEach(a => {
 });
 
 /* ── LOAD ALL ── */
-function loadAll() { loadCategories(); loadHoods(); loadBusinesses(); loadFeatured(); loadProducts(); loadReports(); }
+function loadAll() {
+  Promise.all([
+    fetch(`${API}/categories`, { headers: authHeaders() }).then(r => r.json()).then(d => { if (Array.isArray(d)) CATEGORIES = d; }),
+    fetch(`${API}/hoods`, { headers: authHeaders() }).then(r => r.json()).then(d => { if (Array.isArray(d)) HOODS = d; }),
+  ]).then(() => { loadCategories(); loadHoods(); loadBusinesses(); loadFeatured(); loadProducts(); loadReports(); });
+}
 
 /* ── CATEGORIES ── */
 function loadCategories() {
@@ -452,8 +459,8 @@ function buildModal(section, item) {
     ],
     businesses: [
       {name:'name',label:'Name',type:'text',required:true},
-      {name:'category_id',label:'Category ID',type:'number',required:true},
-      {name:'hood_id',label:'Hood ID',type:'number',required:true},
+      {name:'category_id',label:'Category',type:'select',optionsKey:'CATEGORIES',optionValue:'id',optionLabel:'name',required:true},
+      {name:'hood_id',label:'Neighbourhood',type:'select',optionsKey:'HOODS',optionValue:'id',optionLabel:'name',required:true},
       {name:'phone_number',label:'Phone',type:'text'},
       {name:'business_type',label:'Business Type',type:'select',options:[{value:'service',label:'Service Provider (Reserve Now)'},{value:'product',label:'Product Provider (Choose & Order)'}]},
       {name:'address',label:'Full Address',type:'text'},
@@ -484,9 +491,13 @@ function buildModal(section, item) {
     if (f.type === 'textarea') {
       html += `<label>${f.label}</label><textarea name="${f.name}" ${f.required?'required':''}>${esc(val)}</textarea>`;
     } else if (f.type === 'select') {
+      const opts = f.optionsKey ? (window[f.optionsKey] || []) : (f.options || []);
       html += `<label>${f.label}</label><select name="${f.name}">`;
-      for (const opt of f.options) {
-        html += `<option value="${opt.value}" ${val === opt.value ? 'selected' : ''}>${opt.label}</option>`;
+      if (!f.required) html += `<option value="">-- None --</option>`;
+      for (const opt of opts) {
+        const optVal = f.optionsKey ? opt[f.optionValue] : opt.value;
+        const optLabel = f.optionsKey ? opt[f.optionLabel] : opt.label;
+        html += `<option value="${optVal}" ${String(val) === String(optVal) ? 'selected' : ''}>${esc(optLabel)}</option>`;
       }
       html += `</select>`;
     } else {
