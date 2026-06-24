@@ -105,6 +105,19 @@ export async function searchProducts(query) {
   return res.json()
 }
 
+export async function googleAuth(credential) {
+  const res = await fetch(`${API_URL}/auth/google`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ credential }),
+  })
+  if (!res.ok) {
+    const e = await res.json()
+    throw new Error(e.error)
+  }
+  return res.json()
+}
+
 export async function getSettings() {
   const res = await fetch(`${API_URL}/settings`)
   return res.json()

@@ -1016,6 +1016,33 @@ input, select { font-family: var(--font); }
   transition: color .15s;
 }
 .auth-close:hover { color: #fff; }
+.auth-google {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+.auth-google > div { margin: 0 auto !important; }
+.auth-google-loading {
+  text-align: center;
+  color: #7a9ab0;
+  font-size: .8rem;
+  margin-bottom: 10px;
+}
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  color: #7a9ab0;
+  font-size: .78rem;
+}
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(0,200,255,.15);
+}
 
 /* ===== USER PILL ===== */
 .user-pill {

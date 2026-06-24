@@ -62,6 +62,8 @@ CREATE TABLE users (
   name TEXT NOT NULL,
   hood_id BIGINT REFERENCES hoods(id) ON DELETE SET NULL,
   phone TEXT UNIQUE,
+  email TEXT UNIQUE,
+  google_id TEXT UNIQUE,
   password_hash TEXT,
   created_at TIMESTAMPTZ DEFAULT now()
 );

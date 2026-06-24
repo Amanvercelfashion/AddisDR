@@ -1,5 +1,7 @@
-import { useState } from 'react'
-import { signIn, registerUser, loginUser } from '../lib/api'
+import { useState, useEffect, useRef } from 'react'
+import { signIn, registerUser, loginUser, googleAuth } from '../lib/api'
+
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID
 
 export default function AuthModal({ defaultTab, hoods, onSuccess, onClose }) {
   const [tab, setTab] = useState(defaultTab || 'login')
@@ -11,6 +13,50 @@ export default function AuthModal({ defaultTab, hoods, onSuccess, onClose }) {
   const [regPhone, setRegPhone] = useState('')
   const [regPassword, setRegPassword] = useState('')
   const [regErr, setRegErr] = useState('')
+  const [gErr, setGErr] = useState('')
+  const [gLoading, setGLoading] = useState(false)
+  const googleBtnRef = useRef(null)
+  const initializedRef = useRef(false)
+
+  const handleGoogleResponse = async (response) => {
+    setGErr('')
+    setGLoading(true)
+    try {
+      const user = await googleAuth(response.credential)
+      onSuccess(user)
+    } catch (e) {
+      setGErr(e.message)
+    } finally {
+      setGLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    if (!GOOGLE_CLIENT_ID || GOOGLE_CLIENT_ID.startsWith('your-')) return
+    const checkGoogle = () => {
+      if (window.google && google.accounts && google.accounts.id) {
+        if (initializedRef.current) return
+        initializedRef.current = true
+        google.accounts.id.initialize({
+          client_id: GOOGLE_CLIENT_ID,
+          callback: handleGoogleResponse,
+        })
+        if (googleBtnRef.current) {
+          google.accounts.id.renderButton(googleBtnRef.current, {
+            type: 'standard',
+            shape: 'rectangular',
+            theme: 'outline',
+            text: 'signin_with',
+            size: 'large',
+            width: 280,
+          })
+        }
+      } else {
+        setTimeout(checkGoogle, 200)
+      }
+    }
+    checkGoogle()
+  }, [])
 
   const handleLogin = async () => {
     setLoginErr('')
@@ -36,6 +82,16 @@ export default function AuthModal({ defaultTab, hoods, onSuccess, onClose }) {
         <button className="auth-close" onClick={onClose}>&times;</button>
         <h2>Welcome to AddisDR</h2>
         <p className="auth-sub">Sign in or create an account to rate and report businesses.</p>
+
+        {GOOGLE_CLIENT_ID && !GOOGLE_CLIENT_ID.startsWith('your-') && (
+          <>
+            <div className="auth-google" ref={googleBtnRef}></div>
+            {gLoading && <div className="auth-google-loading">Connecting to Google…</div>}
+            {gErr && <div className="auth-err">{gErr}</div>}
+            <div className="auth-divider"><span>or</span></div>
+          </>
+        )}
+
         <div className="auth-tabs">
           <button className={`auth-tab ${tab === 'login' ? 'active' : ''}`} onClick={() => setTab('login')}>Sign In</button>
           <button className={`auth-tab ${tab === 'register' ? 'active' : ''}`} onClick={() => setTab('register')}>Register</button>

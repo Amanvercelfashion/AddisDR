@@ -7,6 +7,7 @@ const bcrypt = require('bcryptjs');
 const fs = require('fs');
 const path = require('path');
 const { createClient } = require('@supabase/supabase-js');
+const { OAuth2Client } = require('google-auth-library');
 
 const app = express();
 
@@ -345,6 +346,78 @@ app.post('/api/users/signin', async (req, res) => {
         .select()
         .single();
       if (error) throw error;
+      user = newUser;
+    }
+
+    const { data: enriched } = await supabase
+      .from('users')
+      .select('*, hoods(name)')
+      .eq('id', user.id)
+      .single();
+
+    res.json(flattenRow(enriched));
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/auth/google', async (req, res) => {
+  try {
+    const { credential } = req.body;
+    if (!credential) return res.status(400).json({ error: 'Google credential is required' });
+
+    const clientId = process.env.GOOGLE_CLIENT_ID;
+    if (!clientId || clientId.startsWith('your-')) {
+      return res.status(500).json({ error: 'Google OAuth is not configured. Set GOOGLE_CLIENT_ID in .env' });
+    }
+
+    const client = new OAuth2Client(clientId);
+    const ticket = await client.verifyIdToken({ idToken: credential, audience: clientId });
+    const payload = ticket.getPayload();
+
+    const googleId = payload.sub;
+    const email = payload.email;
+    const name = payload.name || email.split('@')[0];
+
+    let user;
+
+    // Check by google_id first, then by email
+    const { data: byGoogleId } = await supabase
+      .from('users')
+      .select('*')
+      .eq('google_id', googleId)
+      .maybeSingle();
+
+    if (byGoogleId) {
+      user = byGoogleId;
+    } else if (email) {
+      const { data: byEmail } = await supabase
+        .from('users')
+        .select('*')
+        .eq('email', email)
+        .maybeSingle();
+
+      if (byEmail) {
+        // Link Google ID to existing email-based user
+        const { data: updated } = await supabase
+          .from('users')
+          .update({ google_id: googleId })
+          .eq('id', byEmail.id)
+          .select()
+          .single();
+        if (updated) user = updated;
+        else user = byEmail;
+      }
+    }
+
+    if (!user) {
+      // Create new user
+      const { data: newUser, error: insertErr } = await supabase
+        .from('users')
+        .insert({ name, email, google_id: googleId })
+        .select()
+        .single();
+      if (insertErr) throw insertErr;
       user = newUser;
     }
 
