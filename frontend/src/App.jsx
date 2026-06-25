@@ -192,10 +192,12 @@ export default function App() {
         />
       )}
 
-      <FeaturedCarousel
-        items={featured}
-        onSelect={openBusinessPage}
-      />
+      {!selectedBusiness && (
+        <FeaturedCarousel
+          items={featured}
+          onSelect={openBusinessPage}
+        />
+      )}
 
       <Footer />
 
