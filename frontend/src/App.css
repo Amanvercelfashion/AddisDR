@@ -744,15 +744,15 @@ input, select { font-family: var(--font); }
   .business-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
   .main-content { padding: 6px 6px; }
   .tile { border-radius: 10px; }
-  .tile-body { padding: 6px 6px 5px; gap: 2px; }
-  .tile-top { flex-wrap: wrap; gap: 2px; }
+  .tile-body { padding: 6px 6px 5px; gap: 4px; }
+  .tile-top { flex-wrap: wrap; gap: 3px; }
   .tile-name { font-size: 0.8rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .tile-hook { font-size: 0.68rem; -webkit-line-clamp: 2; }
+  .tile-hook { font-size: 0.65rem; -webkit-line-clamp: 1; }
   .tile-tag { font-size: 0.65rem; }
   .tile-price { font-size: 0.62rem; padding: 1px 5px; }
   .tile-rating { margin-top: 1px; flex-wrap: wrap; }
   .rating-text { font-size: 0.6rem; }
-  .action-btn { height: 26px; font-size: 0.65rem; border-radius: 6px; padding: 0 4px; }
+  .action-btn { height: 24px; font-size: 0.62rem; border-radius: 6px; padding: 0 4px; }
   .action-btn.cta-btn { font-size: 0.65rem; padding: 0 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .action-btn svg { width: 11px; height: 11px; flex-shrink: 0; }
   .tile-actions { gap: 3px; margin-top: 4px; }
@@ -792,10 +792,10 @@ input, select { font-family: var(--font); }
   .side-menu.open { right: 0; }
   .business-grid { grid-template-columns: 1fr 1fr; gap: 3px; }
   .tile-image { aspect-ratio: 4/3; }
-  .tile-body { padding: 4px 4px 3px; }
+  .tile-body { padding: 4px 4px 3px; gap: 3px; }
   .tile-name { font-size: 0.72rem; }
   .tile-tag { font-size: 0.58rem; }
-  .tile-hook { font-size: 0.6rem; }
+  .tile-hook { font-size: 0.58rem; -webkit-line-clamp: 1; }
   .tile-price { font-size: 0.55rem; }
   .action-btn { height: 24px; font-size: 0.6rem; }
   .action-btn.cta-btn { font-size: 0.6rem; }
@@ -819,9 +819,9 @@ input, select { font-family: var(--font); }
   .logo-img { height: 48px; }
   .business-grid { gap: 4px; }
   .main-content { padding: 4px 4px; }
-  .tile-body { padding: 4px 4px 4px; }
+  .tile-body { padding: 4px 4px 4px; gap: 3px; }
   .tile-name { font-size: 0.74rem; }
-  .tile-hook { font-size: 0.62rem; }
+  .tile-hook { font-size: 0.6rem; -webkit-line-clamp: 1; }
   .tile-tag { font-size: 0.6rem; }
   .tile-price { font-size: 0.58rem; padding: 1px 4px; }
   .action-btn { height: 26px; font-size: 0.62rem; }
