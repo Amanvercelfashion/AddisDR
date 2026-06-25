@@ -729,7 +729,7 @@ input, select { font-family: var(--font); }
   .topbar { background: linear-gradient(to right, #000000 0%, #000000 45%, #003a5c 60%, #006688 72%, #00c8ff 88%, #00ff88 100%); }
   .logo { flex: 0 0 auto; order: 1; }
   .logo-img { height: 56px; width: auto; }
-  .product-search-wrap { display: none; }
+  #productSearchBox { display: none !important; }
   .topbar-filters { display: flex; flex: 1 1 auto; order: 4; gap: 4px; min-width: 0; }
   .filter-group { flex: 1; min-width: 0; }
   .filter-btn { width: 100%; padding: 4px 6px; font-size: 0.7rem; justify-content: space-between; }
@@ -787,6 +787,29 @@ input, select { font-family: var(--font); }
   .side-menu { width: 280px; right: -280px; }
 }
 
+@media (max-width: 400px) {
+  .logo-img { height: 48px; }
+  .business-grid { gap: 4px; }
+  .main-content { padding: 4px 4px; }
+  .tile-body { padding: 4px 4px 4px; gap: 3px; }
+  .tile-name { font-size: 0.74rem; }
+  .tile-hook { font-size: 0.6rem; -webkit-line-clamp: 1; }
+  .tile-tag { font-size: 0.6rem; }
+  .tile-price { font-size: 0.58rem; padding: 1px 4px; }
+  .action-btn { height: 22px; font-size: 0.6rem; }
+  .action-btn.cta-btn { font-size: 0.6rem; padding: 0 5px; }
+  .topbar-actions { gap: 2px; }
+  #userPillWrap .signin-btn { padding: 2px 5px; font-size: 0.6rem; }
+  .tile-image { aspect-ratio: 4/3; }
+  #productSearchInput { font-size: 0.78rem; }
+  .filter-btn { padding: 3px 5px; font-size: 0.65rem; }
+  .filter-btn svg:first-child { display: none; }
+  .topbar-row1 { padding: 3px 6px; gap: 3px; }
+  .section-header { margin-bottom: 6px; }
+  .section-header h2 { font-size: 0.82rem; }
+  .topbar-filters { gap: 3px; }
+  .tile-actions .action-btn.cta-btn { font-size: 0.6rem; }
+}
 @media (max-width: 380px) {
   .side-menu { width: 100vw; right: -100vw; }
   .side-menu.open { right: 0; }
@@ -797,8 +820,8 @@ input, select { font-family: var(--font); }
   .tile-tag { font-size: 0.58rem; }
   .tile-hook { font-size: 0.58rem; -webkit-line-clamp: 1; }
   .tile-price { font-size: 0.55rem; }
-  .action-btn { height: 24px; font-size: 0.6rem; }
-  .action-btn.cta-btn { font-size: 0.6rem; }
+  .action-btn { height: 22px; font-size: 0.58rem; }
+  .action-btn.cta-btn { font-size: 0.58rem; }
   .tile-rating .stars { gap: 1px; }
   .tile-rating .star { width: 9px; height: 9px; }
   .rating-text { font-size: 0.55rem; }
@@ -811,33 +834,9 @@ input, select { font-family: var(--font); }
   .filter-btn svg:first-child { display: none; }
   .filter-btn .chevron { width: 9px; height: 9px; }
   .topbar-filters { gap: 3px; }
-  .tile-actions .action-btn { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; height: 22px; font-size: 0.55rem; }
-  .tile-actions .action-btn.cta-btn { flex: 1 1 auto; font-size: 0.55rem; padding: 0 4px; }
-  .tile-actions .action-btn svg { width: 9px; height: 9px; }
-}
-@media (max-width: 400px) {
-  .logo-img { height: 48px; }
-  .business-grid { gap: 4px; }
-  .main-content { padding: 4px 4px; }
-  .tile-body { padding: 4px 4px 4px; gap: 3px; }
-  .tile-name { font-size: 0.74rem; }
-  .tile-hook { font-size: 0.6rem; -webkit-line-clamp: 1; }
-  .tile-tag { font-size: 0.6rem; }
-  .tile-price { font-size: 0.58rem; padding: 1px 4px; }
-  .action-btn { height: 26px; font-size: 0.62rem; }
-  .action-btn.cta-btn { font-size: 0.62rem; padding: 0 6px; }
-  .topbar-actions { gap: 2px; }
-  #userPillWrap .signin-btn { padding: 2px 5px; font-size: 0.6rem; }
-  .tile-image { aspect-ratio: 4/3; }
-  .product-search-wrap { padding: 4px 8px; }
-  #productSearchInput { font-size: 0.78rem; }
-  .filter-btn { padding: 3px 5px; font-size: 0.65rem; }
-  .filter-btn svg:first-child { display: none; }
-  .topbar-row1 { padding: 3px 6px; gap: 3px; }
-  .section-header { margin-bottom: 6px; }
-  .section-header h2 { font-size: 0.82rem; }
-  .topbar-filters { gap: 3px; }
-  .tile-actions .action-btn.cta-btn { font-size: 0.6rem; }
+  .tile-actions .action-btn { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; height: 20px; font-size: 0.52rem; }
+  .tile-actions .action-btn.cta-btn { flex: 1 1 auto; font-size: 0.52rem; padding: 0 3px; }
+  .tile-actions .action-btn svg { width: 8px; height: 8px; }
 }
 
 .dropdown-panel ul::-webkit-scrollbar { width: 4px; }

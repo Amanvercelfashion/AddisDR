@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import ProductSearch from './ProductSearch'
 import Logo from './Logo'
 
@@ -12,6 +12,14 @@ export default function Header({
   const [hoodOpen, setHoodOpen] = useState(false)
   const [catSearch, setCatSearch] = useState('')
   const [hoodSearch, setHoodSearch] = useState('')
+  const [isPhone, setIsPhone] = useState(window.innerWidth <= 640)
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 640px)')
+    const handler = (e) => setIsPhone(e.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
 
   const filteredCats = categories.filter(c =>
     c.name.toLowerCase().includes(catSearch.toLowerCase())
@@ -28,9 +36,11 @@ export default function Header({
             <Logo className="logo-img" />
           </a>
 
-          <div className="product-search-wrap" id="productSearchBox">
-            <ProductSearch onSelect={onBusinessSelect} />
-          </div>
+          {!isPhone && (
+            <div className="product-search-wrap" id="productSearchBox">
+              <ProductSearch onSelect={onBusinessSelect} />
+            </div>
+          )}
 
           <div className="topbar-filters">
             <div className="filter-group">
