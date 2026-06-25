@@ -107,7 +107,7 @@ export default function Header({
           </div>
 
           <div className="topbar-actions">
-            <div id="userPillWrap" style={{ flexShrink: 0 }}>
+            <div id="userPillWrap" className="topbar-auth" style={{ flexShrink: 0 }}>
               {!currentUser ? (
                 <button className="signin-btn" onClick={() => onOpenAuth('login')}>
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">

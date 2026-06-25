@@ -746,7 +746,7 @@ input, select { font-family: var(--font); }
   .tile { border-radius: 10px; }
   .tile-body { padding: 6px 6px 5px; gap: 2px; }
   .tile-top { flex-wrap: wrap; gap: 2px; }
-  .tile-name { font-size: 0.8rem; white-space: normal; overflow: visible; text-overflow: unset; -webkit-line-clamp: 2; display: -webkit-box; -webkit-box-orient: vertical; }
+  .tile-name { font-size: 0.8rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .tile-hook { font-size: 0.68rem; -webkit-line-clamp: 2; }
   .tile-tag { font-size: 0.65rem; }
   .tile-price { font-size: 0.62rem; padding: 1px 5px; }
@@ -774,6 +774,15 @@ input, select { font-family: var(--font); }
   .carousel-item-business { font-size: 0.6rem; }
   .carousel-item-location { font-size: 0.6rem; }
   .footer-inner { grid-template-columns: 1fr; gap: 24px; }
+  .footer-desc {
+    background: rgba(255,255,255,.05);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(0,200,255,.1);
+    text-align: left;
+  }
   .featured-spacer { height: 90px; }
   .side-menu { width: 280px; right: -280px; }
 }
@@ -1222,6 +1231,8 @@ input, select { font-family: var(--font); }
 }
 .signin-btn:hover { background: rgba(255,255,255,.2); }
 
+.topbar-auth { display: none !important; }
+
 .login-gate-msg {
   font-size: .78rem;
   color: #7a9ab0;
@@ -1474,10 +1485,6 @@ input, select { font-family: var(--font); }
 }
 .biz-contact-link:hover { text-decoration: underline; }
 
-.biz-report-row {
-  margin-top: 12px;
-  padding-bottom: 24px;
-}
 .biz-report-btn {
   background: none;
   border: none;
@@ -1492,6 +1499,12 @@ input, select { font-family: var(--font); }
   transition: color 0.15s, background 0.15s;
 }
 .biz-report-btn:hover { color: #ef4444; background: #fef2f2; }
+.rate-report-btn {
+  font-size: 0.72rem;
+  padding: 2px 8px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
 
 .biz-divider {
   height: 1px;

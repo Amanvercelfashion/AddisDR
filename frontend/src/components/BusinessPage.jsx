@@ -110,6 +110,12 @@ export default function BusinessPage({ businessId, onClose, currentUser, onOpenA
                     >★</button>
                   ))}
                 </div>
+                <button className="biz-report-btn rate-report-btn" onClick={handleReport}>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                  </svg>
+                  Report Issue
+                </button>
               </div>
               <div className="biz-actions" id="bizActions">
                 {biz.business_type === 'product' ? (
@@ -169,14 +175,6 @@ export default function BusinessPage({ businessId, onClose, currentUser, onOpenA
                     <a href={`tel:${biz.phone_number}`} className="biz-contact-link">{biz.phone_number}</a>
                   </div>
                 )}
-              </div>
-              <div className="biz-report-row">
-                <button className="biz-report-btn" onClick={handleReport}>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-                  </svg>
-                  Report Issue
-                </button>
               </div>
             </div>
             <div className="biz-divider"></div>
