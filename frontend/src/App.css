@@ -729,7 +729,7 @@ input, select { font-family: var(--font); }
   .topbar { background: linear-gradient(to right, #000000 0%, #000000 45%, #003a5c 60%, #006688 72%, #00c8ff 88%, #00ff88 100%); }
   .logo { flex: 0 0 auto; order: 1; }
   .logo-img { height: 56px; width: auto; }
-  .product-search-wrap { flex: 1 1 100%; order: 3; min-width: 0; padding: 5px 10px; }
+  .product-search-wrap { display: none; }
   .topbar-filters { display: flex; flex: 1 1 auto; order: 4; gap: 4px; min-width: 0; }
   .filter-group { flex: 1; min-width: 0; }
   .filter-btn { width: 100%; padding: 4px 6px; font-size: 0.7rem; justify-content: space-between; }

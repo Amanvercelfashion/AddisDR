@@ -15,8 +15,8 @@ export default function FeaturedCarousel({ items, onSelect }) {
 
   const visibleCount = () => {
     if (isMobile()) return 1
-    if (!trackRef.current?.parentElement) return 3
-    return Math.max(1, Math.floor(trackRef.current.parentElement.offsetWidth / itemWidth))
+    if (!trackRef.current) return 3
+    return Math.max(1, Math.floor(trackRef.current.offsetWidth / itemWidth))
   }
 
   const maxIndex = Math.max(0, items.length - visibleCount())
@@ -39,7 +39,7 @@ export default function FeaturedCarousel({ items, onSelect }) {
 
   const step = (dir) => {
     if (isMobile()) {
-      const wrapper = trackRef.current?.parentElement
+      const wrapper = trackRef.current
       if (!wrapper) return
       const itemW = window.innerWidth
       const maxScroll = wrapper.scrollWidth - itemW
